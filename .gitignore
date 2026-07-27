@@ -1,0 +1,23 @@
+# Build / distribuição
+APK/*.apk
+APK/*.aab
+DEPLOY/build/
+dist/
+build/
+
+# Dependências
+node_modules/
+
+# Ambiente
+.env
+.env.local
+
+# Sistema operacional
+Thumbs.db
+desktop.ini
+.DS_Store
+
+# Editores
+.vscode/
+.idea/
+*.swp
