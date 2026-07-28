@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+<style>
+html,body{margin:0;padding:0;background:#14091f;overscroll-behavior:none;}
+a{color:#ffd23f;} a:hover{color:#ffe98a;}
+@keyframes bkblink{0%,100%{opacity:1}50%{opacity:.25}}
+@keyframes bkfloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+</style>
+</helmet>
+<div style="width:100%;height:100vh;display:flex;align-items:center;justify-content:center;background:#14091f;font-family:'VT323',monospace;color:#fff3d6;">
+  <div data-screen-label="Banana King - Fase 01" style="position:relative;height:100%;aspect-ratio:480/854;max-width:100vw;overflow:hidden;background:#2b1b3d url('PROJECT/assets/background-fase01.png') center/cover no-repeat;user-select:none;">
+    <canvas ref="{{ canvasRef }}" style="position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:none;z-index:1;"></canvas>
+
+    <sc-if value="{{ isGame }}" hint-placeholder-val="{{ false }}">
+      <div style="position:absolute;top:0;left:0;right:0;height:52px;z-index:5;display:flex;align-items:center;gap:8px;padding:0 10px;background:rgba(20,10,30,.78);border-bottom:2px solid rgba(255,210,63,.35);font-family:'Press Start 2P',monospace;font-size:9px;">
+        <div style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#ffd23f;">{{ name }}</div>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <span style="color:#9fe3ff;">{{ phaseText }}</span>
+          <span style="color:#fff3d6;">{{ scoreText }}</span>
+          <span style="color:#ff8c42;">{{ comboText }}</span>
+          <div style="display:flex;gap:4px;align-items:center;">
+            <sc-for list="{{ livesArr }}" as="l" hint-placeholder-count="3">
+              <div style="width:16px;height:8px;background:#ffd23f;border:2px solid #3a2415;border-radius:6px;transform:rotate(-18deg);"></div>
+            </sc-for>
+          </div>
+          <button onClick="{{ toggleMute }}" style="background:none;border:2px solid #ffd23f;color:#ffd23f;font-family:'Press Start 2P',monospace;font-size:9px;padding:4px 6px;cursor:pointer;border-radius:4px;min-width:30px;">{{ muteIcon }}</button>
+          <button onClick="{{ onPause }}" style="background:none;border:2px solid #9fe3ff;color:#9fe3ff;font-family:'Press Start 2P',monospace;font-size:9px;padding:4px 6px;cursor:pointer;border-radius:4px;">II</button>
+        </div>
+      </div>
+      <sc-if value="{{ showAdsUI }}" hint-placeholder-val="{{ true }}">
+        <div style="position:absolute;bottom:0;left:0;right:0;z-index:5;display:flex;flex-direction:column;align-items:center;gap:2px;padding:4px 8px 8px;background:rgba(20,10,30,.82);border-top:2px solid rgba(255,210,63,.35);">
+          <a href="#" onClick="{{ openAds }}" style="font-size:15px;text-decoration:underline;color:#ffd23f;">{{ t.removeAds }}</a>
+          <div style="width:100%;max-width:340px;height:52px;border:2px dashed rgba(255,243,214,.5);border-radius:4px;display:flex;align-items:center;justify-content:center;color:rgba(255,243,214,.6);font-size:15px;background:rgba(255,255,255,.04);">{{ t.adPh }}</div>
+        </div>
+      </sc-if>
+    </sc-if>
+
+    <sc-if value="{{ isMenu }}" hint-placeholder-val="{{ true }}">
+      <div style="position:absolute;inset:0;z-index:10;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:24px;background:linear-gradient(180deg,rgba(24,12,40,.9),rgba(43,27,61,.94));text-align:center;">
+        <img src="PROJECT/assets/logo-transparente.png" alt="Banana King Counterattacks" style="width:72%;max-width:280px;animation:bkfloat 3.5s ease-in-out infinite;"/>
+        <div style="font-size:19px;line-height:1.3;max-width:320px;color:#fff3d6;">{{ t.tagline }}</div>
+        <select value="{{ lang }}" onChange="{{ onLangChange }}" style="font-family:'VT323',monospace;font-size:18px;padding:6px 10px;background:#1d0f30;color:#ffd23f;border:2px solid #ffd23f;border-radius:6px;">
+          <option value="pt">Português (BR)</option>
+          <option value="en">English</option>
+          <option value="es">Español</option>
+          <option value="fr">Français</option>
+          <option value="it">Italiano</option>
+          <option value="de">Deutsch</option>
+        </select>
+        <input value="{{ nameInput }}" onChange="{{ onNameInput }}" placeholder="{{ t.namePh }}" maxLength="14" style="font-family:'VT323',monospace;font-size:20px;padding:8px 12px;width:210px;text-align:center;background:#1d0f30;color:#fff3d6;border:2px solid #9fe3ff;border-radius:6px;outline:none;"/>
+        <button onClick="{{ onPlay }}" style="font-family:'Press Start 2P',monospace;font-size:15px;padding:14px 30px;background:#ffd23f;color:#3a2415;border:3px solid #3a2415;border-radius:8px;box-shadow:0 5px 0 #7a4a12;cursor:pointer;">{{ t.play }}</button>
+        <div style="display:flex;gap:10px;">
+          <button onClick="{{ toggleMusic }}" style="font-family:'VT323',monospace;font-size:17px;padding:5px 12px;background:none;border:2px solid #9fe3ff;color:#9fe3ff;border-radius:6px;cursor:pointer;">{{ musicLabel }}</button>
+          <button onClick="{{ toggleFx }}" style="font-family:'VT323',monospace;font-size:17px;padding:5px 12px;background:none;border:2px solid #9fe3ff;color:#9fe3ff;border-radius:6px;cursor:pointer;">{{ fxLabel }}</button>
+        </div>
+        <div style="font-size:17px;color:rgba(255,243,214,.85);">{{ lastScoreText }}</div>
+        <a href="#" onClick="{{ openTerms }}" style="font-size:15px;">{{ t.terms }}</a>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isVictory }}" hint-placeholder-val="{{ false }}">
+      <div style="position:absolute;inset:0;z-index:10;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:24px;background:linear-gradient(180deg,rgba(24,12,40,.88),rgba(64,30,70,.94));text-align:center;">
+        <div style="display:flex;align-items:flex-end;gap:8px;">
+          <img src="PROJECT/assets/gorila-frente-banana-01.svg" alt="Banana King" style="height:170px;animation:bkfloat 2.5s ease-in-out infinite;"/>
+          <img src="PROJECT/assets/vilao-Trasho.png" alt="Trasho" style="height:90px;filter:grayscale(1) brightness(.6);transform:rotate(24deg);opacity:.8;"/>
+        </div>
+        <div style="font-family:'Press Start 2P',monospace;font-size:17px;color:#ffd23f;line-height:1.5;">{{ t.victoryTitle }}</div>
+        <div style="font-size:20px;">{{ t.victorySub }}</div>
+        <div style="font-family:'Press Start 2P',monospace;font-size:13px;color:#9fe3ff;">{{ finalScoreText }}</div>
+        <div style="font-size:17px;color:rgba(255,243,214,.8);">{{ t.soon }}</div>
+        <button onClick="{{ onPlay }}" style="font-family:'Press Start 2P',monospace;font-size:13px;padding:12px 24px;background:#ffd23f;color:#3a2415;border:3px solid #3a2415;border-radius:8px;box-shadow:0 5px 0 #7a4a12;cursor:pointer;">{{ t.again }}</button>
+        <button onClick="{{ backToMenu }}" style="font-family:'VT323',monospace;font-size:18px;padding:6px 16px;background:none;border:2px solid #9fe3ff;color:#9fe3ff;border-radius:6px;cursor:pointer;">{{ t.menu }}</button>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isGameover }}" hint-placeholder-val="{{ false }}">
+      <div style="position:absolute;inset:0;z-index:10;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:24px;background:linear-gradient(180deg,rgba(30,8,8,.9),rgba(43,27,61,.95));text-align:center;">
+        <img src="PROJECT/assets/banana-king-no-espaco.png" alt="" style="height:150px;filter:grayscale(1) brightness(.55);transform:rotate(-20deg);"/>
+        <div style="font-family:'Press Start 2P',monospace;font-size:17px;color:#ff6b57;line-height:1.5;">{{ t.overTitle }}</div>
+        <div style="font-size:19px;">{{ t.overSub }}</div>
+        <div style="font-family:'Press Start 2P',monospace;font-size:13px;color:#9fe3ff;">{{ finalScoreText }}</div>
+        <button onClick="{{ onPlay }}" style="font-family:'Press Start 2P',monospace;font-size:13px;padding:12px 24px;background:#ff6b57;color:#2b0d0d;border:3px solid #2b0d0d;border-radius:8px;box-shadow:0 5px 0 #7a1e12;cursor:pointer;">{{ t.tryAgain }}</button>
+        <button onClick="{{ backToMenu }}" style="font-family:'VT323',monospace;font-size:18px;padding:6px 16px;background:none;border:2px solid #9fe3ff;color:#9fe3ff;border-radius:6px;cursor:pointer;">{{ t.menu }}</button>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isPaused }}" hint-placeholder-val="{{ false }}">
+      <div style="position:absolute;inset:0;z-index:15;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:24px;background:rgba(15,8,26,.88);text-align:center;">
+        <div style="font-family:'Press Start 2P',monospace;font-size:19px;color:#ffd23f;">{{ t.pauseTitle }}</div>
+        <div style="font-size:17px;color:rgba(255,243,214,.75);">{{ t.pauseNote }}</div>
+        <button onClick="{{ onResume }}" style="font-family:'Press Start 2P',monospace;font-size:13px;padding:12px 24px;background:#ffd23f;color:#3a2415;border:3px solid #3a2415;border-radius:8px;box-shadow:0 5px 0 #7a4a12;cursor:pointer;">{{ t.resume }}</button>
+        <button onClick="{{ onPlay }}" style="font-family:'VT323',monospace;font-size:18px;padding:6px 16px;background:none;border:2px solid #ff6b57;color:#ff6b57;border-radius:6px;cursor:pointer;">{{ t.restart }}</button>
+        <div style="display:flex;gap:10px;">
+          <button onClick="{{ toggleMusic }}" style="font-family:'VT323',monospace;font-size:17px;padding:5px 12px;background:none;border:2px solid #9fe3ff;color:#9fe3ff;border-radius:6px;cursor:pointer;">{{ musicLabel }}</button>
+          <button onClick="{{ toggleFx }}" style="font-family:'VT323',monospace;font-size:17px;padding:5px 12px;background:none;border:2px solid #9fe3ff;color:#9fe3ff;border-radius:6px;cursor:pointer;">{{ fxLabel }}</button>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ showAd }}" hint-placeholder-val="{{ false }}">
+      <div style="position:absolute;inset:0;z-index:20;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.6);padding:24px;">
+        <div style="background:#241236;border:3px solid #ffd23f;border-radius:12px;padding:22px;max-width:320px;display:flex;flex-direction:column;gap:10px;text-align:center;">
+          <div style="font-family:'Press Start 2P',monospace;font-size:12px;color:#ffd23f;line-height:1.6;">{{ t.adTitle }}</div>
+          <div style="font-size:18px;line-height:1.3;">{{ t.adDesc }}</div>
+          <div style="font-family:'Press Start 2P',monospace;font-size:15px;color:#9fe3ff;">USD 1,90</div>
+          <div style="font-size:14px;color:rgba(255,243,214,.65);line-height:1.3;">{{ t.adNote }}</div>
+          <button onClick="{{ buyAds }}" style="font-family:'Press Start 2P',monospace;font-size:11px;padding:12px 18px;background:#ffd23f;color:#3a2415;border:3px solid #3a2415;border-radius:8px;box-shadow:0 4px 0 #7a4a12;cursor:pointer;">{{ t.buy }}</button>
+          <button onClick="{{ closeAds }}" style="font-family:'VT323',monospace;font-size:17px;padding:5px 12px;background:none;border:2px solid #9fe3ff;color:#9fe3ff;border-radius:6px;cursor:pointer;">{{ t.cancel }}</button>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ showTerms }}" hint-placeholder-val="{{ false }}">
+      <div style="position:absolute;inset:0;z-index:20;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.6);padding:24px;">
+        <div style="background:#241236;border:3px solid #9fe3ff;border-radius:12px;padding:22px;max-width:320px;display:flex;flex-direction:column;gap:10px;text-align:center;">
+          <div style="font-family:'Press Start 2P',monospace;font-size:11px;color:#9fe3ff;line-height:1.6;">{{ t.termsTitle }}</div>
+          <div style="font-size:16px;line-height:1.35;color:rgba(255,243,214,.85);">{{ t.termsBody }}</div>
+          <button onClick="{{ closeTerms }}" style="font-family:'VT323',monospace;font-size:17px;padding:5px 12px;background:none;border:2px solid #9fe3ff;color:#9fe3ff;border-radius:6px;cursor:pointer;">{{ t.close }}</button>
+        </div>
+      </div>
+    </sc-if>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;fireRateMs&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:350,&quot;min&quot;:120,&quot;max&quot;:900,&quot;step&quot;:10,&quot;unit&quot;:&quot;ms&quot;,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Calibração&quot;},&quot;cocoIntervalS&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:4.5,&quot;min&quot;:0.8,&quot;max&quot;:8,&quot;step&quot;:0.2,&quot;unit&quot;:&quot;s&quot;,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Calibração&quot;},&quot;formationSpeed&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:26,&quot;min&quot;:10,&quot;max&quot;:90,&quot;step&quot;:2,&quot;unit&quot;:&quot;px/s&quot;,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Calibração&quot;},&quot;powerupDropPct&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:4,&quot;min&quot;:0,&quot;max&quot;:40,&quot;step&quot;:1,&quot;unit&quot;:&quot;%&quot;,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Calibração&quot;}}">
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    const ls = (k, d) => { try { const v = localStorage.getItem('bkc_' + k); return v === null ? d : v; } catch (e) { return d; } };
+    this.state = {
+      screen: 'menu', paused: false,
+      lang: ls('lang', 'pt'), name: ls('name', ''), nameInput: ls('name', ''),
+      score: 0, lives: 3, comboMult: 1, phase: 1,
+      muted: ls('muted', '0') === '1', musicOn: ls('music', '1') === '1', fxOn: ls('fx', '1') === '1',
+      adsRemoved: ls('ads', '0') === '1', showAd: false, showTerms: false,
+      lastScore: parseInt(ls('last', '0'), 10) || 0, highScore: parseInt(ls('high', '0'), 10) || 0,
+      finalScore: 0
+    };
+    this.canvasRef = React.createRef();
+    this.keys = {};
+  }
+  save(k, v) { try { localStorage.setItem('bkc_' + k, String(v)); } catch (e) {} }
+
+  I18N = {
+    pt: { tagline: 'Defenda a Terra do chimpanzé Trasho e sua tropa estelar! Deslize para desviar dos cocos, destrua a formação e vença as 10 fases.', namePh: 'Seu nome', play: 'JOGAR', music: 'Música', fx: 'Efeitos', on: 'ON', off: 'OFF', terms: 'Termos de uso e privacidade', termsTitle: 'TERMOS DE USO', termsBody: '[Placeholder] Os Termos de Uso e a Política de Privacidade reais serão adicionados antes do lançamento.', close: 'Fechar', lastScore: 'Última pontuação', removeAds: 'Remover Anúncio', adPh: 'Banner AdMob 320×50 (placeholder)', adTitle: 'REMOVER ANÚNCIOS', adDesc: 'Compra única. Remove todos os anúncios para sempre.', adNote: 'Preço de referência. O valor final é exibido conforme a sua região na loja.', buy: 'COMPRAR', cancel: 'Cancelar', victoryTitle: 'FASE COMPLETA!', victorySub: 'O Banana King venceu a tropa de Trasho!', soon: 'Protótipo: Fase 02 em breve.', again: 'JOGAR DE NOVO', menu: 'Menu', overTitle: 'GAME OVER', overSub: 'A nave do Banana King foi destruída...', tryAgain: 'TENTAR NOVAMENTE', pauseTitle: 'PAUSA', pauseNote: 'Fase atual salva.', resume: 'CONTINUAR', restart: 'Reiniciar o jogo', phase: 'FASE' },
+    en: { tagline: 'Defend Earth from the chimp Trasho and his star troop! Slide to dodge coconuts, destroy the formation and beat all 10 levels.', namePh: 'Your name', play: 'PLAY', music: 'Music', fx: 'Sound FX', on: 'ON', off: 'OFF', terms: 'Terms of use & privacy', termsTitle: 'TERMS OF USE', termsBody: '[Placeholder] Real Terms of Use and Privacy Policy will be added before release.', close: 'Close', lastScore: 'Last score', removeAds: 'Remove Ads', adPh: 'AdMob banner 320×50 (placeholder)', adTitle: 'REMOVE ADS', adDesc: 'One-time purchase. Removes all ads forever.', adNote: 'Reference price. The final price is shown by the store for your region.', buy: 'BUY', cancel: 'Cancel', victoryTitle: 'LEVEL COMPLETE!', victorySub: 'Banana King defeated Trasho\u2019s troop!', soon: 'Prototype: Level 02 coming soon.', again: 'PLAY AGAIN', menu: 'Menu', overTitle: 'GAME OVER', overSub: 'Banana King\u2019s ship was destroyed...', tryAgain: 'TRY AGAIN', pauseTitle: 'PAUSED', pauseNote: 'Current level saved.', resume: 'RESUME', restart: 'Restart game', phase: 'LEVEL' },
+    es: { tagline: '¡Defiende la Tierra del chimpancé Trasho y su tropa estelar! Desliza para esquivar cocos, destruye la formación y gana las 10 fases.', namePh: 'Tu nombre', play: 'JUGAR', music: 'Música', fx: 'Efectos', on: 'ON', off: 'OFF', terms: 'Términos de uso y privacidad', termsTitle: 'TÉRMINOS DE USO', termsBody: '[Placeholder] Los Términos y la Política de Privacidad reales se añadirán antes del lanzamiento.', close: 'Cerrar', lastScore: 'Última puntuación', removeAds: 'Quitar anuncios', adPh: 'Banner AdMob 320×50 (placeholder)', adTitle: 'QUITAR ANUNCIOS', adDesc: 'Compra única. Elimina todos los anuncios para siempre.', adNote: 'Precio de referencia. El precio final lo muestra la tienda según tu región.', buy: 'COMPRAR', cancel: 'Cancelar', victoryTitle: '¡FASE COMPLETA!', victorySub: '¡Banana King venció a la tropa de Trasho!', soon: 'Prototipo: Fase 02 muy pronto.', again: 'JUGAR OTRA VEZ', menu: 'Menú', overTitle: 'GAME OVER', overSub: 'La nave de Banana King fue destruida...', tryAgain: 'INTENTAR DE NUEVO', pauseTitle: 'PAUSA', pauseNote: 'Fase actual guardada.', resume: 'CONTINUAR', restart: 'Reiniciar juego', phase: 'FASE' },
+    fr: { tagline: 'Défendez la Terre contre le chimpanzé Trasho et sa troupe stellaire ! Glissez pour esquiver les noix de coco, détruisez la formation et gagnez les 10 niveaux.', namePh: 'Votre nom', play: 'JOUER', music: 'Musique', fx: 'Effets', on: 'ON', off: 'OFF', terms: 'Conditions d\u2019utilisation et confidentialité', termsTitle: 'CONDITIONS', termsBody: '[Placeholder] Les Conditions et la Politique de confidentialité réelles seront ajoutées avant la sortie.', close: 'Fermer', lastScore: 'Dernier score', removeAds: 'Supprimer les pubs', adPh: 'Bannière AdMob 320×50 (placeholder)', adTitle: 'SUPPRIMER LES PUBS', adDesc: 'Achat unique. Supprime toutes les publicités pour toujours.', adNote: 'Prix de référence. Le prix final est affiché par la boutique selon votre région.', buy: 'ACHETER', cancel: 'Annuler', victoryTitle: 'NIVEAU TERMINÉ !', victorySub: 'Banana King a vaincu la troupe de Trasho !', soon: 'Prototype : niveau 02 bientôt.', again: 'REJOUER', menu: 'Menu', overTitle: 'GAME OVER', overSub: 'Le vaisseau de Banana King a été détruit...', tryAgain: 'RÉESSAYER', pauseTitle: 'PAUSE', pauseNote: 'Niveau actuel sauvegardé.', resume: 'CONTINUER', restart: 'Recommencer', phase: 'NIVEAU' },
+    it: { tagline: 'Difendi la Terra dallo scimpanzé Trasho e dalla sua truppa stellare! Scorri per schivare le noci di cocco, distruggi la formazione e vinci le 10 fasi.', namePh: 'Il tuo nome', play: 'GIOCA', music: 'Musica', fx: 'Effetti', on: 'ON', off: 'OFF', terms: 'Termini d\u2019uso e privacy', termsTitle: 'TERMINI D\u2019USO', termsBody: '[Placeholder] I Termini e la Privacy Policy reali saranno aggiunti prima del lancio.', close: 'Chiudi', lastScore: 'Ultimo punteggio', removeAds: 'Rimuovi annunci', adPh: 'Banner AdMob 320×50 (placeholder)', adTitle: 'RIMUOVI ANNUNCI', adDesc: 'Acquisto unico. Rimuove tutti gli annunci per sempre.', adNote: 'Prezzo di riferimento. Il prezzo finale è mostrato dallo store in base alla tua regione.', buy: 'ACQUISTA', cancel: 'Annulla', victoryTitle: 'FASE COMPLETATA!', victorySub: 'Banana King ha sconfitto la truppa di Trasho!', soon: 'Prototipo: Fase 02 in arrivo.', again: 'GIOCA ANCORA', menu: 'Menu', overTitle: 'GAME OVER', overSub: 'La nave di Banana King è stata distrutta...', tryAgain: 'RIPROVA', pauseTitle: 'PAUSA', pauseNote: 'Fase attuale salvata.', resume: 'CONTINUA', restart: 'Ricomincia', phase: 'FASE' },
+    de: { tagline: 'Verteidige die Erde gegen den Schimpansen Trasho und seine Sternentruppe! Wische, um Kokosnüssen auszuweichen, zerstöre die Formation und gewinne alle 10 Level.', namePh: 'Dein Name', play: 'SPIELEN', music: 'Musik', fx: 'Effekte', on: 'AN', off: 'AUS', terms: 'Nutzungsbedingungen & Datenschutz', termsTitle: 'NUTZUNGSBEDINGUNGEN', termsBody: '[Placeholder] Die echten Nutzungsbedingungen und die Datenschutzerklärung werden vor dem Release ergänzt.', close: 'Schließen', lastScore: 'Letzte Punktzahl', removeAds: 'Werbung entfernen', adPh: 'AdMob-Banner 320×50 (Placeholder)', adTitle: 'WERBUNG ENTFERNEN', adDesc: 'Einmaliger Kauf. Entfernt alle Werbung für immer.', adNote: 'Referenzpreis. Der Endpreis wird im Store je nach Region angezeigt.', buy: 'KAUFEN', cancel: 'Abbrechen', victoryTitle: 'LEVEL GESCHAFFT!', victorySub: 'Banana King hat Trashos Truppe besiegt!', soon: 'Prototyp: Level 02 folgt bald.', again: 'NOCHMAL SPIELEN', menu: 'Menü', overTitle: 'GAME OVER', overSub: 'Banana Kings Schiff wurde zerstört...', tryAgain: 'NOCHMAL VERSUCHEN', pauseTitle: 'PAUSE', pauseNote: 'Aktuelles Level gespeichert.', resume: 'WEITER', restart: 'Neu starten', phase: 'LEVEL' }
+  };
+
+  componentDidMount() {
+    this.img = {};
+    const files = { hero: 'banana-king-no-espaco.png', hero2: 'banana-king-no-espaco-espelhado.png', vil: 'vilao-Trasho.png', vil2: 'vilao-Trasho-espelhado.png', n00: 'nave-inimiga-00.png', n01: 'nave-inimiga-01.png', n02: 'nave-inimiga-02.png', n03: 'nave-inimiga-03.png', n04: 'nave-inimiga-04.png', n05: 'nave-inimiga-05.png' };
+    for (const k in files) { const im = new Image(); im.src = 'PROJECT/assets/' + files[k]; this.img[k] = im; }
+    this.onKey = (e) => {
+      if (e.type === 'keydown' && e.key === 'Escape' && this.state.screen === 'game') { this.state.paused ? this.resumeGame() : this.pauseGame(); return; }
+      this.keys[e.key] = e.type === 'keydown';
+    };
+    window.addEventListener('keydown', this.onKey);
+    window.addEventListener('keyup', this.onKey);
+    this.onVis = () => { if (document.hidden && this.state.screen === 'game' && !this.state.paused) this.pauseGame(); };
+    document.addEventListener('visibilitychange', this.onVis);
+  }
+  componentWillUnmount() {
+    window.removeEventListener('keydown', this.onKey);
+    window.removeEventListener('keyup', this.onKey);
+    document.removeEventListener('visibilitychange', this.onVis);
+    cancelAnimationFrame(this.raf);
+    this.stopMusic();
+  }
+
+  // ---------- audio ----------
+  ac() { if (!this._ac) this._ac = new (window.AudioContext || window.webkitAudioContext)(); if (this._ac.state === 'suspended') this._ac.resume(); return this._ac; }
+  tone(freq, dur, type, vol, slide) {
+    if (this.state.muted || !this.state.fxOn) return;
+    const ac = this.ac(), o = ac.createOscillator(), g = ac.createGain(), t = ac.currentTime;
+    o.type = type || 'square'; o.frequency.setValueAtTime(freq, t);
+    if (slide) o.frequency.exponentialRampToValueAtTime(Math.max(30, freq + slide), t + dur);
+    g.gain.setValueAtTime(vol || .08, t); g.gain.exponentialRampToValueAtTime(.0001, t + dur);
+    o.connect(g); g.connect(ac.destination); o.start(t); o.stop(t + dur + .02);
+  }
+  noise(dur, vol, low) {
+    if (this.state.muted || !this.state.fxOn) return;
+    const ac = this.ac(), t = ac.currentTime, n = ac.sampleRate * dur, buf = ac.createBuffer(1, n, ac.sampleRate), d = buf.getChannelData(0);
+    for (let i = 0; i < n; i++) d[i] = (Math.random() * 2 - 1) * (1 - i / n);
+    const s = ac.createBufferSource(); s.buffer = buf;
+    const f = ac.createBiquadFilter(); f.type = 'lowpass'; f.frequency.value = low || 1800;
+    const g = ac.createGain(); g.gain.setValueAtTime(vol || .15, t); g.gain.exponentialRampToValueAtTime(.0001, t + dur);
+    s.connect(f); f.connect(g); g.connect(ac.destination); s.start(t);
+  }
+  sfx(name) {
+    if (name === 'laser') this.tone(880, .12, 'square', .05, -600);
+    else if (name === 'boom') { this.noise(.25, .18, 1600); this.tone(160, .2, 'sawtooth', .06, -120); }
+    else if (name === 'banana') { this.noise(.35, .22, 900); this.tone(110, .3, 'triangle', .09, -70); }
+    else if (name === 'hit') { this.tone(300, .4, 'sawtooth', .12, -260); this.noise(.4, .2, 700); }
+    else if (name === 'power') { this.tone(523, .09, 'square', .07); setTimeout(() => this.tone(659, .09, 'square', .07), 90); setTimeout(() => this.tone(784, .14, 'square', .07), 180); }
+    else if (name === 'click') this.tone(600, .05, 'square', .05);
+    else if (name === 'win') [523, 659, 784, 1046].forEach((f, i) => setTimeout(() => this.tone(f, .22, 'square', .08), i * 160));
+    else if (name === 'lose') [392, 330, 262, 196].forEach((f, i) => setTimeout(() => this.tone(f, .3, 'sawtooth', .08), i * 200));
+    else if (name === 'tick') this.tone(220, .06, 'square', .04);
+  }
+  startMusic() {
+    if (this.state.muted || !this.state.musicOn || this._mus) return;
+    const ac = this.ac(); let step = 0;
+    const bass = [110, 110, 131, 110, 87, 87, 98, 110], arp = [220, 262, 330, 262, 220, 294, 349, 294];
+    this._mus = setInterval(() => {
+      if (this.state.paused) return;
+      const t = ac.currentTime;
+      const o = ac.createOscillator(), g = ac.createGain();
+      o.type = 'triangle'; o.frequency.value = bass[step % 8];
+      g.gain.setValueAtTime(.05, t); g.gain.exponentialRampToValueAtTime(.0001, t + .22);
+      o.connect(g); g.connect(ac.destination); o.start(t); o.stop(t + .25);
+      if (step % 2 === 0) {
+        const o2 = ac.createOscillator(), g2 = ac.createGain();
+        o2.type = 'square'; o2.frequency.value = arp[(step / 2) % 8];
+        g2.gain.setValueAtTime(.022, t); g2.gain.exponentialRampToValueAtTime(.0001, t + .18);
+        o2.connect(g2); g2.connect(ac.destination); o2.start(t); o2.stop(t + .2);
+      }
+      step++;
+    }, 250);
+  }
+  stopMusic() { if (this._mus) { clearInterval(this._mus); this._mus = null; } }
+
+  // ---------- game ----------
+  W = 480; H = 854;
+  startGame = () => {
+    this.sfx('click');
+    const nm = (this.state.nameInput || '').trim() || 'PLAYER 1';
+    this.save('name', nm);
+    this.setState({ screen: 'game', paused: false, name: nm, score: 0, lives: 3, comboMult: 1 });
+    const W = this.W, H = this.H;
+    const rows = [{ lv: 2, img: 'n03' }, { lv: 2, img: 'n04' }, { lv: 1, img: 'n05' }, { lv: 1, img: 'n05' }];
+    const ships = [];
+    rows.forEach((r, ri) => { for (let c = 0; c < 5; c++) ships.push({ row: ri, col: c, lv: r.lv, hp: r.lv, img: r.img, flash: 0, w: 60, h: 46 }); });
+    this.g = {
+      t: 0, hero: { x: W / 2, y: H - 150, w: 66, h: 52, face: 1, invuln: 0, shield: 0, weapon: null, weaponUntil: 0 },
+      fireAt: 0, bullets: [], cocos: [], powerups: [], parts: [], texts: [],
+      ships, rows: rows.map((r, i) => ({ x: 0, dir: i % 2 === 0 ? 1 : -1, y: 130 + i * 62 })),
+      total: ships.length, score: 0, combo: 0,
+      vil: { x: W / 2, t: 0 }, cocoAt: 1.8 + Math.random() * 1.5,
+      bananas: Array.from({ length: 7 }, (_, i) => ({ i, hp: 2 })),
+      bananaY: H - 290, over: false
+    };
+    this.setupCanvas();
+    this.startMusic();
+    this._last = performance.now();
+    cancelAnimationFrame(this.raf);
+    this.raf = requestAnimationFrame(this.loop);
+  };
+  setupCanvas() {
+    const cv = this.canvasRef.current; if (!cv || cv._bk) { if (cv) this.fitCanvas(cv); return; }
+    cv._bk = true; this.fitCanvas(cv);
+    const toX = (e) => { const r = cv.getBoundingClientRect(); return (e.clientX - r.left) / r.width * this.W; };
+    const mv = (e) => { if (this.g && !this.state.paused && this.state.screen === 'game') { const h = this.g.hero, nx = Math.max(40, Math.min(this.W - 40, toX(e))); if (Math.abs(nx - h.x) > 1) h.face = nx > h.x ? 1 : -1; h.x = nx; } };
+    cv.addEventListener('pointerdown', (e) => { cv.setPointerCapture(e.pointerId); mv(e); });
+    cv.addEventListener('pointermove', (e) => { if (e.buttons || e.pointerType === 'touch') mv(e); });
+    window.addEventListener('resize', () => this.fitCanvas(cv));
+  }
+  fitCanvas(cv) {
+    const dpr = Math.min(2, window.devicePixelRatio || 1);
+    const r = cv.getBoundingClientRect();
+    cv.width = Math.round(r.width * dpr); cv.height = Math.round(r.height * dpr);
+    this._sc = { sx: cv.width / this.W, sy: cv.height / this.H };
+  }
+  pauseGame = () => { this.sfx('click'); this.setState({ paused: true }); };
+  resumeGame = () => { this.sfx('click'); this.setState({ paused: false }); this._last = performance.now(); };
+  endGame(win) {
+    this.g.over = true; this.stopMusic();
+    const sc = this.g.score;
+    const high = Math.max(sc, this.state.highScore);
+    this.save('last', sc); this.save('high', high);
+    this.sfx(win ? 'win' : 'lose');
+    setTimeout(() => this.setState({ screen: win ? 'victory' : 'gameover', finalScore: sc, lastScore: sc, highScore: high, score: sc }), win ? 700 : 1100);
+  }
+
+  loop = (now) => {
+    if (!this.g || this.state.screen !== 'game') return;
+    this.raf = requestAnimationFrame(this.loop);
+    if (this.state.paused) { this._last = now; return; }
+    let dt = Math.min(.033, (now - this._last) / 1000); this._last = now;
+    const g = this.g; if (!g.over) { g.t += dt; this.update(dt); }
+    this.draw();
+    if (now - (this._hud || 0) > 150) {
+      this._hud = now;
+      const mult = 1 + Math.min(4, Math.floor(g.combo / 4));
+      if (this.state.score !== g.score || this.state.comboMult !== mult) this.setState({ score: g.score, comboMult: mult });
+    }
+  };
+
+  update(dt) {
+    const g = this.g, W = this.W, H = this.H, hero = g.hero;
+    // hero keyboard
+    if (this.keys['ArrowLeft']) { hero.x -= 320 * dt; hero.face = -1; }
+    if (this.keys['ArrowRight']) { hero.x += 320 * dt; hero.face = 1; }
+    hero.x = Math.max(40, Math.min(W - 40, hero.x));
+    if (hero.invuln > 0) hero.invuln -= dt;
+    if (hero.weapon && g.t > hero.weaponUntil) hero.weapon = null;
+    if (hero.shield > 0) hero.shield -= dt;
+    // autofire
+    const rate = (hero.weapon === 'rapid' ? .5 : 1) * ((this.props.fireRateMs ?? 350) / 1000);
+    if (g.t >= g.fireAt) {
+      g.fireAt = g.t + rate;
+      this.sfx('laser');
+      if (hero.weapon === 'triple') [-70, 0, 70].forEach(vx => g.bullets.push({ x: hero.x, y: hero.y - 30, vx, vy: -430 }));
+      else g.bullets.push({ x: hero.x, y: hero.y - 30, vx: 0, vy: -430 });
+    }
+    g.bullets.forEach(b => { b.x += b.vx * dt; b.y += b.vy * dt; });
+    g.bullets = g.bullets.filter(b => b.y > 60 && b.x > 0 && b.x < W);
+    // villain
+    g.vil.t += dt; g.vil.x = W / 2 + Math.sin(g.vil.t * .55) * (W / 2 - 70);
+    const baseInt = this.props.cocoIntervalS ?? 4.5;
+    if (g.t >= g.cocoAt) {
+      g.cocoAt = g.t + baseInt * (.6 + Math.random() * .9);
+      g.cocos.push({ x: g.vil.x + (Math.random() * 40 - 20), y: 130, vy: 130 + Math.random() * 55, vx: Math.random() * 40 - 20, r: 13, spin: Math.random() * 6 });
+    }
+    g.cocos.forEach(c => { c.x += c.vx * dt; c.y += c.vy * dt; c.spin += dt * 4; });
+    // formation
+    const alive = g.ships.length, speedBase = this.props.formationSpeed ?? 26;
+    const spd = speedBase + (1 - alive / g.total) * 80;
+    const colW = 82, half = (5 - 1) * colW / 2;
+    g.rows.forEach((row, ri) => {
+      row.x += row.dir * spd * dt;
+      const rowShips = g.ships.filter(s => s.row === ri);
+      if (!rowShips.length) return;
+      const minC = Math.min(...rowShips.map(s => s.col)), maxC = Math.max(...rowShips.map(s => s.col));
+      const left = W / 2 + row.x - half + minC * colW - 28, right = W / 2 + row.x - half + maxC * colW + 28;
+      if ((row.dir > 0 && right > W - 8) || (row.dir < 0 && left < 8)) {
+        row.dir *= -1;
+        g.rows.forEach(r2 => r2.y += 5);
+        this.sfx('tick');
+      }
+    });
+    const shipPos = (s) => { const row = g.rows[s.row]; return { x: W / 2 + row.x - half + s.col * colW, y: row.y }; };
+    // bullets vs ships
+    g.bullets = g.bullets.filter(b => {
+      for (const s of g.ships) {
+        const p = shipPos(s);
+        if (Math.abs(b.x - p.x) < s.w / 2 && Math.abs(b.y - p.y) < s.h / 2 + 6) {
+          s.hp--; s.flash = .1;
+          if (s.hp <= 0) {
+            g.ships.splice(g.ships.indexOf(s), 1);
+            g.combo++;
+            const mult = 1 + Math.min(4, Math.floor(g.combo / 4));
+            const pts = s.lv * 100 * mult;
+            g.score += pts;
+            this.boom(p.x, p.y, '#ff8c42'); this.sfx('boom');
+            g.texts.push({ x: p.x, y: p.y, txt: '+' + pts, a: 1 });
+            if (Math.random() * 100 < (this.props.powerupDropPct ?? 12)) {
+              const types = ['triple', 'rapid', 'shield', 'life'];
+              g.powerups.push({ x: p.x, y: p.y, vy: 95, type: types[Math.floor(Math.random() * 4)] });
+            }
+          } else this.sfx('tick');
+          return false;
+        }
+      }
+      return true;
+    });
+    // cocos vs bananas / hero / ground
+    const bw = W / 8;
+    g.cocos = g.cocos.filter(c => {
+      if (c.y > g.bananaY - 14 && c.y < g.bananaY + 16) {
+        for (const bn of g.bananas) {
+          if (bn.hp <= 0) continue;
+          const bx = bw * (bn.i + 1);
+          if (Math.abs(c.x - bx) < 26) {
+            bn.hp--;
+            if (bn.hp <= 0) { this.boom(bx, g.bananaY, '#ffd23f'); this.sfx('banana'); }
+            else this.sfx('tick');
+            this.boom(c.x, c.y, '#8a5a2b', 5);
+            return false;
+          }
+        }
+      }
+      if (Math.abs(c.x - hero.x) < hero.w / 2 - 4 && Math.abs(c.y - hero.y) < hero.h / 2 + 4) {
+        if (hero.shield > 0) { hero.shield = 0; this.boom(c.x, c.y, '#9fe3ff'); this.sfx('boom'); return false; }
+        if (hero.invuln <= 0) this.hitHero();
+        return false;
+      }
+      return c.y < H - 60;
+    });
+    // powerups
+    g.powerups.forEach(p => p.y += p.vy * dt);
+    g.powerups = g.powerups.filter(p => {
+      if (Math.abs(p.x - hero.x) < hero.w / 2 + 8 && Math.abs(p.y - hero.y) < hero.h / 2 + 10) {
+        this.sfx('power');
+        if (p.type === 'life') { if (this.state.lives < 3) this.setState({ lives: this.state.lives + 1 }); }
+        else if (p.type === 'shield') hero.shield = 8;
+        else { hero.weapon = p.type; hero.weaponUntil = g.t + 8; }
+        g.texts.push({ x: p.x, y: p.y - 10, txt: p.type.toUpperCase(), a: 1 });
+        return false;
+      }
+      return p.y < H - 80;
+    });
+    // particles / texts
+    g.parts.forEach(p => { p.x += p.vx * dt; p.y += p.vy * dt; p.vy += 260 * dt; p.a -= dt * 1.6; });
+    g.parts = g.parts.filter(p => p.a > 0);
+    g.texts.forEach(t => { t.y -= 34 * dt; t.a -= dt * 1.1; });
+    g.texts = g.texts.filter(t => t.a > 0);
+    // win — vida só é perdida por coco ou nave encostando no herói
+    if (!g.ships.length && !g.over) this.endGame(true);
+    g.rows.forEach(r => { if (r.y > hero.y - 20) r.y = hero.y - 20; });
+    if (hero.invuln <= 0 && !g.over) {
+      for (const s of g.ships) {
+        const p = shipPos(s);
+        if (Math.abs(p.x - hero.x) < (s.w + hero.w) / 2 - 10 && Math.abs(p.y - hero.y) < (s.h + hero.h) / 2 - 6) { this.hitHero(); break; }
+      }
+    }
+  }
+  hitHero() {
+    const g = this.g, hero = g.hero;
+    g.combo = 0;
+    this.boom(hero.x, hero.y, '#ff6b57', 22); this.sfx('hit');
+    const lives = this.state.lives - 1;
+    this.setState({ lives, comboMult: 1 });
+    if (lives <= 0) this.endGame(false);
+    else { hero.invuln = 2; hero.x = this.W / 2; }
+  }
+  boom(x, y, color, n) {
+    for (let i = 0; i < (n || 14); i++) this.g.parts.push({ x, y, vx: Math.random() * 260 - 130, vy: Math.random() * 220 - 150, a: 1, c: color, s: 3 + Math.random() * 4 });
+  }
+
+  draw() {
+    const cv = this.canvasRef.current; if (!cv) return;
+    const ctx = cv.getContext('2d'), g = this.g, W = this.W, H = this.H;
+    ctx.setTransform(this._sc.sx, 0, 0, this._sc.sy, 0, 0);
+    ctx.clearRect(0, 0, W, H);
+    ctx.imageSmoothingEnabled = false;
+    // villain
+    const vw = 96;
+    let vimg = this.img[Math.cos(g.vil.t * .55) > 0 ? 'vil' : 'vil2'];
+    if (!(vimg.complete && vimg.naturalWidth)) vimg = this.img.vil;
+    if (vimg.complete && vimg.naturalWidth) ctx.drawImage(vimg, g.vil.x - vw / 2, 52, vw, vw * .85);
+    // ships
+    const colW = 82, half = (5 - 1) * colW / 2;
+    g.ships.forEach(s => {
+      const row = g.rows[s.row], x = W / 2 + row.x - half + s.col * colW, y = row.y;
+      if (s.flash > 0) { s.flash -= .016; ctx.filter = 'brightness(2.2)'; }
+      else { const dmg = 1 - s.hp / s.lv; ctx.filter = 'brightness(' + (1 - dmg * .45).toFixed(2) + ')'; }
+      ctx.drawImage(this.img[s.img], x - s.w / 2, y - s.h / 2, s.w, s.h * 1.15);
+      ctx.filter = 'none';
+    });
+    // bullets
+    ctx.fillStyle = '#ffe98a';
+    g.bullets.forEach(b => { ctx.fillRect(b.x - 2, b.y - 8, 4, 14); ctx.fillStyle = '#ffd23f'; });
+    // cocos (pixel coconut)
+    g.cocos.forEach(c => {
+      ctx.save(); ctx.translate(c.x, c.y); ctx.rotate(c.spin);
+      ctx.fillStyle = '#5b3a1e'; ctx.beginPath(); ctx.arc(0, 0, c.r, 0, 7); ctx.fill();
+      ctx.fillStyle = '#8a5a2b'; ctx.beginPath(); ctx.arc(-c.r * .3, -c.r * .3, c.r * .5, 0, 7); ctx.fill();
+      ctx.fillStyle = '#3a2415'; [[-4, 2], [4, 2], [0, 7]].forEach(pt => { ctx.beginPath(); ctx.arc(pt[0], pt[1], 2.4, 0, 7); ctx.fill(); });
+      ctx.restore();
+    });
+    // bananas barrier
+    const bw = W / 8;
+    g.bananas.forEach(bn => {
+      if (bn.hp <= 0) return;
+      const x = bw * (bn.i + 1), y = g.bananaY, hurt = bn.hp === 1;
+      ctx.save(); ctx.translate(x, y);
+      ctx.fillStyle = hurt ? '#c9a52f' : '#ffd23f';
+      ctx.fillRect(-22, -4, 44, 10); ctx.fillRect(-18, -8, 36, 6); ctx.fillRect(-26, -2, 6, 8); ctx.fillRect(20, -2, 6, 8);
+      ctx.fillStyle = '#3a2415'; ctx.fillRect(-28, 0, 4, 5); ctx.fillRect(24, 0, 4, 5);
+      if (hurt) { ctx.fillStyle = '#7a4a12'; ctx.fillRect(-6, -6, 4, 10); ctx.fillRect(6, -3, 4, 8); }
+      ctx.restore();
+    });
+    // powerups
+    g.powerups.forEach(p => {
+      const col = { triple: '#ff8c42', rapid: '#ff6b57', shield: '#9fe3ff', life: '#7ed957' }[p.type];
+      ctx.fillStyle = col; ctx.fillRect(p.x - 12, p.y - 12, 24, 24);
+      ctx.fillStyle = '#1d0f30'; ctx.font = '12px "Press Start 2P", monospace'; ctx.textAlign = 'center';
+      ctx.fillText(p.type === 'life' ? '+1' : p.type[0].toUpperCase(), p.x, p.y + 5);
+    });
+    // hero
+    const hero = g.hero;
+    if (!(hero.invuln > 0 && Math.floor(g.t * 10) % 2 === 0)) {
+      const himg = (hero.face < 0 && this.img.hero2.complete && this.img.hero2.naturalWidth) ? this.img.hero2 : this.img.hero;
+      ctx.drawImage(himg, hero.x - hero.w / 2, hero.y - hero.h / 2 - 8, hero.w, hero.w);
+      if (hero.shield > 0) {
+        ctx.strokeStyle = 'rgba(159,227,255,' + (hero.shield < 2 ? (Math.sin(g.t * 12) * .3 + .5) : .8) + ')';
+        ctx.lineWidth = 3; ctx.beginPath(); ctx.arc(hero.x, hero.y, 46, 0, 7); ctx.stroke();
+      }
+      if (hero.weapon) { ctx.fillStyle = '#ffe98a'; ctx.font = '10px "Press Start 2P", monospace'; ctx.textAlign = 'center'; ctx.fillText(hero.weapon === 'triple' ? 'x3' : '>>', hero.x, hero.y + 44); }
+    }
+    // particles
+    g.parts.forEach(p => { ctx.globalAlpha = Math.max(0, p.a); ctx.fillStyle = p.c; ctx.fillRect(p.x, p.y, p.s, p.s); });
+    ctx.globalAlpha = 1;
+    // float texts
+    ctx.font = '11px "Press Start 2P", monospace'; ctx.textAlign = 'center';
+    g.texts.forEach(t => { ctx.globalAlpha = Math.max(0, t.a); ctx.fillStyle = '#ffe98a'; ctx.fillText(t.txt, t.x, t.y); });
+    ctx.globalAlpha = 1;
+  }
+
+  // ---------- render ----------
+  renderVals() {
+    const s = this.state, t = this.I18N[s.lang] || this.I18N.pt;
+    const pad = (n) => String(n).padStart(6, '0');
+    return {
+      t, canvasRef: this.canvasRef,
+      isMenu: s.screen === 'menu', isGame: s.screen === 'game', isVictory: s.screen === 'victory', isGameover: s.screen === 'gameover',
+      isPaused: s.screen === 'game' && s.paused,
+      showAd: s.showAd, showTerms: s.showTerms, showAdsUI: !s.adsRemoved,
+      name: s.name || 'PLAYER 1', nameInput: s.nameInput, lang: s.lang,
+      phaseText: t.phase + ' 01', scoreText: pad(s.score), comboText: s.comboMult > 1 ? 'x' + s.comboMult : '',
+      livesArr: Array.from({ length: s.lives }),
+      muteIcon: s.muted ? '\u00d7' : '\u266a',
+      lastScoreText: t.lastScore + ': ' + s.lastScore,
+      finalScoreText: 'SCORE ' + pad(s.finalScore),
+      musicLabel: t.music + ': ' + (s.musicOn ? t.on : t.off),
+      fxLabel: t.fx + ': ' + (s.fxOn ? t.on : t.off),
+      onNameInput: (e) => this.setState({ nameInput: e.target.value }),
+      onLangChange: (e) => { this.save('lang', e.target.value); this.setState({ lang: e.target.value }); },
+      onPlay: this.startGame,
+      onPause: this.pauseGame, onResume: this.resumeGame,
+      backToMenu: () => { this.sfx('click'); this.stopMusic(); this.setState({ screen: 'menu', paused: false }); },
+      toggleMute: () => { const m = !this.state.muted; this.save('muted', m ? 1 : 0); this.setState({ muted: m }); if (m) this.stopMusic(); else if (this.state.screen === 'game') { this.setState({}, () => this.startMusic()); } },
+      toggleMusic: () => { const v = !this.state.musicOn; this.save('music', v ? 1 : 0); this.setState({ musicOn: v }, () => { v && this.state.screen === 'game' ? this.startMusic() : this.stopMusic(); }); },
+      toggleFx: () => { const v = !this.state.fxOn; this.save('fx', v ? 1 : 0); this.setState({ fxOn: v }); },
+      openAds: (e) => { e.preventDefault(); this.sfx('click'); if (this.state.screen === 'game' && !this.state.paused) this.setState({ showAd: true, paused: true }); else this.setState({ showAd: true }); },
+      closeAds: () => { this.sfx('click'); this.setState({ showAd: false, paused: false }); this._last = performance.now(); },
+      buyAds: () => { this.sfx('power'); this.save('ads', 1); this.setState({ adsRemoved: true, showAd: false, paused: false }); this._last = performance.now(); },
+      openTerms: (e) => { e.preventDefault(); this.sfx('click'); this.setState({ showTerms: true }); },
+      closeTerms: () => { this.sfx('click'); this.setState({ showTerms: false }); }
+    };
+  }
+}
+</script>
+</body>
+</html>
