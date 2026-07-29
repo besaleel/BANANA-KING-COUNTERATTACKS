@@ -1,13 +1,60 @@
-precisamos atualizar esse arquivo para o novo nome do app, que é "Banana King Counterattacks".
-Incluindo o nome do app e o ID do aplicativo no Google AdMob, que é `ca-app-pub-XXX`.
-E o nome do pacote no google play console, que é `com.bananaking.counterattacks`.
-
-# Como gerar o AAB de release (Banana King)
+# Como gerar o AAB de release — Banana King Counterattacks
 
 Passo a passo para gerar o pacote `.aab` assinado, pronto para upload na Google
 Play Console, e deixá-lo em `DEPLOY/`.
 
-> Rode todos os comandos a partir da pasta `APK/` do projeto, exceto onde indicado.
+> ⚠️ **Documento adaptado de outro projeto.** O processo abaixo veio do projeto
+> anterior "Banana King" (distinto deste — ver §0 da
+> [ESPECFICATION.md](ESPECFICATION.md)) e assume **Angular + Capacitor**.
+> **O stack de empacotamento deste jogo ainda não foi decidido** — a POC atual é
+> HTML + canvas puro. Os comandos dos passos 4 em diante só valem depois que o
+> stack for definido e o projeto Capacitor existir em `APK/`. Os passos 1–3
+> (JDK/SDK e keystore) valem para qualquer stack que gere um AAB Android.
+
+## Identidade do app (confirmada)
+
+| Item | Valor |
+|---|---|
+| Nome do app | **Banana King Counterattacks** |
+| Pacote Android | `com.bananaking.counterattacks` |
+| App ID AdMob | `ca-app-pub-XXX` *(a substituir pelo real)* |
+| Keystore | `banana-king-counterattacks-release.jks` |
+| Alias da chave | `bkcounterattacks` |
+| AAB de saída | `DEPLOY/banana-king-counterattacks-release.aab` |
+
+> Rode todos os comandos a partir da pasta `APK/` do projeto, exceto onde
+> indicado.
+
+---
+
+## 0. ⚠️ Pré-requisito bloqueante — proteger segredos no `.gitignore`
+
+**Faça isto ANTES de gerar o keystore (§2).** O `.gitignore` da raiz hoje cobre
+apenas `APK/*.apk` e `APK/*.aab`. Os arquivos sensíveis do processo de release
+**não estão protegidos**:
+
+| Arquivo | Risco se commitado |
+|---|---|
+| `*.jks` / `*.keystore` | **Irreversível.** Chave de assinatura exposta compromete o app permanentemente — qualquer um pode publicar updates falsos. Não há como revogar. |
+| `keystore.properties` | Senhas do keystore em texto puro. |
+| `local.properties` | Caminho local do SDK (vaza estrutura da máquina). |
+| `DEPLOY/*.aab` | Binário grande e desnecessário no histórico do git. |
+
+Adicione ao `.gitignore` da raiz:
+
+```gitignore
+# Assinatura Android — NUNCA commitar
+*.jks
+*.keystore
+keystore.properties
+local.properties
+DEPLOY/*.aab
+```
+
+> Se um keystore já tiver sido commitado por acidente, **remover em um commit
+> novo não basta** — ele permanece no histórico. Nesse caso a chave deve ser
+> considerada comprometida: gere um keystore novo antes da primeira publicação.
+> Depois da primeira publicação, a chave não pode mais ser trocada.
 
 ---
 
@@ -22,7 +69,7 @@ Play Console, e deixá-lo em `DEPLOY/`.
   sdk.dir=C:/Users/SEU_USUARIO/AppData/Local/Android/Sdk
   ```
   (use barras `/`, não `\`, senão o Gradle falha com `Invalid file path`.
-  Esse arquivo é local e já está no `.gitignore` do Android.)
+  Esse arquivo é local e **não deve ser commitado** — ver §0.)
 
 ## 2. Criar o keystore de assinatura (uma vez só, e guardar para sempre)
 
@@ -33,29 +80,33 @@ diferente. Faça backup do arquivo `.jks` gerado (fora do repositório) em pelo
 menos dois lugares seguros (ex. gerenciador de senhas + storage em nuvem
 pessoal).
 
+> **Atenção:** este é um **app novo**, com pacote próprio
+> (`com.bananaking.counterattacks`). **Não reutilize** o keystore do projeto
+> anterior "Banana King" — gere um keystore novo, exclusivo deste app.
+
 Rode a partir da pasta `APK/android`:
 
 ```powershell
-Set-Location "C:\Sistemas\BANANA-KING\APK\android"
-keytool -genkeypair -v -keystore banana-king-release.jks -alias bananaking -keyalg RSA -keysize 2048 -validity 10000
+Set-Location "C:\Sistemas\BANANA-KING-COUNTERATTACKS\APK\android"
+keytool -genkeypair -v -keystore banana-king-counterattacks-release.jks -alias bkcounterattacks -keyalg RSA -keysize 2048 -validity 10000
 ```
 
 O `keytool` vai pedir uma senha do keystore, uma senha da chave (pode ser a
 mesma) e alguns dados (nome, organização, cidade, etc. — podem ser
 genéricos, não são validados). Guarde a senha com cuidado.
 
-Esse arquivo (`banana-king-release.jks`) **nunca deve ser commitado** — já está
-coberto por `*.jks` no `.gitignore` de `APK/android/`.
+Esse arquivo **nunca deve ser commitado**. ⚠️ **O `.gitignore` atual NÃO cobre
+`*.jks`** — execute o §0 antes de rodar este comando.
 
 ## 3. Configurar as credenciais do keystore no projeto
 
-Crie o arquivo `APK/android/keystore.properties` (também já ignorado pelo
-git) com:
+Crie o arquivo `APK/android/keystore.properties` (contém senhas em texto puro —
+**não commitar**, ver §0) com:
 
 ```properties
-storeFile=banana-king-release.jks
+storeFile=banana-king-counterattacks-release.jks
 storePassword=SENHA_DO_KEYSTORE
-keyAlias=bananaking
+keyAlias=bkcounterattacks
 keyPassword=SENHA_DA_CHAVE
 ```
 
@@ -65,13 +116,15 @@ outro local (recomendado, fora do repositório), use um caminho absoluto.
 > Sem esse arquivo, o Gradle assina o release com a chave de **debug**
 > automaticamente (útil para testar o processo, mas esse AAB **não pode ser
 > enviado à Play Store** — o Google rejeita builds assinados com chave
-> debug). O `APK/android/app/build.gradle` já está preparado para usar
+> debug). O `APK/android/app/build.gradle` precisa estar preparado para usar
 > `keystore.properties` quando ele existir.
 
-## 4. Build de produção do Angular + sync Android
+## 4. Build de produção + sync Android
+
+> Depende do stack escolhido. Exemplo para Angular/Capacitor:
 
 ```powershell
-Set-Location "C:\Sistemas\BANANA-KING\APK"
+Set-Location "C:\Sistemas\BANANA-KING-COUNTERATTACKS\APK"
 npm run build
 npx cap sync android
 ```
@@ -84,7 +137,7 @@ Isso gera `APK/www` (build otimizado de produção) e copia para
 ```powershell
 Set-Item -Path Env:JAVA_HOME -Value "C:\Program Files\Android\Android Studio\jbr"
 Set-Item -Path Env:PATH -Value "$Env:JAVA_HOME\bin;$Env:PATH"
-Set-Location "C:\Sistemas\BANANA-KING\APK\android"
+Set-Location "C:\Sistemas\BANANA-KING-COUNTERATTACKS\APK\android"
 .\gradlew bundleRelease
 ```
 
@@ -96,11 +149,11 @@ APK\android\app\build\outputs\bundle\release\app-release.aab
 ## 6. Copiar para DEPLOY
 
 ```powershell
-Copy-Item "C:\Sistemas\BANANA-KING\APK\android\app\build\outputs\bundle\release\app-release.aab" "C:\Sistemas\BANANA-KING\DEPLOY\banana-king-release.aab"
+Copy-Item "C:\Sistemas\BANANA-KING-COUNTERATTACKS\APK\android\app\build\outputs\bundle\release\app-release.aab" "C:\Sistemas\BANANA-KING-COUNTERATTACKS\DEPLOY\banana-king-counterattacks-release.aab"
 ```
 
-`DEPLOY/*.aab` já está no `.gitignore` da raiz do projeto — o binário fica só
-local, não é versionado.
+O binário **não deve ser versionado**. ⚠️ O `.gitignore` atual cobre `APK/*.aab`,
+mas **não** `DEPLOY/*.aab` — ver §0.
 
 ## 7. Antes de cada novo release
 
@@ -115,20 +168,22 @@ local, não é versionado.
 ## Checklist rápido (releases seguintes, keystore já existe)
 
 ```powershell
-Set-Location "C:\Sistemas\BANANA-KING\APK"
+Set-Location "C:\Sistemas\BANANA-KING-COUNTERATTACKS\APK"
 npm run build
 npx cap sync android
 
 Set-Item -Path Env:JAVA_HOME -Value "C:\Program Files\Android\Android Studio\jbr"
 Set-Item -Path Env:PATH -Value "$Env:JAVA_HOME\bin;$Env:PATH"
-Set-Location "C:\Sistemas\BANANA-KING\APK\android"
+Set-Location "C:\Sistemas\BANANA-KING-COUNTERATTACKS\APK\android"
 .\gradlew bundleRelease
 
-Copy-Item "app\build\outputs\bundle\release\app-release.aab" "C:\Sistemas\BANANA-KING\DEPLOY\banana-king-release.aab"
+Copy-Item "app\build\outputs\bundle\release\app-release.aab" "C:\Sistemas\BANANA-KING-COUNTERATTACKS\DEPLOY\banana-king-counterattacks-release.aab"
 ```
 
 ## Assets de loja (a gerar)
 
 - Ícone de alta resolução (512×512) para a ficha da Play Store:
   `DEPLOY/store-assets/icon-512.png`, a gerar a partir de
-  `PROJECT/assets/banana-king-logo.png` (ver Épico 9.3 do backlog).
+  `PROJECT/assets/logo.png` ou `PROJECT/assets/icon.png`.
+- Screenshots (retrato), feature graphic 1024×500 — ver épico de release no
+  [BACKLOG.md](BACKLOG.md).
