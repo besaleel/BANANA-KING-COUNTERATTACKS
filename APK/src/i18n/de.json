@@ -32,5 +32,8 @@
   "restart": "Neu starten",
   "phase": "LEVEL",
   "bonusPhase": "LEVEL-BONUS",
-  "bonusLives": "LEBEN-BONUS"
+  "bonusLives": "LEBEN-BONUS",
+  "nextPhase": "LEVEL",
+  "gameWonTitle": "GEWONNEN!",
+  "gameWonSub": "Banana King hat die Galaxie von Trasho befreit! Alle 10 Level geschafft."
 }

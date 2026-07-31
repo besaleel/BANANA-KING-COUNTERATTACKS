@@ -32,5 +32,8 @@
   "restart": "Recommencer",
   "phase": "NIVEAU",
   "bonusPhase": "BONUS DE NIVEAU",
-  "bonusLives": "BONUS DE VIES"
+  "bonusLives": "BONUS DE VIES",
+  "nextPhase": "NIVEAU",
+  "gameWonTitle": "VOUS AVEZ GAGNÉ !",
+  "gameWonSub": "Banana King a libéré la galaxie de Trasho ! Les 10 niveaux sont terminés."
 }

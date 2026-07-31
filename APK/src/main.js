@@ -24,7 +24,8 @@ const state = {
   adsRemoved: loadBool('ads', false),
   lastScore: loadInt('last', 0),
   highScore: loadInt('high', 0),
-  finalScore: 0
+  finalScore: 0,
+  gameWon: false
 };
 
 const audio = new AudioEngine();
@@ -52,10 +53,13 @@ function applyI18n() {
   $('lastScore').textContent = d.lastScore + ': ' + state.lastScore;
   $('linkRemoveAds').textContent = d.removeAds;
   $('adPlaceholder').textContent = d.adPh;
-  $('vicTitle').textContent = d.victoryTitle;
-  $('vicSub').textContent = d.victorySub;
+  // respeita o estado atual: na vitoria final os textos sao outros
+  $('vicTitle').textContent = state.gameWon ? d.gameWonTitle : d.victoryTitle;
+  $('vicSub').textContent = state.gameWon ? d.gameWonSub : d.victorySub;
   $('vicSoon').textContent = d.soon;
   $('btnVicAgain').textContent = d.again;
+  $('btnVicNext').textContent = d.nextPhase +
+    (game ? ' ' + String(Math.min(game.phase + 1, config.fases.length)).padStart(2, '0') : '');
   $('btnVicMenu').textContent = d.menu;
   $('overTitle').textContent = d.overTitle;
   $('overSub').textContent = d.overSub;
@@ -102,7 +106,29 @@ function show(screen) {
 function setPaused(p) {
   if (!game || state.screen !== 'game') return;
   $('scPause').hidden = !p;
-  if (p) game.pause(); else game.resume();
+  if (p) {
+    game.pause();
+    // SS7.1: a pausa "salva a fase atual". Persistimos fase, placar e vidas
+    // para retomar a campanha depois (o menu oferece Continuar).
+    saveProgress();
+  } else {
+    game.resume();
+  }
+}
+
+/** Grava o progresso da campanha (SS6.1, prefixo bkc_). */
+function saveProgress() {
+  if (!game) return;
+  save('phase', game.phase);
+  save('progScore', game.score);
+  save('progLives', game.lives);
+}
+
+/** Limpa o progresso salvo (game over ou campanha concluida). */
+function clearProgress() {
+  save('phase', 0);
+  save('progScore', 0);
+  save('progLives', 0);
 }
 
 const isPaused = () => game ? game.paused : false;
@@ -130,6 +156,7 @@ function renderHud(score, mult, lives, phase) {
 
 function startGame(phase = 1) {
   audio.sfx('click');
+  state.gameWon = false;
   const nm = ($('inpName').value || '').trim() || 'PLAYER 1';
   state.name = nm;
   save('name', nm);
@@ -146,6 +173,7 @@ function startGame(phase = 1) {
   game.start(phase);
   setFrameBackground(game.fase.background);
   renderHud(0, 1, 3, phase);
+  saveProgress();
   audio.startMusic();
 }
 
@@ -165,8 +193,49 @@ function onGameEnd(win, score, bonus) {
   if (bonus?.lives) lines.push(d.bonusLives + ' +' + bonus.lives);
   $('vicBonus').textContent = lines.join('   ');
   $('vicBonus').hidden = lines.length === 0;
-  $('lastScore').textContent = t().lastScore + ': ' + state.lastScore;
+  $('lastScore').textContent = d.lastScore + ': ' + state.lastScore;
+
+  // derrota ou campanha concluida encerram a corrida: nao ha o que retomar
+  if (!win || bonus?.gameWon) clearProgress();
+
+  if (win) {
+    // Epico 4: vitoria de fase oferece CONTINUAR para a proxima; so a fase 10
+    // (campanha concluida) mostra a tela de vitoria final.
+    state.gameWon = !!bonus?.gameWon;
+    $('vicTitle').textContent = state.gameWon ? d.gameWonTitle : d.victoryTitle;
+    $('vicSub').textContent = state.gameWon ? d.gameWonSub : d.victorySub;
+    $('vicSoon').hidden = true;
+    $('btnVicNext').hidden = state.gameWon;
+    $('btnVicAgain').hidden = !state.gameWon;
+    if (!state.gameWon) {
+      $('btnVicNext').textContent = d.nextPhase + ' ' +
+        String((bonus?.phase ?? 1) + 1).padStart(2, '0');
+      // pre-carrega o fundo da proxima fase para nao piscar na transicao
+      preloadBackground((bonus?.phase ?? 1) + 1);
+    }
+  }
+
   setTimeout(() => show(win ? 'victory' : 'gameover'), win ? 700 : 1100);
+}
+
+/** Avanca para a proxima fase preservando placar, vidas e barreira. */
+function continuePhase() {
+  if (!game) return;
+  audio.sfx('click');
+  if (!game.nextPhase()) return;      // ja era a ultima fase
+  show('game');
+  setFrameBackground(game.fase.background);
+  renderHud(game.score, game.comboMult, game.lives, game.phase);
+  saveProgress();
+  audio.startMusic();
+}
+
+/** Aquece o cache do browser com o fundo da fase seguinte. */
+function preloadBackground(phase) {
+  const f = config.fases.find(x => x.id === phase);
+  if (!f) return;
+  const im = new Image();
+  im.src = assetUrl(f.background);
 }
 
 function backToMenu() {
@@ -202,6 +271,7 @@ function wire() {
   $('inpName').value = state.name;
 
   $('btnPlay').addEventListener('click', () => startGame(1));
+  $('btnVicNext').addEventListener('click', continuePhase);
   $('btnVicAgain').addEventListener('click', () => startGame(1));
   $('btnOverAgain').addEventListener('click', () => startGame(1));
   $('btnVicMenu').addEventListener('click', backToMenu);

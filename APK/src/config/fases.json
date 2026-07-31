@@ -1,5 +1,5 @@
 {
-  "_doc": "Config de fases - Banana King Counterattacks. Composicao conforme SS5.1 da ESPECFICATION.md. Mapeamento nivel->nave: 1=nave-inimiga-05, 2=nave-inimiga-03|nave-inimiga-04, 3=nave-inimiga-02, 4=nave-inimiga-01, 5=nave-inimiga-00. Cada fileira e' [nivel, spriteKey]. Velocidade/degrau/intervalo de coco das fases 02-10 sao iguais ao baseline v1 por ora - a curva de dificuldade e' o epico 4.",
+  "_doc": "Config de fases - Banana King Counterattacks. Composicao conforme SS5.1 da ESPECFICATION.md (verificada 1:1 contra a tabela). Mapeamento nivel->nave: 1=nave-inimiga-05, 2=nave-inimiga-03|nave-inimiga-04, 3=nave-inimiga-02, 4=nave-inimiga-01, 5=nave-inimiga-00.",
   "baseline": {
     "formationSpeed": 26,
     "formationAccel": 80,
@@ -19,7 +19,6 @@
     "rowY0": 130,
     "bananaCount": 7,
     "bananaHp": 2,
-
     "_calibracao_provisoria": "PROVISORIOS - pendencias #9 e #3 da spec, a fechar em playtest humano. Ajustar aqui, sem tocar em codigo. Referencia medida: uma fase limpa com combo perfeito vale ~7.8k (fase 01) a ~25.8k (fase 10); campanha completa ~166k. Com X=20000 o jogador habilidoso recebe ~1 reposicao a cada 1,4 fases e o jogador fraco ~1 a cada 2,5 - a barreira continua escassa (SS4.4) sem deixar ninguem sem defesa por muito tempo.",
     "bananaBonusScoreMilestone": 20000,
     "phaseClearBonus": 1000,
@@ -27,21 +26,44 @@
     "bananaBonusFallSpeed": 95
   },
   "levelSprites": {
-    "1": ["n05"],
-    "2": ["n03", "n04"],
-    "3": ["n02"],
-    "4": ["n01"],
-    "5": ["n00"]
+    "1": [
+      "n05"
+    ],
+    "2": [
+      "n03",
+      "n04"
+    ],
+    "3": [
+      "n02"
+    ],
+    "4": [
+      "n01"
+    ],
+    "5": [
+      "n00"
+    ]
   },
   "fases": [
     {
       "id": 1,
       "background": "background-fase01.png",
       "rows": [
-        { "lv": 2, "img": "n03" },
-        { "lv": 2, "img": "n04" },
-        { "lv": 1, "img": "n05" },
-        { "lv": 1, "img": "n05" }
+        {
+          "lv": 2,
+          "img": "n03"
+        },
+        {
+          "lv": 2,
+          "img": "n04"
+        },
+        {
+          "lv": 1,
+          "img": "n05"
+        },
+        {
+          "lv": 1,
+          "img": "n05"
+        }
       ],
       "formationSpeed": 26,
       "stepDown": 5,
@@ -52,127 +74,236 @@
       "id": 2,
       "background": "background-fase02.png",
       "rows": [
-        { "lv": 2, "img": "n03" },
-        { "lv": 2, "img": "n04" },
-        { "lv": 2, "img": "n03" },
-        { "lv": 1, "img": "n05" }
+        {
+          "lv": 2,
+          "img": "n03"
+        },
+        {
+          "lv": 2,
+          "img": "n04"
+        },
+        {
+          "lv": 2,
+          "img": "n03"
+        },
+        {
+          "lv": 1,
+          "img": "n05"
+        }
       ],
-      "formationSpeed": 26,
+      "formationSpeed": 27,
       "stepDown": 5,
-      "cocoIntervalS": 4.5,
+      "cocoIntervalS": 4.3,
       "bananaBonusGuaranteed": false
     },
     {
       "id": 3,
       "background": "background-fase03.png",
       "rows": [
-        { "lv": 3, "img": "n02" },
-        { "lv": 2, "img": "n03" },
-        { "lv": 2, "img": "n04" },
-        { "lv": 1, "img": "n05" }
+        {
+          "lv": 3,
+          "img": "n02"
+        },
+        {
+          "lv": 2,
+          "img": "n03"
+        },
+        {
+          "lv": 2,
+          "img": "n04"
+        },
+        {
+          "lv": 1,
+          "img": "n05"
+        }
       ],
-      "formationSpeed": 26,
+      "formationSpeed": 28,
       "stepDown": 5,
-      "cocoIntervalS": 4.5,
+      "cocoIntervalS": 4.1,
       "bananaBonusGuaranteed": false
     },
     {
       "id": 4,
       "background": "background-fase04.png",
       "rows": [
-        { "lv": 3, "img": "n02" },
-        { "lv": 3, "img": "n02" },
-        { "lv": 2, "img": "n03" },
-        { "lv": 1, "img": "n05" }
+        {
+          "lv": 3,
+          "img": "n02"
+        },
+        {
+          "lv": 3,
+          "img": "n02"
+        },
+        {
+          "lv": 2,
+          "img": "n03"
+        },
+        {
+          "lv": 1,
+          "img": "n05"
+        }
       ],
-      "formationSpeed": 26,
+      "formationSpeed": 30,
       "stepDown": 5,
-      "cocoIntervalS": 4.5,
+      "cocoIntervalS": 3.9,
       "bananaBonusGuaranteed": false
     },
     {
       "id": 5,
       "background": "background-fase05.png",
       "rows": [
-        { "lv": 4, "img": "n01" },
-        { "lv": 3, "img": "n02" },
-        { "lv": 2, "img": "n04" },
-        { "lv": 1, "img": "n05" }
+        {
+          "lv": 4,
+          "img": "n01"
+        },
+        {
+          "lv": 3,
+          "img": "n02"
+        },
+        {
+          "lv": 2,
+          "img": "n04"
+        },
+        {
+          "lv": 1,
+          "img": "n05"
+        }
       ],
-      "formationSpeed": 26,
+      "formationSpeed": 31,
       "stepDown": 5,
-      "cocoIntervalS": 4.5,
+      "cocoIntervalS": 3.7,
       "bananaBonusGuaranteed": true
     },
     {
       "id": 6,
       "background": "background-fase06.png",
       "rows": [
-        { "lv": 4, "img": "n01" },
-        { "lv": 3, "img": "n02" },
-        { "lv": 3, "img": "n02" },
-        { "lv": 2, "img": "n03" }
+        {
+          "lv": 4,
+          "img": "n01"
+        },
+        {
+          "lv": 3,
+          "img": "n02"
+        },
+        {
+          "lv": 3,
+          "img": "n02"
+        },
+        {
+          "lv": 2,
+          "img": "n03"
+        }
       ],
-      "formationSpeed": 26,
+      "formationSpeed": 32,
       "stepDown": 5,
-      "cocoIntervalS": 4.5,
+      "cocoIntervalS": 3.4,
       "bananaBonusGuaranteed": false
     },
     {
       "id": 7,
       "background": "background-fase07.png",
       "rows": [
-        { "lv": 5, "img": "n00" },
-        { "lv": 4, "img": "n01" },
-        { "lv": 3, "img": "n02" },
-        { "lv": 2, "img": "n04" }
+        {
+          "lv": 5,
+          "img": "n00"
+        },
+        {
+          "lv": 4,
+          "img": "n01"
+        },
+        {
+          "lv": 3,
+          "img": "n02"
+        },
+        {
+          "lv": 2,
+          "img": "n04"
+        }
       ],
-      "formationSpeed": 26,
+      "formationSpeed": 34,
       "stepDown": 5,
-      "cocoIntervalS": 4.5,
+      "cocoIntervalS": 3.2,
       "bananaBonusGuaranteed": false
     },
     {
       "id": 8,
       "background": "background-fase08.png",
       "rows": [
-        { "lv": 5, "img": "n00" },
-        { "lv": 4, "img": "n01" },
-        { "lv": 4, "img": "n01" },
-        { "lv": 3, "img": "n02" }
+        {
+          "lv": 5,
+          "img": "n00"
+        },
+        {
+          "lv": 4,
+          "img": "n01"
+        },
+        {
+          "lv": 4,
+          "img": "n01"
+        },
+        {
+          "lv": 3,
+          "img": "n02"
+        }
       ],
-      "formationSpeed": 26,
+      "formationSpeed": 35,
       "stepDown": 5,
-      "cocoIntervalS": 4.5,
+      "cocoIntervalS": 3,
       "bananaBonusGuaranteed": false
     },
     {
       "id": 9,
       "background": "background-fase09.png",
       "rows": [
-        { "lv": 5, "img": "n00" },
-        { "lv": 5, "img": "n00" },
-        { "lv": 4, "img": "n01" },
-        { "lv": 3, "img": "n02" }
+        {
+          "lv": 5,
+          "img": "n00"
+        },
+        {
+          "lv": 5,
+          "img": "n00"
+        },
+        {
+          "lv": 4,
+          "img": "n01"
+        },
+        {
+          "lv": 3,
+          "img": "n02"
+        }
       ],
-      "formationSpeed": 26,
+      "formationSpeed": 36,
       "stepDown": 5,
-      "cocoIntervalS": 4.5,
+      "cocoIntervalS": 2.8,
       "bananaBonusGuaranteed": false
     },
     {
       "id": 10,
       "background": "background-fase10.png",
       "rows": [
-        { "lv": 5, "img": "n00" },
-        { "lv": 5, "img": "n00" },
-        { "lv": 4, "img": "n01" },
-        { "lv": 4, "img": "n01" }
+        {
+          "lv": 5,
+          "img": "n00"
+        },
+        {
+          "lv": 5,
+          "img": "n00"
+        },
+        {
+          "lv": 4,
+          "img": "n01"
+        },
+        {
+          "lv": 4,
+          "img": "n01"
+        }
       ],
-      "formationSpeed": 26,
+      "formationSpeed": 38,
       "stepDown": 5,
-      "cocoIntervalS": 4.5,
+      "cocoIntervalS": 2.6,
       "bananaBonusGuaranteed": false
     }
-  ]
+  ],
+  "_curva_dificuldade": "PROVISORIA - pendencias #4 e #10 da spec, a fechar em playtest humano. Fase 01 NAO muda (baseline v1 aprovado em playtest). Curva medida por simulacao: a composicao sozinha ja triplica o HP da formacao (30 na fase 01 -> 90 na fase 10) enquanto o tempo de descida e' constante, entao a fase 05 em diante a formacao ja alcanca a barreira sem nenhum ajuste. Por isso formationSpeed sobe de forma SUAVE (26->38, faixa 10-90) e stepDown fica FIXO em 5: subir o degrau multiplica por 4 (SS4.2 - cada uma das 4 fileiras aplica o degrau ao tocar a borda) e esgota a barreira, que nao regenera entre fases (SS4.4). O grosso da curva de ameaca fica no cocoIntervalS (4.5s -> 2.6s), que pressiona sem consumir a barreira: os cocos por fase sobem de ~2 para ~11."
 }

@@ -101,6 +101,33 @@ export class Game {
     this._guaranteedBananaAt = fase.bananaBonusGuaranteed ? 3.5 : -1;
   }
 
+  /** true quando a fase atual e' a ultima da campanha. */
+  get isLastPhase() {
+    return this.phase >= this.config.fases.length;
+  }
+
+  /**
+   * Avanca para a proxima fase apos a vitoria (epico 4).
+   * Preserva pontuacao, vidas e o ESTADO DA BARREIRA - ela nunca regenera
+   * entre fases (SS4.4). O marco de pontuacao da banana bonus tambem e'
+   * preservado, para nao reconceder bananas ja gastas.
+   */
+  nextPhase() {
+    if (this.isLastPhase) return false;
+    this.phase++;
+    // `_bananas` ja aponta para a barreira vigente; buildStage a reaproveita.
+    this.deathlessPhase = true;   // o bonus de +1000 vale por fase
+    this.buildStage();
+    this.running = true;
+    this.paused = false;
+    this.over = false;
+    this.renderer.fit();
+    this._last = performance.now();
+    cancelAnimationFrame(this.raf);
+    this.raf = requestAnimationFrame(this._tick);
+    return true;
+  }
+
   /**
    * Reinicia a fase mantendo placar e vidas (SS4.5).
    * A barreira NAO e' restaurada.
@@ -490,7 +517,7 @@ export class Game {
       this.score += bonus.phaseClear;
     }
     // SS6: bonus por vidas restantes ao vencer o JOGO (apos a fase 10).
-    const gameWon = win && this.phase >= this.config.fases.length;
+    const gameWon = win && this.isLastPhase;
     if (gameWon) {
       bonus.lives = this.lives * this.baseline.lifeBonusPerLife;
       this.score += bonus.lives;
@@ -498,6 +525,10 @@ export class Game {
 
     this.audio.stopMusic();
     this.audio.sfx(win ? 'win' : 'lose');
-    if (this.hooks.onEnd) this.hooks.onEnd(win, this.score, { ...bonus, gameWon });
+    // `gameWon` distingue "fase vencida, ha mais pela frente" de "campanha
+    // concluida" - a UI usa isso para oferecer Continuar x vitoria final.
+    if (this.hooks.onEnd) {
+      this.hooks.onEnd(win, this.score, { ...bonus, gameWon, phase: this.phase });
+    }
   }
 }

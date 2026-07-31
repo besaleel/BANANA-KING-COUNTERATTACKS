@@ -32,5 +32,8 @@
   "restart": "Restart game",
   "phase": "LEVEL",
   "bonusPhase": "LEVEL BONUS",
-  "bonusLives": "LIVES BONUS"
+  "bonusLives": "LIVES BONUS",
+  "nextPhase": "LEVEL",
+  "gameWonTitle": "YOU WIN!",
+  "gameWonSub": "Banana King freed the galaxy from Trasho! All 10 levels beaten."
 }

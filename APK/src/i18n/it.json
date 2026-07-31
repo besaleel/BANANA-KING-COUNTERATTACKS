@@ -32,5 +32,8 @@
   "restart": "Ricomincia",
   "phase": "FASE",
   "bonusPhase": "BONUS DI FASE",
-  "bonusLives": "BONUS VITE"
+  "bonusLives": "BONUS VITE",
+  "nextPhase": "FASE",
+  "gameWonTitle": "HAI VINTO!",
+  "gameWonSub": "Banana King ha liberato la galassia da Trasho! Tutte le 10 fasi superate."
 }

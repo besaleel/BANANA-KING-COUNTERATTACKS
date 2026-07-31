@@ -12,7 +12,7 @@
 | 1 | Protótipo Fase 01 (fatia vertical) | ✅ | — |
 | 2 | Decisão de stack e migração do protótipo | ⬜ | **Bloqueante** |
 | 3 | Pendências de gameplay da Fase 01 | 🟡 | Alta |
-| 4 | Fases 02–10 e curva de dificuldade | ⬜ | Alta |
+| 4 | Fases 02–10 e curva de dificuldade | 🟡 | Alta |
 | 5 | Animação de vitória final | ⬜ | Média |
 | 6 | Áudio e assets de produção | ⬜ | Média (6.0 ⚠️ **áudio mudo no mobile**) |
 | 7 | Internacionalização (fechamento) | ⬜ | Média |
@@ -194,17 +194,55 @@ problema crítico de a formação parar sobre o herói e drenar as 3 vidas em ~4
 
 ## Épico 4 — Fases 02–10 e curva de dificuldade
 
-- [ ] Implementar a **progressão de fases** (avanço automático após vitória,
-      persistência da fase atual na pausa).
-- [ ] Implementar as composições de fileiras das fases 02–10 (§5.1 da spec).
-- [ ] Definir e calibrar **por fase**: velocidade da formação, degrau de descida
-      e intervalo de coco. *(Pendência #4)*
-- [ ] Vincular `background-fase02..10.png` às respectivas fases.
-- [ ] **Persistir o estado das 7 bananas ao trocar de fase** (a barreira nunca
-      regenera — ver épico 3.1).
-- [ ] Ativar a **banana bônus garantida da Fase 5** (mecânica implementada no
-      épico 3.2; aqui é só o gatilho da fase).
+- [x] Implementar a **progressão de fases** (avanço automático após vitória,
+      persistência da fase atual na pausa). *(31/07/2026 — `Game.nextPhase()`;
+      a tela de vitória agora oferece **CONTINUAR** para a fase N+1 em vez de
+      recomeçar da 01. A pausa passou a **realmente** gravar `bkc_phase`,
+      `bkc_progScore` e `bkc_progLives` — antes o texto "Fase atual salva" era
+      falso, nada era persistido.)*
+- [x] Implementar as composições de fileiras das fases 02–10 (§5.1 da spec).
+      *(31/07/2026 — já estavam corretas desde o épico 2; **verificadas 1:1**
+      contra a tabela da §5.1, incluindo níveis, sprites válidos por nível e
+      vínculo do background. Zero divergências.)*
+- [x] Definir e calibrar **por fase**: velocidade da formação, degrau de descida
+      e intervalo de coco. *(Pendência #4)* *(31/07/2026 — curva **provisória**
+      em `fases.json`, ver nota abaixo)*
+- [x] Vincular `background-fase02..10.png` às respectivas fases.
+      *(31/07/2026 — vínculo conferido para as 10 fases + **pré-carga** do fundo
+      da fase seguinte na tela de vitória, para não piscar na transição)*
+- [x] **Persistir o estado das 7 bananas ao trocar de fase** (a barreira nunca
+      regenera — ver épico 3.1). *(31/07/2026 — testado da fase 1→2 e 2→4)*
+- [x] Ativar a **banana bônus garantida da Fase 5** (mecânica implementada no
+      épico 3.2; aqui é só o gatilho da fase). *(31/07/2026 — testado tanto
+      entrando direto na fase 5 quanto **chegando nela por progressão**)*
 - [ ] Playtest de dificuldade fase a fase; ajustar a curva.
+      ⚠️ **Playtest humano — não substituível por simulação.** A curva atual foi
+      dimensionada por simulação de pressão (tempo de limpeza × tempo de descida
+      × consumo da barreira), mas o *feeling* de cada fase precisa de jogador
+      real, como foi feito na Fase 01.
+
+> **Curva de dificuldade (provisória, 31/07/2026) — pendências #4 e #10.**
+> Valores em `APK/src/config/fases.json`, ajustáveis sem tocar em código.
+> A **Fase 01 não mudou** (26 px/s · degrau 5 · coco 4,5 s — aprovada em playtest).
+>
+> | Fase | 01 | 02 | 03 | 04 | 05 | 06 | 07 | 08 | 09 | 10 |
+> |---|---|---|---|---|---|---|---|---|---|---|
+> | `formationSpeed` | 26 | 27 | 28 | 30 | 31 | 32 | 34 | 35 | 36 | 38 |
+> | `stepDown` | 5 | 5 | 5 | 5 | 5 | 5 | 5 | 5 | 5 | 5 |
+> | `cocoIntervalS` | 4,5 | 4,3 | 4,1 | 3,9 | 3,7 | 3,4 | 3,2 | 3,0 | 2,8 | 2,6 |
+>
+> **Por que a curva é suave:** a simulação mostrou que a **composição sozinha já
+> é a curva** — o HP da formação triplica (30 na Fase 01 → 90 na Fase 10)
+> enquanto o tempo de descida é constante, então a partir da Fase 05 a formação
+> **já alcança a barreira sem nenhum ajuste**. Subir a velocidade agressivamente
+> em cima disso esgotaria a barreira, que **não regenera entre fases** (§4.4).
+> Por isso:
+> - `formationSpeed` sobe pouco (26→38, dentro da faixa 10–90);
+> - `stepDown` fica **fixo em 5** — a §4.2 avisa que o degrau é aplicado por
+>   **cada** fileira que toca a borda (efeito real ~4×), e aumentá-lo tratando
+>   como "descida única" deixaria o jogo rápido demais;
+> - o grosso da ameaça vai para `cocoIntervalS` (4,5 s → 2,6 s), que pressiona
+>   **sem consumir a barreira**: os cocos por fase sobem de ~2 para ~11.
 
 ---
 
