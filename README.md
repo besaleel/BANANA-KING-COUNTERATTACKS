@@ -16,10 +16,11 @@ tropa estelar ao longo de **10 fases**.
 — tela inicial, gameplay completo, power-ups, vitória/derrota, pausa, i18n nos 6
 idiomas, áudio e recorde local.
 
-O **stack de produção ainda não foi decidido** (o protótipo roda sobre um
-framework de prototipagem, não é um alvo de build). Essa é a decisão que
-desbloqueia o resto do desenvolvimento — ver épico 2 do
-[backlog](DOC/BACKLOG.md).
+O **stack de produção foi decidido em 31/07/2026: vanilla JS/canvas + Capacitor**
+(épico 2 do [backlog](DOC/BACKLOG.md)). O projeto de produção vive em
+[APK/](APK/), onde a lógica da Fase 01 já foi portada do protótipo — sem o
+framework de prototipagem, com config de fases e i18n em JSON e pooling de
+entidades. O protótipo em `PROJECT/` permanece como referência histórica.
 
 ## Documentação
 
@@ -40,10 +41,33 @@ desbloqueia o resto do desenvolvimento — ver épico 2 do
 | `PROJECT/assets/` | Arte do jogo (~30 MB): 10 backgrounds de fase, personagens, 6 naves inimigas, frames da animação final, logo e ícone |
 | `PROJECT/uploads/` | Mocks de referência visual |
 | `DOC/` | Documentação do projeto |
-| `APK/` | Projeto de empacotamento Android (vazio — aguarda a decisão de stack) |
+| `APK/` | **Projeto de produção** — vanilla JS + Vite + Capacitor |
 | `DEPLOY/` | Artefatos de publicação e assets de loja |
 
-## Como rodar o protótipo
+## Como rodar o projeto de produção (`APK/`)
+
+Os assets **não são versionados** em `APK/public/assets/` — hoje seriam cópias
+byte a byte de `PROJECT/assets/` (~26 MB de PNG), e commitar as duas gravaria
+~56 MB permanentes no histórico. Copie-os na primeira execução:
+
+```powershell
+Copy-Item PROJECT/assets APK/public/assets -Recurse
+cd APK
+npm install
+npm run dev
+```
+
+`npm run build` gera o bundle em `APK/dist/`.
+
+> Quando o épico 6 gerar os **WebP otimizados**, só a versão otimizada passa a
+> ser versionada em `APK/` e este passo de cópia desaparece. A conversão é
+> **requisito de release**: 26 MB de PNG cru contra o teto de 50 MB do AAB.
+
+> As fontes `Press Start 2P` e `VT323` ainda **não estão embutidas** — o
+> carregamento via Google Fonts foi removido por violar o requisito
+> offline-first, então a UI cai em `monospace` até o épico 6.
+
+## Como rodar o protótipo (histórico)
 
 A partir da raiz do repositório:
 

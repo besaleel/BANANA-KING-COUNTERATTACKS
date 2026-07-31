@@ -1,0 +1,17 @@
+{
+  "appId": "com.bananaking.counterattacks",
+  "appName": "Banana King Counterattacks",
+  "webDir": "dist",
+  "android": {
+    "allowMixedContent": false,
+    "backgroundColor": "#14091f"
+  },
+  "server": {
+    "androidScheme": "https"
+  },
+  "plugins": {
+    "ScreenOrientation": {
+      "lockDefault": "portrait"
+    }
+  }
+}

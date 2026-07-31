@@ -72,8 +72,14 @@ Entregue em [PROJECT/Banana King - Fase 01.dc.html](../PROJECT/Banana%20King%20-
 
 A POC roda no framework `DCLogic`/`support.js`, que não é um alvo de produção.
 
-- [ ] **Decidir o stack** entre: vanilla JS/canvas + Capacitor,
-      Angular + Capacitor, ou TWA. *(Pendência #5 da spec)*
+- [x] **Decidir o stack** — **vanilla JS/canvas + Capacitor** (decidido em
+      31/07/2026). *(Pendência #5 da spec)*
+      **Razão:** a POC já é canvas 2D puro; o porte é quase direto, o bundle fica
+      mínimo e o FPS em Android de entrada é melhor sem overhead de framework.
+      O Capacitor cobre AdMob, Billing, lock de orientação e offline real.
+      Angular/Ionic foi descartado por adicionar peso a um jogo que renderiza
+      tudo em `<canvas>`; TWA foi descartado por exigir hospedagem online e
+      limitar AdMob/Billing nativos, conflitando com o offline-first (§8).
 - [ ] Avaliar tamanho de bundle, performance em mobile de entrada e esforço de
       port do código da POC.
 - [ ] Montar o projeto em `APK/` com o stack escolhido.
@@ -198,6 +204,20 @@ problema crítico de a formação parar sobre o herói e drenar as 3 vidas em ~4
 - [ ] Converter `background-fase01..10.png` (~1 MB cada) para **WebP**.
 - [ ] Gerar sprite atlas das naves e do herói.
 
+> **⚠️ Elevado a requisito de release (31/07/2026):** os assets somam **26 MB de
+> PNG cru** (só os 10 backgrounds são ~10 MB), contra o teto de **50 MB** do AAB.
+> A conversão para WebP deixou de ser otimização cosmética e virou **requisito de
+> publicação**.
+>
+> **Decisão de versionamento:** `APK/public/assets/` está no `.gitignore` e **não
+> é versionado** — hoje é cópia byte a byte de `PROJECT/assets/`, e commitar as
+> duas gravaria ~56 MB permanentes no histórico. A fonte segue sendo
+> `PROJECT/assets/`; para rodar em dev, copie para `APK/public/assets/`. Quando
+> este épico gerar os **WebP**, só a versão otimizada é commitada em `APK/`.
+
+- [ ] Ao gerar os WebP, remover `public/assets/` do `APK/.gitignore` e versionar
+      apenas os assets otimizados.
+
 ---
 
 ## Épico 7 — Internacionalização (fechamento)
@@ -252,6 +272,16 @@ problema crítico de a formação parar sobre o herói e drenar as 3 vidas em ~4
       *(Pendência #8)*
 - [ ] Redigir a **Política de Privacidade** real e **hospedar em URL pública**
       (exigida pelas lojas e pelo AdMob).
+
+> **Nota (31/07/2026) — hospedagem dos textos legais:** os **Termos de Uso** e a
+> **Política de Privacidade** serão publicados no **GitHub Pages** deste
+> repositório. URL prevista:
+> `https://besaleel.github.io/BANANA-KING-COUNTERATTACKS/privacy` (e `/terms`).
+> É essa URL pública que será informada no Play Console e no AdMob, e para onde
+> apontam os links da tela inicial (§7.1 da spec).
+
+- [ ] Habilitar **GitHub Pages** no repositório e criar as páginas `terms` e
+      `privacy` (6 idiomas).
 - [ ] Substituir os placeholders da tela inicial pelos textos/links reais.
 - [ ] Revisar conformidade **COPPA / público infantil** — afeta anúncios e coleta
       de dados, e o jogo tem apelo infantil.
@@ -268,10 +298,10 @@ Bloqueia a geração do keystore (11.1). O `.gitignore` atual cobre apenas
 Detalhes e o bloco pronto para colar estão no §0 do
 [GERAR-AAB.md](GERAR-AAB.md).
 
-- [ ] Adicionar ao `.gitignore` da raiz: `*.jks`, `*.keystore`,
-      `keystore.properties`, `local.properties`, `DEPLOY/*.aab`.
-- [ ] Confirmar com `git check-ignore -v` que cada padrão está ativo **antes** de
-      criar o keystore.
+- [x] Adicionar ao `.gitignore` da raiz: `*.jks`, `*.keystore`,
+      `keystore.properties`, `local.properties`, `DEPLOY/*.aab`. *(31/07/2026)*
+- [x] Confirmar com `git check-ignore -v` que cada padrão está ativo **antes** de
+      criar o keystore. *(31/07/2026 — os 5 padrões verificados e ativos)*
 
 > **Por que é crítico:** chave de assinatura commitada é **irreversível** — não há
 > como revogar, e quem a tiver pode publicar updates falsos do app. Remover em um

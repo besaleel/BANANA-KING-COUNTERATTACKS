@@ -2,8 +2,15 @@
 APK/*.apk
 APK/*.aab
 DEPLOY/build/
+DEPLOY/*.aab
 dist/
 build/
+
+# Segredos de assinatura — NUNCA commitar (ver GERAR-AAB.md §0)
+*.jks
+*.keystore
+keystore.properties
+local.properties
 
 # Dependências
 node_modules/

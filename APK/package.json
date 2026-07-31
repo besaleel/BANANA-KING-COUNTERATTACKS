@@ -1,0 +1,24 @@
+{
+  "name": "banana-king-counterattacks",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Banana King Counterattacks - arcade fixed-shooter offline-first (vanilla JS + Canvas + Capacitor)",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "cap:sync": "npm run build && cap sync",
+    "cap:android": "npm run build && cap sync android && cap open android"
+  },
+  "devDependencies": {
+    "vite": "^5.4.11"
+  },
+  "dependencies": {
+    "@capacitor/android": "^6.2.0",
+    "@capacitor/app": "^6.0.2",
+    "@capacitor/cli": "^6.2.0",
+    "@capacitor/core": "^6.2.0",
+    "@capacitor/screen-orientation": "^6.0.3"
+  }
+}

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, viewport-fit=cover">
+<title>Banana King Counterattacks</title>
+<link rel="icon" href="assets/icon.png">
+<link rel="stylesheet" href="./src/styles.css">
+</head>
+<body>
+<div id="app">
+  <!-- moldura 480x854, retrato -->
+  <div id="frame">
+    <canvas id="cv"></canvas>
+
+    <!-- HUD de gameplay -->
+    <div id="hud" hidden>
+      <div id="hudName"></div>
+      <div class="hud-right">
+        <span id="hudPhase" class="c-blue"></span>
+        <span id="hudScore" class="c-cream"></span>
+        <span id="hudCombo" class="c-orange"></span>
+        <div id="hudLives" class="lives"></div>
+        <button id="btnMute" class="hud-btn c-yellow">&#9834;</button>
+        <button id="btnPause" class="hud-btn c-blue">II</button>
+      </div>
+    </div>
+
+    <!-- rodape de anuncio -->
+    <div id="adsBar" hidden>
+      <a href="#" id="linkRemoveAds"></a>
+      <div id="adPlaceholder"></div>
+    </div>
+
+    <!-- menu inicial -->
+    <div id="scMenu" class="overlay">
+      <img id="menuLogo" src="assets/logo-transparente.png" alt="Banana King Counterattacks">
+      <div id="tagline" class="txt"></div>
+      <select id="selLang"></select>
+      <input id="inpName" maxlength="14">
+      <button id="btnPlay" class="btn-primary"></button>
+      <div class="row">
+        <button id="btnMusic" class="btn-ghost"></button>
+        <button id="btnFx" class="btn-ghost"></button>
+      </div>
+      <div id="lastScore" class="txt dim"></div>
+      <a href="#" id="linkTerms"></a>
+    </div>
+
+    <!-- vitoria de fase -->
+    <div id="scVictory" class="overlay" hidden>
+      <div class="art">
+        <img src="assets/gorila-frente-banana-01.svg" alt="" class="art-hero">
+        <img src="assets/vilao-Trasho.png" alt="" class="art-villain">
+      </div>
+      <div id="vicTitle" class="title c-yellow"></div>
+      <div id="vicSub" class="txt"></div>
+      <div id="vicScore" class="score c-blue"></div>
+      <div id="vicSoon" class="txt dim"></div>
+      <button id="btnVicAgain" class="btn-primary"></button>
+      <button id="btnVicMenu" class="btn-ghost"></button>
+    </div>
+
+    <!-- derrota -->
+    <div id="scOver" class="overlay over" hidden>
+      <img src="assets/banana-king-no-espaco.png" alt="" class="art-dead">
+      <div id="overTitle" class="title c-red"></div>
+      <div id="overSub" class="txt"></div>
+      <div id="overScore" class="score c-blue"></div>
+      <button id="btnOverAgain" class="btn-danger"></button>
+      <button id="btnOverMenu" class="btn-ghost"></button>
+    </div>
+
+    <!-- pausa -->
+    <div id="scPause" class="overlay dark" hidden>
+      <div id="pauseTitle" class="title c-yellow"></div>
+      <div id="pauseNote" class="txt dim"></div>
+      <button id="btnResume" class="btn-primary"></button>
+      <button id="btnRestart" class="btn-ghost danger"></button>
+      <div class="row">
+        <button id="btnMusic2" class="btn-ghost"></button>
+        <button id="btnFx2" class="btn-ghost"></button>
+      </div>
+    </div>
+
+    <!-- modal remover anuncios -->
+    <div id="mdAds" class="modal" hidden>
+      <div class="modal-box yellow">
+        <div id="adTitle" class="title sm c-yellow"></div>
+        <div id="adDesc" class="txt"></div>
+        <div class="score c-blue">USD 1,90</div>
+        <div id="adNote" class="txt tiny dim"></div>
+        <button id="btnBuy" class="btn-primary"></button>
+        <button id="btnCancelAds" class="btn-ghost"></button>
+      </div>
+    </div>
+
+    <!-- modal termos -->
+    <div id="mdTerms" class="modal" hidden>
+      <div class="modal-box blue">
+        <div id="termsTitle" class="title sm c-blue"></div>
+        <div id="termsBody" class="txt dim"></div>
+        <button id="btnCloseTerms" class="btn-ghost"></button>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="module" src="./src/main.js"></script>
+</body>
+</html>
