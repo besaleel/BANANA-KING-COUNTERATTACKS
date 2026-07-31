@@ -149,7 +149,7 @@ function startGame(phase = 1) {
   audio.startMusic();
 }
 
-function onGameEnd(win, score) {
+function onGameEnd(win, score, bonus) {
   state.finalScore = score;
   state.lastScore = score;
   state.highScore = Math.max(score, state.highScore);
@@ -157,6 +157,14 @@ function onGameEnd(win, score) {
   save('high', state.highScore);
   $('vicScore').textContent = 'SCORE ' + pad(score);
   $('overScore').textContent = 'SCORE ' + pad(score);
+
+  // SS6: detalha os bonus na tela de vitoria
+  const d = t();
+  const lines = [];
+  if (bonus?.phaseClear) lines.push(d.bonusPhase + ' +' + bonus.phaseClear);
+  if (bonus?.lives) lines.push(d.bonusLives + ' +' + bonus.lives);
+  $('vicBonus').textContent = lines.join('   ');
+  $('vicBonus').hidden = lines.length === 0;
   $('lastScore').textContent = t().lastScore + ': ' + state.lastScore;
   setTimeout(() => show(win ? 'victory' : 'gameover'), win ? 700 : 1100);
 }

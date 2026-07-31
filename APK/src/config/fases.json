@@ -18,7 +18,13 @@
     "rowGap": 62,
     "rowY0": 130,
     "bananaCount": 7,
-    "bananaHp": 2
+    "bananaHp": 2,
+
+    "_calibracao_provisoria": "PROVISORIOS - pendencias #9 e #3 da spec, a fechar em playtest humano. Ajustar aqui, sem tocar em codigo. Referencia medida: uma fase limpa com combo perfeito vale ~7.8k (fase 01) a ~25.8k (fase 10); campanha completa ~166k. Com X=20000 o jogador habilidoso recebe ~1 reposicao a cada 1,4 fases e o jogador fraco ~1 a cada 2,5 - a barreira continua escassa (SS4.4) sem deixar ninguem sem defesa por muito tempo.",
+    "bananaBonusScoreMilestone": 20000,
+    "phaseClearBonus": 1000,
+    "lifeBonusPerLife": 5000,
+    "bananaBonusFallSpeed": 95
   },
   "levelSprites": {
     "1": ["n05"],

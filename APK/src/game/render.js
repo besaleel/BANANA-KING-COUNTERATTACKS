@@ -103,6 +103,13 @@ export class Renderer {
     // power-ups
     ctx.textAlign = 'center';
     for (const p of g.pools.powerups.items) {
+      if (p.type === 'banana') {
+        // SS4.4: a banana bonus e' visualmente distinta dos power-ups de
+        // combate (quadrados com letra) - o jogador precisa reconhecer de
+        // longe que o que esta caindo restaura a barreira.
+        drawBananaBonus(ctx, p.x, p.y, g.t);
+        continue;
+      }
       const col = POWERUP_COLORS[p.type] || '#ffffff';
       ctx.fillStyle = col;
       ctx.fillRect(p.x - 12, p.y - 12, 24, 24);
@@ -154,3 +161,41 @@ const POWERUP_COLORS = {
   shield: '#9fe3ff',
   life: '#7ed957'
 };
+
+/**
+ * Banana bonus (SS4.4). Reusa o vocabulario visual das bananas da barreira -
+ * mesmas cores e silhueta deitada - para o jogador ligar na hora o item ao
+ * que ele restaura, mas maior, girando e com halo pulsante para nao se
+ * confundir com os quadrados dos power-ups de combate.
+ */
+function drawBananaBonus(ctx, x, y, t) {
+  ctx.save();
+  ctx.translate(x, y);
+
+  // halo pulsante
+  const pulse = 0.55 + Math.sin(t * 8) * 0.25;
+  ctx.globalAlpha = pulse;
+  ctx.fillStyle = '#ffe98a';
+  ctx.beginPath();
+  ctx.arc(0, 0, 21, 0, 7);
+  ctx.fill();
+  ctx.globalAlpha = 1;
+
+  ctx.rotate(Math.sin(t * 3) * 0.35);
+
+  // corpo da banana (mesma silhueta da barreira, ~30% maior)
+  ctx.fillStyle = '#ffd23f';
+  ctx.fillRect(-15, -3, 30, 8);
+  ctx.fillRect(-12, -7, 24, 5);
+  ctx.fillRect(-18, -1, 5, 6);
+  ctx.fillRect(13, -1, 5, 6);
+  // pontas escuras
+  ctx.fillStyle = '#3a2415';
+  ctx.fillRect(-20, 0, 3, 4);
+  ctx.fillRect(17, 0, 3, 4);
+  // brilho
+  ctx.fillStyle = '#fff3d6';
+  ctx.fillRect(-8, -5, 10, 3);
+
+  ctx.restore();
+}

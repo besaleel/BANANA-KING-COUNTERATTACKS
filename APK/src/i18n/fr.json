@@ -30,5 +30,7 @@
   "pauseNote": "Niveau actuel sauvegardé.",
   "resume": "CONTINUER",
   "restart": "Recommencer",
-  "phase": "NIVEAU"
+  "phase": "NIVEAU",
+  "bonusPhase": "BONUS DE NIVEAU",
+  "bonusLives": "BONUS DE VIES"
 }

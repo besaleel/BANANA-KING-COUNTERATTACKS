@@ -11,7 +11,7 @@
 | 0 | Documentação e base do projeto | 🟡 | Alta |
 | 1 | Protótipo Fase 01 (fatia vertical) | ✅ | — |
 | 2 | Decisão de stack e migração do protótipo | ⬜ | **Bloqueante** |
-| 3 | Pendências de gameplay da Fase 01 | ⬜ | Alta |
+| 3 | Pendências de gameplay da Fase 01 | 🟡 | Alta |
 | 4 | Fases 02–10 e curva de dificuldade | ⬜ | Alta |
 | 5 | Animação de vitória final | ⬜ | Média |
 | 6 | Áudio e assets de produção | ⬜ | Média |
@@ -103,54 +103,84 @@ A POC roda no framework `DCLogic`/`support.js`, que não é um alvo de produçã
 Mecânica definida na revisão da spec e **ainda não implementada**. Resolve o
 problema crítico de a formação parar sobre o herói e drenar as 3 vidas em ~4 s.
 
-- [ ] **Nave que atinge a barreira de bananas é destruída** (§4.4 da spec).
-- [ ] **A banana atingida é destruída junto** — troca mútua, independente de ter
-      1 ou 2 de vida.
-- [ ] Nave destruída na barreira **não dá pontos** e **não incrementa o combo**
-      (impede farmar pontos deixando a formação descer).
-- [ ] Formação inteira consumida na barreira → **fase vencida normalmente**.
-- [ ] **Ao perder uma vida (com vidas restantes): reiniciar a fase completa** —
+- [x] **Nave que atinge a barreira de bananas é destruída** (§4.4 da spec).
+      *(31/07/2026)*
+- [x] **A banana atingida é destruída junto** — troca mútua, independente de ter
+      1 ou 2 de vida. *(31/07/2026 — `bn.hp = 0` direto, não decrementa)*
+- [x] Nave destruída na barreira **não dá pontos** e **não incrementa o combo**
+      (impede farmar pontos deixando a formação descer). *(31/07/2026)*
+- [x] Formação inteira consumida na barreira → **fase vencida normalmente**.
+      *(31/07/2026 — condição continua sendo "formação vazia")*
+- [x] **Ao perder uma vida (com vidas restantes): reiniciar a fase completa** —
       formação restaurada no topo, herói ao centro, projéteis/cocos/power-ups
-      limpos, **mantendo pontuação e vidas**, combo zerado.
-- [ ] **Barreira persistente:** ao reiniciar a fase, as bananas ficam **exatamente
+      limpos, **mantendo pontuação e vidas**, combo zerado. *(30/07/2026, épico 2)*
+- [x] **Barreira persistente:** ao reiniciar a fase, as bananas ficam **exatamente
       como estavam** no momento da morte (não regeneram). Idem ao trocar de fase.
-      A barreira é a "reserva de vidas extras" do jogador.
-- [ ] Remover o clamp `r.y = hero.y − 20` ou reavaliá-lo: com as naves morrendo na
+      A barreira é a "reserva de vidas extras" do jogador. *(30/07/2026, épico 2)*
+- [x] Remover o clamp `r.y = hero.y − 20` ou reavaliá-lo: com as naves morrendo na
       barreira, ele passa a ser um caso de borda raro
       ([html:414](../PROJECT/Banana%20King%20-%20Fase%2001.dc.html#L414)).
+      *(31/07/2026 — **avaliado e MANTIDO** como rede de segurança: a barreira é
+      finita, então após bananas destruídas abre-se um corredor por onde a
+      formação passa sem ser consumida. Sem o clamp ela afundaria indefinidamente
+      fora da tela, e como não há game over por alcance (§4.5) o jogo travaria
+      sem condição de término. Com o clamp, a nave para sobre o herói e tira 1
+      vida pela regra normal.)*
 
 ### 3.2 Banana bônus — recuperação da barreira (decidido em 29/07/2026)
 
 Única forma de recuperar a barreira. Ver §4.4 da spec.
 
-- [ ] Implementar o power-up **`banana`**: ao coletar, **restaura a barreira
+- [x] Implementar o power-up **`banana`**: ao coletar, **restaura a barreira
       completa** (7 bananas × 2 de vida), independente do estado anterior.
-- [ ] **Origem 1 — marco de pontuação:** a cada **X pontos acumulados** cai uma
+      *(31/07/2026)*
+- [x] **Origem 1 — marco de pontuação:** a cada **X pontos acumulados** cai uma
       banana bônus, repetindo a cada novo múltiplo de X. Vale em **qualquer fase**.
+      *(31/07/2026)*
 - [ ] **Definir o valor de X** em playtest. *(Pendência #9)*
-- [ ] **Origem 2 — Fase 5:** banana bônus **garantida**, independente da
-      pontuação. Convive com os marcos de pontuação.
-- [ ] Banana não coletada é **perdida** ao atingir a base — sem reoferta.
-- [ ] **Arte distinta:** a banana bônus deve ser visualmente diferente dos
+      ⚠️ **Provisório em uso: `bananaBonusScoreMilestone = 20000`** em
+      `APK/src/config/fases.json`. Escolhido por simulação da economia (fase
+      limpa vale ~7,8k na fase 01 e ~25,8k na fase 10; campanha ~166k), dando
+      ~1 reposição a cada 1,4 fases para o jogador habilidoso e ~1 a cada 2,5
+      para o fraco. **Falta validar com humano jogando.**
+- [x] **Origem 2 — Fase 5:** banana bônus **garantida**, independente da
+      pontuação. Convive com os marcos de pontuação. *(31/07/2026 — campo
+      `bananaBonusGuaranteed` em `fases.json`)*
+- [x] Banana não coletada é **perdida** ao atingir a base — sem reoferta.
+      *(31/07/2026)*
+- [x] **Arte distinta:** a banana bônus deve ser visualmente diferente dos
       power-ups de combate (que hoje são quadrados com letra), para o jogador
-      reconhecer o que está caindo.
+      reconhecer o que está caindo. *(31/07/2026 — banana desenhada no canvas
+      com halo pulsante e rotação, reusando as cores da barreira)*
 
 - [ ] **Playtest de economia da barreira:** 7 bananas contra 20 naves por fase,
       sem regeneração entre fases. Verificar se o marco de pontuação repõe em
       ritmo suficiente ou se o jogador fica sem defesa alguma no meio da campanha.
+      ⚠️ **Playtest humano — não substituível por simulação.** A simulação de
+      economia só mediu a *frequência* de reposição, não a sensação de jogo nem
+      o ritmo real de desgaste da barreira.
 
 ### 3.3 Pontuação
 
-- [ ] **Bônus de fase: +1000** ao concluir sem perder vida. *(Pendência #2)*
-- [ ] **Bônus por vidas restantes** ao vencer o jogo — definir o valor e
-      implementar. *(Pendências #2 e #3)*
+- [x] **Bônus de fase: +1000** ao concluir sem perder vida. *(Pendência #2)*
+      *(31/07/2026 — `phaseClearBonus` no config; flag por fase, derrubado ao
+      perder vida)*
+- [x] **Bônus por vidas restantes** ao vencer o jogo — definir o valor e
+      implementar. *(Pendências #2 e #3)* *(31/07/2026 — implementado; concedido
+      só após a fase 10)*
+- [ ] **Confirmar o valor do bônus por vidas restantes.** *(Pendência #3)*
+      ⚠️ **Provisório em uso: `lifeBonusPerLife = 5000`** (3 vidas = 15000,
+      ~8 % de uma campanha completa ≈ o valor de uma fase média). Alto o
+      bastante para pesar no ranking, baixo o bastante para não deixar o jogo
+      cauteloso vencer o jogo habilidoso. **Falta validar em playtest.**
 
 ### 3.4 Ajustes e correções
 
-- [ ] Corrigir a divergência de default do drop de power-up: a spec fixa **4 %**,
+- [x] Corrigir a divergência de default do drop de power-up: a spec fixa **4 %**,
       mas o fallback no código é `12` em
       [Banana King - Fase 01.dc.html:361](../PROJECT/Banana%20King%20-%20Fase%2001.dc.html#L361).
-      Alinhar em 4 %.
+      Alinhar em 4 %. *(30/07/2026, épico 2 — `powerupDropPct: 4` no config;
+      taxa medida em 3,80 % sobre 4000 naves destruídas)*
 - [ ] **Ajustar escalas** de personagens/naves conforme o mock
       `PROJECT/uploads/Meshy_AI_Gameplay Prototype Banana Barriers.png`.
       *(Pendência #7)*

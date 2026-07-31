@@ -30,5 +30,7 @@
   "pauseNote": "Fase actual guardada.",
   "resume": "CONTINUAR",
   "restart": "Reiniciar juego",
-  "phase": "FASE"
+  "phase": "FASE",
+  "bonusPhase": "BONUS DE FASE",
+  "bonusLives": "BONUS DE VIDAS"
 }

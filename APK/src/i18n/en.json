@@ -30,5 +30,7 @@
   "pauseNote": "Current level saved.",
   "resume": "RESUME",
   "restart": "Restart game",
-  "phase": "LEVEL"
+  "phase": "LEVEL",
+  "bonusPhase": "LEVEL BONUS",
+  "bonusLives": "LIVES BONUS"
 }

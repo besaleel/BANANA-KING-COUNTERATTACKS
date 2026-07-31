@@ -30,5 +30,7 @@
   "pauseNote": "Aktuelles Level gespeichert.",
   "resume": "WEITER",
   "restart": "Neu starten",
-  "phase": "LEVEL"
+  "phase": "LEVEL",
+  "bonusPhase": "LEVEL-BONUS",
+  "bonusLives": "LEBEN-BONUS"
 }

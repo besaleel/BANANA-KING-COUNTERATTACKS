@@ -30,5 +30,7 @@
   "pauseNote": "Fase attuale salvata.",
   "resume": "CONTINUA",
   "restart": "Ricomincia",
-  "phase": "FASE"
+  "phase": "FASE",
+  "bonusPhase": "BONUS DI FASE",
+  "bonusLives": "BONUS VITE"
 }

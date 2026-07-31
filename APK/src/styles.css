@@ -177,6 +177,9 @@ a { color: #ffd23f; }
 .title.sm { font-size: 12px; }
 
 .score { font-family: 'Press Start 2P', monospace; font-size: 13px; }
+.score.bonus { font-size: 10px; line-height: 1.6; }
+.score[hidden] { display: none; }
+.c-green { color: #7ed957; }
 
 .row { display: flex; gap: 10px; }
 

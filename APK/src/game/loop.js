@@ -6,8 +6,9 @@
  * Divergencia corrigida no porte: o fallback de drop de power-up era 12 na POC
  * (linha 361 do HTML); a spec fixa 4 % - item 3.4 do BACKLOG.
  *
- * FORA DE ESCOPO nesta rodada (epico 3 do backlog): nave destruida na barreira,
- * banana bonus, bonus de pontuacao, fases 02-10 jogaveis.
+ * Epico 3 implementado: barreira como linha de defesa (3.1), banana bonus (3.2)
+ * e bonus de pontuacao (3.3). Fases 02-10 jogaveis continuam fora de escopo
+ * (epico 4).
  */
 import { W, H, createPools, createStage, createHero, shipPos } from './entities.js';
 import { Renderer } from './render.js';
@@ -61,6 +62,12 @@ export class Game {
     this.score = 0;
     this.phase = phase;
     this._bananas = null;      // barreira nova em partida nova
+    // marco de pontuacao da banana bonus (SS4.4): conta o ultimo multiplo de X
+    // ja concedido, para a recompensa repetir a cada novo multiplo.
+    this._lastBananaMilestone = 0;
+    // SS6: bonus de fase (+1000) exige concluir SEM perder vida. O flag vive
+    // por FASE, nao por tentativa - morrer e reiniciar a fase o derruba.
+    this.deathlessPhase = true;
     this.buildStage();
     this.running = true;
     this.paused = false;
@@ -87,6 +94,11 @@ export class Game {
     this.vil = { x: W / 2, t: 0 };
     this.cocoAt = 1.8 + Math.random() * 1.5;
     for (const k in this.pools) this.pools[k].clear();
+
+    // SS4.4 origem 2: a fase marcada solta uma banana bonus garantida,
+    // independente da pontuacao. Cai um pouco depois do inicio para nao
+    // nascer junto com a formacao entrando em tela.
+    this._guaranteedBananaAt = fase.bananaBonusGuaranteed ? 3.5 : -1;
   }
 
   /**
@@ -214,6 +226,32 @@ export class Game {
       }
     });
 
+    // --- naves x barreira: linha de defesa (SS4.4) ---
+    // Troca mutua: a nave e' destruida e a banana atingida morre junto,
+    // independente de ter 1 ou 2 de vida. Nao pontua e nao mexe no combo -
+    // so destruicao por tiro pontua (SS6), o que impede farmar pontos
+    // deixando a formacao descer.
+    if (stage.ships.length) {
+      const bwd = W / 8;
+      for (let i = stage.ships.length - 1; i >= 0; i--) {
+        const s = stage.ships[i];
+        const p = shipPos(s, stage.rows, base);
+        if (Math.abs(p.y - stage.bananaY) > s.h / 2 + 8) continue;
+        for (const bn of stage.bananas) {
+          if (bn.hp <= 0) continue;
+          const bx = bwd * (bn.i + 1);
+          if (Math.abs(p.x - bx) < s.w / 2 + 22) {
+            bn.hp = 0;                       // morre junto, sem descontar 1 a 1
+            stage.ships.splice(i, 1);
+            this.boom(p.x, p.y, '#ff8c42');
+            this.boom(bx, stage.bananaY, '#ffd23f');
+            this.audio.sfx('banana');
+            break;
+          }
+        }
+      }
+    }
+
     // --- tiros x naves ---
     for (const b of this.pools.bullets.items) {
       if (!b.alive) continue;
@@ -226,10 +264,10 @@ export class Game {
             stage.ships.splice(stage.ships.indexOf(s), 1);
             this.combo++;
             const pts = s.lv * 100 * this.comboMult;
-            this.score += pts;
             this.boom(p.x, p.y, '#ff8c42');
             this.audio.sfx('boom');
             this.spawnText(p.x, p.y, '+' + pts);
+            this.addScore(pts, p.x, p.y);
             if (Math.random() * 100 < base.powerupDropPct) {
               const pu = this.pools.powerups.obtain();
               pu.x = p.x; pu.y = p.y; pu.vy = 95;
@@ -281,13 +319,23 @@ export class Game {
       if (c.y >= H - 60) this.pools.cocos.release(c);
     }
 
+    // --- banana bonus: fase garantida (SS4.4 origem 2) ---
+    if (this._guaranteedBananaAt >= 0 && this.t >= this._guaranteedBananaAt) {
+      this._guaranteedBananaAt = -1;
+      this.spawnBananaBonus(40 + Math.random() * (W - 80), 140);
+    }
+
     // --- power-ups ---
     for (const p of this.pools.powerups.items) {
       if (!p.alive) continue;
       p.y += p.vy * dt;
       if (Math.abs(p.x - hero.x) < hero.w / 2 + 8 && Math.abs(p.y - hero.y) < hero.h / 2 + 10) {
         this.audio.sfx('power');
-        if (p.type === 'life') {
+        if (p.type === 'banana') {
+          // SS4.4: unica forma de recuperar a barreira - volta completa,
+          // 7 bananas x 2 de vida, independente do estado anterior.
+          this.restoreBarrier();
+        } else if (p.type === 'life') {
           if (this.lives < 3) this.lives++;
         } else if (p.type === 'shield') {
           hero.shield = base.powerupDurationS;
@@ -296,7 +344,7 @@ export class Game {
           hero.weapon = p.type;
           hero.weaponUntil = this.t + base.powerupDurationS;
         }
-        this.spawnText(p.x, p.y - 10, p.type.toUpperCase());
+        this.spawnText(p.x, p.y - 10, p.type === 'banana' ? 'BARREIRA!' : p.type.toUpperCase());
         this.pools.powerups.release(p);
       } else if (p.y >= H - 80) {
         this.pools.powerups.release(p);
@@ -318,14 +366,19 @@ export class Game {
     }
 
     // --- vitoria ---
+    // SS4.4: a condicao continua sendo "formacao vazia", qualquer que seja a
+    // causa - inclusive toda a formacao consumida na barreira.
     if (!stage.ships.length && !this.over) {
       this.endGame(true);
       this.sweepPools();
       return;
     }
 
-    // clamp herdado da POC (linha 414): impede a formacao de afundar alem do
-    // heroi. Vira caso de borda quando a regra da barreira do epico 3.1 entrar.
+    // Clamp herdado da POC (linha 414 do HTML): impede a formacao de afundar
+    // alem do heroi. MANTIDO como rede de seguranca - ver nota em SS3.1 do
+    // relatorio. Com a barreira ativa vira caso de borda raro (so alcanca o
+    // heroi por corredor de banana ja destruida), mas sem ele uma formacao que
+    // passe pelo corredor afundaria indefinidamente fora da tela.
     for (const r of stage.rows) {
       if (r.y > hero.y - 20) r.y = hero.y - 20;
     }
@@ -365,6 +418,39 @@ export class Game {
     t.x = x; t.y = y; t.txt = txt; t.a = 1;
   }
 
+  /**
+   * Soma pontos e verifica o marco da banana bonus (SS4.4 origem 1).
+   * A recompensa repete a cada novo multiplo de X - um unico ganho que cruze
+   * varios multiplos de uma vez solta apenas uma banana (nao acumula), porque
+   * a barreira ja volta completa de qualquer forma.
+   */
+  addScore(pts, x, y) {
+    this.score += pts;
+    const X = this.baseline.bananaBonusScoreMilestone;
+    if (X > 0) {
+      const milestone = Math.floor(this.score / X) * X;
+      if (milestone > this._lastBananaMilestone) {
+        this._lastBananaMilestone = milestone;
+        this.spawnBananaBonus(x, y);
+      }
+    }
+  }
+
+  /** Solta uma banana bonus caindo (SS4.4). Nao e' drop aleatorio. */
+  spawnBananaBonus(x, y) {
+    const pu = this.pools.powerups.obtain();
+    pu.x = Math.max(20, Math.min(W - 20, x));
+    pu.y = y;
+    pu.vy = this.baseline.bananaBonusFallSpeed;
+    pu.type = 'banana';
+  }
+
+  /** Restaura a barreira completa: 7 bananas x 2 de vida (SS4.4). */
+  restoreBarrier() {
+    for (const bn of this.stage.bananas) bn.hp = this.baseline.bananaHp;
+    this.boom(W / 2, this.stage.bananaY, '#ffd23f', 18);
+  }
+
   boom(x, y, color, n) {
     const count = n || 14;
     for (let i = 0; i < count; i++) {
@@ -380,6 +466,7 @@ export class Game {
   hitHero() {
     const hero = this.hero;
     this.combo = 0;
+    this.deathlessPhase = false;   // SS6: perde o direito ao bonus de fase
     this.boom(hero.x, hero.y, '#ff6b57', 22);
     this.audio.sfx('hit');
     this.lives--;
@@ -395,8 +482,22 @@ export class Game {
     this.over = true;
     this.running = false;
     cancelAnimationFrame(this.raf);
+
+    // SS6: bonus de fase (+1000) por concluir sem perder vida.
+    const bonus = { phaseClear: 0, lives: 0 };
+    if (win && this.deathlessPhase) {
+      bonus.phaseClear = this.baseline.phaseClearBonus;
+      this.score += bonus.phaseClear;
+    }
+    // SS6: bonus por vidas restantes ao vencer o JOGO (apos a fase 10).
+    const gameWon = win && this.phase >= this.config.fases.length;
+    if (gameWon) {
+      bonus.lives = this.lives * this.baseline.lifeBonusPerLife;
+      this.score += bonus.lives;
+    }
+
     this.audio.stopMusic();
     this.audio.sfx(win ? 'win' : 'lose');
-    if (this.hooks.onEnd) this.hooks.onEnd(win, this.score);
+    if (this.hooks.onEnd) this.hooks.onEnd(win, this.score, { ...bonus, gameWon });
   }
 }
