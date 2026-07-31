@@ -59,8 +59,26 @@
       <div id="vicBonus" class="score bonus c-green" hidden></div>
       <div id="vicSoon" class="txt dim"></div>
       <button id="btnVicNext" class="btn-primary"></button>
-      <button id="btnVicAgain" class="btn-primary" hidden></button>
       <button id="btnVicMenu" class="btn-ghost"></button>
+    </div>
+
+    <!-- vitoria final da campanha (epico 5): walk-cycle em tela cheia.
+         Os overlays ficam no topo e na base; a faixa central (~34%-73% da
+         altura da arte) e' onde o personagem aparece e fica livre de texto. -->
+    <div id="scWin" class="overlay win" hidden>
+      <img id="winFrame" alt="">
+      <div class="win-top">
+        <div id="winTitle" class="title c-yellow"></div>
+        <div id="winPhrase" class="txt"></div>
+      </div>
+      <div class="win-bottom">
+        <div id="winScoreLabel" class="score sm c-cream"></div>
+        <div id="winScore" class="score big c-yellow"></div>
+        <div id="winBest" class="score sm c-blue"></div>
+        <div id="winBonus" class="score bonus c-green" hidden></div>
+        <button id="btnWinAgain" class="btn-primary"></button>
+        <button id="btnWinMenu" class="btn-ghost"></button>
+      </div>
     </div>
 
     <!-- derrota -->

@@ -35,5 +35,8 @@
   "bonusLives": "BONUS DE VIDAS",
   "nextPhase": "FASE",
   "gameWonTitle": "¡HAS GANADO!",
-  "gameWonSub": "¡Banana King liberó la galaxia de Trasho! Las 10 fases superadas."
+  "winPhrase": "La galaxia es libre. ¡Larga vida al Banana King!",
+  "winFinalScore": "PUNTUACIÓN FINAL",
+  "winBest": "RÉCORD",
+  "winNewBest": "¡NUEVO RÉCORD!"
 }

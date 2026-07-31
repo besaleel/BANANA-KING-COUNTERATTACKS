@@ -1,7 +1,7 @@
 # Backlog — Banana King Counterattacks
 
 > **Documento de referência:** [ESPECFICATION.md](ESPECFICATION.md)
-> **Atualizado:** 29/07/2026
+> **Atualizado:** 31/07/2026
 > **Legenda de status:** ⬜ pendente · 🟡 em andamento · ✅ concluído · ⏸️ bloqueado
 
 ## Sumário de épicos
@@ -13,7 +13,7 @@
 | 2 | Decisão de stack e migração do protótipo | ⬜ | **Bloqueante** |
 | 3 | Pendências de gameplay da Fase 01 | 🟡 | Alta |
 | 4 | Fases 02–10 e curva de dificuldade | 🟡 | Alta |
-| 5 | Animação de vitória final | ⬜ | Média |
+| 5 | Animação de vitória final | ✅ | — |
 | 6 | Áudio e assets de produção | ⬜ | Média (6.0 ⚠️ **áudio mudo no mobile**) |
 | 7 | Internacionalização (fechamento) | ⬜ | Média |
 | 8 | Monetização — AdMob + Billing | ⬜ | Média |
@@ -248,13 +248,53 @@ problema crítico de a formação parar sobre o herói e drenar as 3 vidas em ~4
 
 ## Épico 5 — Animação de vitória final
 
-- [ ] Implementar o walk-cycle com `win_Walk-Frame-1/3/5-Phone.png` a ~8 fps,
-      personagem parado.
-- [ ] **Definir a posição dos overlays** (pontuação final + frase de vitória)
-      para não cobrir o personagem. *(Pendência #1)*
-- [ ] Botão de ação (menu / recomeçar) na base.
-- [ ] Frase de vitória localizada nos 6 idiomas.
-- [ ] Confirmar que os assets Tablet permanecem fora de escopo.
+- [x] Implementar o walk-cycle a ~8 fps, personagem parado.
+      *(31/07/2026 — `APK/src/game/winanim.js`, 125 ms por frame)*
+      ⚠️ **Divergência do plano original:** o backlog pedia os frames **1/3/5**,
+      mas os assets **não sustentam essa combinação** — ver a nota abaixo.
+      Implementado com **1 → 2 → 5 → 2**.
+- [x] **Definir a posição dos overlays** (pontuação final + frase de vitória)
+      para não cobrir o personagem. *(Pendência #1)* *(31/07/2026 — resolvido e
+      **medido**, ver a nota de geometria abaixo)*
+- [x] Botão de ação (menu / recomeçar) na base. *(31/07/2026 — `JOGAR DE NOVO`
+      + `Menu` no bloco inferior)*
+- [x] Frase de vitória localizada nos 6 idiomas. *(31/07/2026 — chaves
+      `winPhrase`, `winFinalScore`, `winBest`, `winNewBest`)*
+- [x] Confirmar que os assets Tablet permanecem fora de escopo.
+      *(31/07/2026 — **mantidos fora**. Os 3 arquivos `*-Tablet.png` estão em
+      896×1200 e 1081×1455, proporções ~0,75 contra os 0,562 do frame retrato
+      480×854: não são uma versão "maior" da mesma cena, e sim outro
+      enquadramento. Como a §7 fixa retrato em todos os aparelhos, não há tela
+      que os use.)*
+
+> **Nota (31/07/2026) — por que 1-2-5 e não 1-3-5.**
+> Os cinco `win_Walk-Frame-*-Phone.png` **não são sprites recortados**: cada um
+> é uma cena completa (céu, sol, floresta, chão) com o gorila embutido.
+> - Os frames **1, 2 e 5** são 768×1376 e compartilham o mesmo cenário. A
+>   diferença medida pixel a pixel entre eles é de **~1 % da imagem**, restrita
+>   à faixa **y 467–1001** — que é exatamente o personagem. São um walk-cycle
+>   legítimo.
+> - Os frames **3 e 4** foram renderizados em **937×1679 / 936×1681**, com o
+>   personagem em **outra escala e enquadramento**. Alterná-los com 1 e 5
+>   produziria um *salto de zoom* a cada 125 ms, não um passo.
+>
+> Por isso o ciclo usa `1 → 2 → 5 → 2` (`WIN_FRAMES` em `APK/src/game/assets.js`),
+> que alterna as pernas sem mexer no cenário. Os frames 3 e 4 seguem nos assets,
+> sem uso — candidatos ao inventário de descarte da §15 da spec.
+
+> **Nota (31/07/2026) — geometria dos overlays (pendência #1).**
+> A arte é 768×1376 (0,558) e o frame é 480×854 (0,562): com `object-fit: cover`
+> a escala é 0,625 e o corte é de **6 px no topo**, sem perder conteúdo. Nessa
+> projeção o personagem ocupa **y 286–620** dos 854 px de altura.
+> Medido no browser, no **pior caso** (alemão, rótulos mais longos, duas linhas
+> de bônus):
+>
+> | Bloco | Ocupa | Folga até o personagem |
+> |---|---|---|
+> | Overlay superior (título + frase) | y 0–134 | **152 px** |
+> | Overlay inferior (placar + botões) | y 635–854 | **15 px** |
+>
+> Nenhum elemento estoura a largura de 480 px. A faixa central fica livre.
 
 ---
 
@@ -458,7 +498,11 @@ Detalhes e o bloco pronto para colar estão no §0 do
 - Comportamento em telas com notch / safe area no topo (HUD de 52 px).
 - **Assets sem uso definido** — inventário completo em §15 da
   [ESPECFICATION.md](ESPECFICATION.md). Decidir aplicação ou descarte antes do
-  release.
+  release. Confirmados sem uso em 31/07/2026 (épico 5): `win_Walk-Frame-3` e
+  `win_Walk-Frame-4-Phone.png` (escala incompatível com o ciclo) e os três
+  `win_Walk-Frame-*-Tablet.png` (proporção de paisagem, e o jogo é só retrato).
+  São ~5,8 MB de PNG que podem sair do pacote — relevante para o teto de 50 MB
+  do AAB (épico 6).
 - Naves de mesmo nível (`nave-03`/`nave-04`) são **só variedade visual** — decidido
   em 29/07/2026, não implementar diferenças de atributo entre elas.
 

@@ -22,6 +22,24 @@ const FILES = {
   n05: 'nave-inimiga-05.png'
 };
 
+/**
+ * Walk-cycle da vitoria final (epico 5).
+ *
+ * Sao cenas completas (768x1376, mesmo cenario), nao sprites recortados: a
+ * animacao troca a imagem inteira. Os frames 3 e 4 existem nos assets mas
+ * ficam de fora - foram renderizados em 937x1679 com o personagem em outra
+ * escala e enquadramento, entao intercala-los com 1/2/5 produz um salto de
+ * zoom em vez de um passo. A ordem 1-2-5-2 usa so os tres frames que
+ * compartilham cenario (diferenca medida: ~1% dos pixels, restrita a faixa
+ * y 467-1001, que e' o proprio personagem).
+ */
+export const WIN_FRAMES = [
+  'win_Walk-Frame-1-Phone.png',
+  'win_Walk-Frame-2-Phone.png',
+  'win_Walk-Frame-5-Phone.png',
+  'win_Walk-Frame-2-Phone.png'
+];
+
 /** Dispara o carregamento de todos os sprites de gameplay. */
 export function loadImages() {
   const img = {};

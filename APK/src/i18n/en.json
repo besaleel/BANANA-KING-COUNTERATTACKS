@@ -35,5 +35,8 @@
   "bonusLives": "LIVES BONUS",
   "nextPhase": "LEVEL",
   "gameWonTitle": "YOU WIN!",
-  "gameWonSub": "Banana King freed the galaxy from Trasho! All 10 levels beaten."
+  "winPhrase": "The galaxy is free. Long live the Banana King!",
+  "winFinalScore": "FINAL SCORE",
+  "winBest": "BEST",
+  "winNewBest": "NEW BEST!"
 }

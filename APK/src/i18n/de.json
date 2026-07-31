@@ -35,5 +35,8 @@
   "bonusLives": "LEBEN-BONUS",
   "nextPhase": "LEVEL",
   "gameWonTitle": "GEWONNEN!",
-  "gameWonSub": "Banana King hat die Galaxie von Trasho befreit! Alle 10 Level geschafft."
+  "winPhrase": "Die Galaxie ist frei. Lang lebe der Banana King!",
+  "winFinalScore": "ENDPUNKTZAHL",
+  "winBest": "REKORD",
+  "winNewBest": "NEUER REKORD!"
 }

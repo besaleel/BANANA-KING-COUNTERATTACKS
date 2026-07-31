@@ -188,6 +188,70 @@ a { color: #ffd23f; }
 .art-villain { height: 90px; filter: grayscale(1) brightness(.6); transform: rotate(24deg); opacity: .8; }
 .art-dead { height: 150px; filter: grayscale(1) brightness(.55); transform: rotate(-20deg); }
 
+/* ---------- vitoria final (epico 5) ---------- */
+
+/* A arte do walk-cycle e' 768x1376 (0.558) contra o frame 480x854 (0.562):
+   as proporcoes praticamente coincidem, entao `cover` encaixa sem corte
+   perceptivel. O layout empurra os textos para o topo e a base, mantendo
+   livre a faixa central onde o personagem caminha (pendencia #1). */
+.overlay.win {
+  justify-content: space-between;
+  padding: 0;
+  background: #2b1b3d;
+  overflow: hidden;
+}
+
+#winFrame {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center bottom;
+  /* pixel art: sem suavizacao ao escalar */
+  image-rendering: pixelated;
+  z-index: 0;
+}
+
+.win-top, .win-bottom {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 18px 20px;
+}
+
+/* Legibilidade sobre a arte sem cobrir o personagem: o degrade some antes
+   de chegar a faixa central. */
+.win-top {
+  padding-top: 26px;
+  background: linear-gradient(180deg, rgba(24, 12, 40, .92) 55%, rgba(24, 12, 40, 0));
+}
+
+/* `gap` menor que o do topo: com 2 linhas de bonus (DE/FR) o bloco cresce e
+   comecava a alcancar os pes do personagem (~y 620 de 854). */
+.win-bottom {
+  padding: 10px 20px 22px;
+  gap: 5px;
+  background: linear-gradient(0deg, rgba(24, 12, 40, .93) 60%, rgba(24, 12, 40, 0));
+}
+
+.win-top .title { font-size: 20px; text-shadow: 0 3px 0 #7a4a12; }
+.win-top .txt { font-size: 20px; max-width: 300px; }
+
+.score.big { font-size: 20px; text-shadow: 0 3px 0 #7a4a12; }
+.score.sm { font-size: 10px; }
+
+#winBest.is-new { color: #7ed957; animation: bkpulse 1s ease-in-out infinite; }
+
+@keyframes bkpulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: .45; }
+}
+
 /* ---------- controles ---------- */
 
 select, input {

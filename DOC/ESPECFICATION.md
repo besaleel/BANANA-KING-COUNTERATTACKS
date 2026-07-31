@@ -53,7 +53,8 @@ desse protótipo.
 | *(reserva)* | `banana-king-no-espaco_branco.png` | **Sem uso definido** — ver §15 |
 | **Trasho** (vilão/chefe) | `vilao-Trasho.png`, `vilao-Trasho-espelhado.png` | Topo, oscila lateralmente e lança cocos |
 | **Gorila (variações)** | `king-gorila.svg`, `gorila-frente-banana-01/02.svg` | Telas de vitória/derrota/menu |
-| **Animação de vitória final** | `win_Walk-Frame-1/3/5-Phone.png` | Walk-cycle final (ver §7.2) |
+| **Animação de vitória final** | `win_Walk-Frame-1/2/5-Phone.png` | Walk-cycle final (ver §7.2) |
+| *(reserva)* | `win_Walk-Frame-3/4-Phone.png`, `*-Tablet.png` | **Sem uso** — escala/proporção incompatíveis, ver §7.2 e §15 |
 | **Naves inimigas** | `nave-inimiga-00…05.png` | Formação (ver §2.1) |
 | **Logo** | `logo.png`, `logo-transparente.png` | Menu / splash |
 | **Ícone** | `icon.png` | App icon / favicon |
@@ -381,14 +382,25 @@ Cena **pré-renderizada** (fundo pôr do sol + floresta já embutidos em cada fr
 da caminhada do Banana King segurando o troféu — **walk-cycle em sprites**, não
 uma animação por camadas.
 
-- **Frames:** **3 frames** — `win_Walk-Frame-1/3/5-Phone.png` — a **~8 fps**.
-- **Reprodução:** loop dos 3 frames; personagem **parado** (walk-cycle no lugar,
-  sem transladar pela tela).
+- **Frames:** **3 frames distintos** — `win_Walk-Frame-1`, `-2` e `-5-Phone.png`
+  — a **~8 fps** (125 ms por frame).
+  ⚠️ **Corrigido em 31/07/2026:** esta seção dizia `1/3/5`. Os frames **3 e 4**
+  foram renderizados em 937×1679 com o personagem em **outra escala e
+  enquadramento**, enquanto 1, 2 e 5 são 768×1376 sobre o mesmo cenário
+  (diferença medida: ~1 % dos pixels, restrita à faixa do personagem).
+  Misturar as duas famílias produz salto de zoom, não caminhada.
+- **Reprodução:** ciclo **1 → 2 → 5 → 2**; personagem **parado** (walk-cycle no
+  lugar, sem transladar pela tela).
 - **Overlays:** pontuação final e frase de vitória localizada sobrepostas, com
   botão de ação (menu/recomeçar) na base.
 - **Layout único (Phone)** escalado — os assets Tablet não são necessários.
 
-> **Pendente:** posicionamento exato dos overlays para não cobrir o personagem.
+> **Resolvido em 31/07/2026 — posicionamento dos overlays.** Com `object-fit:
+> cover` a arte 768×1376 entra no frame 480×854 a 0,625 de escala (corte de 6 px
+> no topo, sem perda de conteúdo) e o personagem ocupa **y 286–620**. Os textos
+> vão para dois blocos: **topo** (título + frase, y 0–134) e **base** (placar,
+> bônus e botões, y 635–854), deixando a faixa central livre. Medido no pior
+> caso de layout (alemão, duas linhas de bônus).
 
 ---
 
@@ -556,7 +568,8 @@ estrutura.
     apresentação (§10.1).
 14. **Textos legais:** placeholder no protótipo; textos reais obrigatórios antes
     do lançamento.
-15. **Animação final:** frames 1/3/5 a ~8 fps, personagem parado.
+15. **Animação final:** frames 1/2/5 a ~8 fps, personagem parado (ver §7.2 —
+    os frames 3/4 não servem ao ciclo).
 16. **Assets:** layout único (Phone escalado); assets Tablet não usados.
 17. **Nome do produto:** "Banana King Counterattacks" (app) vs. "Banana King"
     (personagem) — ver §0.
@@ -567,7 +580,7 @@ estrutura.
 
 | # | Pendência | Onde |
 |---|---|---|
-| 1 | Posicionamento dos overlays (pontuação/frase) na animação final | §7.2 |
+| 1 | ~~Posicionamento dos overlays (pontuação/frase) na animação final~~ — **resolvida em 31/07/2026** (topo y 0–134 · base y 635–854 · personagem y 286–620) | §7.2 |
 | 2 | Bônus de fase (+1000) e bônus por vidas restantes — implementar | §6 |
 | 3 | Valor exato do bônus por vidas restantes | §6 |
 | 4 | Curva de dificuldade por fase (velocidade, degrau, cadência de coco por fase) | §5.1 |
@@ -594,8 +607,8 @@ repositório como reserva; definir aplicação ou descartar antes do release.
 | `banana-king-no-espaco_branco.png` | Variante branca do herói. Possível uso: frame de dano/flash ou silhueta de vidas no HUD. |
 | `king-gorila.svg` | Não referenciado. Candidato a splash ou tela de menu. |
 | `gorila-frente-banana-02.svg` | Só a variante `-01` é usada (tela de vitória). |
-| `win_Walk-Frame-2/4-Phone.png` | Frames descartados do walk-cycle (usa-se 1/3/5). |
-| `win_Walk-Frame-1/3/4-Tablet.png` | Layout tablet fora de escopo (§13.16). |
+| `win_Walk-Frame-3/4-Phone.png` | **Corrigido em 31/07/2026:** são estes os descartados, não o 2. Renderizados em 937×1679 com o personagem em outra escala/enquadramento — não intercalam com 1/2/5 (§7.2). ~3 MB. |
+| `win_Walk-Frame-1/3/4-Tablet.png` | Layout tablet fora de escopo (§13.16): proporção ~0,75 contra os 0,562 do frame retrato. ~2,8 MB. |
 | `poc-do-jogo.png` | Referência visual de design, não asset de runtime. |
 | `PROJECT/uploads/Meshy_AI_Gameplay Prototype Banana Barriers.png` | Mock de referência para ajuste de escalas (pendência #7). |
 

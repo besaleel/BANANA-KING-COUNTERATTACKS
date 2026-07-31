@@ -11,6 +11,7 @@ import { loadImages, assetUrl } from './game/assets.js';
 import { AudioEngine } from './game/audio.js';
 import { Input } from './game/input.js';
 import { Game } from './game/loop.js';
+import { WinAnimation } from './game/winanim.js';
 
 const $ = (id) => document.getElementById(id);
 
@@ -37,6 +38,7 @@ const input = new Input();
 const images = loadImages();
 
 const canvas = $('cv');
+const winAnim = new WinAnimation($('winFrame'));
 let game = null;
 
 /* ---------- i18n ---------- */
@@ -53,11 +55,20 @@ function applyI18n() {
   $('lastScore').textContent = d.lastScore + ': ' + state.lastScore;
   $('linkRemoveAds').textContent = d.removeAds;
   $('adPlaceholder').textContent = d.adPh;
-  // respeita o estado atual: na vitoria final os textos sao outros
-  $('vicTitle').textContent = state.gameWon ? d.gameWonTitle : d.victoryTitle;
-  $('vicSub').textContent = state.gameWon ? d.gameWonSub : d.victorySub;
+  $('vicTitle').textContent = d.victoryTitle;
+  $('vicSub').textContent = d.victorySub;
   $('vicSoon').textContent = d.soon;
-  $('btnVicAgain').textContent = d.again;
+  // a tela final pode estar aberta na troca de idioma: reescreve com o placar
+  // ja apurado (nao recalcula recorde - `is-new` continua valendo)
+  $('winTitle').textContent = d.gameWonTitle;
+  $('winPhrase').textContent = d.winPhrase;
+  $('winScoreLabel').textContent = d.winFinalScore;
+  const bestEl = $('winBest');
+  bestEl.textContent = bestEl.classList.contains('is-new')
+    ? d.winNewBest
+    : d.winBest + ' ' + pad(state.highScore);
+  $('btnWinAgain').textContent = d.again;
+  $('btnWinMenu').textContent = d.menu;
   $('btnVicNext').textContent = d.nextPhase +
     (game ? ' ' + String(Math.min(game.phase + 1, config.fases.length)).padStart(2, '0') : '');
   $('btnVicMenu').textContent = d.menu;
@@ -97,10 +108,14 @@ function show(screen) {
   state.screen = screen;
   $('scMenu').hidden = screen !== 'menu';
   $('scVictory').hidden = screen !== 'victory';
+  $('scWin').hidden = screen !== 'win';
   $('scOver').hidden = screen !== 'gameover';
   $('hud').hidden = screen !== 'game';
   $('adsBar').hidden = state.adsRemoved || screen !== 'game';
   if (screen !== 'game') $('scPause').hidden = true;
+  // o walk-cycle so roda enquanto a tela final esta visivel
+  if (screen === 'win') winAnim.start();
+  else winAnim.stop();
 }
 
 function setPaused(p) {
@@ -180,6 +195,8 @@ function startGame(phase = 1) {
 function onGameEnd(win, score, bonus) {
   state.finalScore = score;
   state.lastScore = score;
+  // comparado ANTES de sobrescrever: a tela final destaca o recorde novo
+  const isNewBest = score > state.highScore;
   state.highScore = Math.max(score, state.highScore);
   save('last', score);
   save('high', state.highScore);
@@ -198,16 +215,17 @@ function onGameEnd(win, score, bonus) {
   // derrota ou campanha concluida encerram a corrida: nao ha o que retomar
   if (!win || bonus?.gameWon) clearProgress();
 
+  // Epico 4: vitoria de fase oferece CONTINUAR para a proxima. A fase 10
+  // (campanha concluida) sai para a tela de vitoria final do epico 5.
+  state.gameWon = win && !!bonus?.gameWon;
+
   if (win) {
-    // Epico 4: vitoria de fase oferece CONTINUAR para a proxima; so a fase 10
-    // (campanha concluida) mostra a tela de vitoria final.
-    state.gameWon = !!bonus?.gameWon;
-    $('vicTitle').textContent = state.gameWon ? d.gameWonTitle : d.victoryTitle;
-    $('vicSub').textContent = state.gameWon ? d.gameWonSub : d.victorySub;
-    $('vicSoon').hidden = true;
-    $('btnVicNext').hidden = state.gameWon;
-    $('btnVicAgain').hidden = !state.gameWon;
-    if (!state.gameWon) {
+    if (state.gameWon) {
+      fillWinScreen(score, isNewBest, lines);
+    } else {
+      $('vicTitle').textContent = d.victoryTitle;
+      $('vicSub').textContent = d.victorySub;
+      $('vicSoon').hidden = true;
       $('btnVicNext').textContent = d.nextPhase + ' ' +
         String((bonus?.phase ?? 1) + 1).padStart(2, '0');
       // pre-carrega o fundo da proxima fase para nao piscar na transicao
@@ -215,7 +233,33 @@ function onGameEnd(win, score, bonus) {
     }
   }
 
-  setTimeout(() => show(win ? 'victory' : 'gameover'), win ? 700 : 1100);
+  // a vitoria final espera um pouco mais: da tempo do ultimo som terminar
+  // antes de cortar para a cena de encerramento
+  const delay = !win ? 1100 : (state.gameWon ? 1000 : 700);
+  setTimeout(() => show(!win ? 'gameover' : (state.gameWon ? 'win' : 'victory')), delay);
+}
+
+/** Preenche a tela de vitoria final da campanha (epico 5). */
+function fillWinScreen(score, isNewBest, bonusLines) {
+  const d = t();
+  $('winTitle').textContent = d.gameWonTitle;
+  $('winPhrase').textContent = d.winPhrase;
+  $('winScoreLabel').textContent = d.winFinalScore;
+  $('winScore').textContent = pad(score);
+  const best = $('winBest');
+  best.textContent = isNewBest ? d.winNewBest : d.winBest + ' ' + pad(state.highScore);
+  best.classList.toggle('is-new', isNewBest);
+  // uma linha por bonus: em DE/FR os rotulos sao longos e emendam num so texto
+  const bonusEl = $('winBonus');
+  bonusEl.textContent = '';
+  for (const line of bonusLines) {
+    const div = document.createElement('div');
+    div.textContent = line;
+    bonusEl.appendChild(div);
+  }
+  bonusEl.hidden = bonusLines.length === 0;
+  $('btnWinAgain').textContent = d.again;
+  $('btnWinMenu').textContent = d.menu;
 }
 
 /** Avanca para a proxima fase preservando placar, vidas e barreira. */
@@ -272,10 +316,11 @@ function wire() {
 
   $('btnPlay').addEventListener('click', () => startGame(1));
   $('btnVicNext').addEventListener('click', continuePhase);
-  $('btnVicAgain').addEventListener('click', () => startGame(1));
   $('btnOverAgain').addEventListener('click', () => startGame(1));
+  $('btnWinAgain').addEventListener('click', () => startGame(1));
   $('btnVicMenu').addEventListener('click', backToMenu);
   $('btnOverMenu').addEventListener('click', backToMenu);
+  $('btnWinMenu').addEventListener('click', backToMenu);
 
   $('btnPause').addEventListener('click', () => { audio.sfx('click'); setPaused(true); });
   $('btnResume').addEventListener('click', () => { audio.sfx('click'); setPaused(false); });
