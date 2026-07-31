@@ -14,7 +14,7 @@
 | 3 | Pendências de gameplay da Fase 01 | 🟡 | Alta |
 | 4 | Fases 02–10 e curva de dificuldade | ⬜ | Alta |
 | 5 | Animação de vitória final | ⬜ | Média |
-| 6 | Áudio e assets de produção | ⬜ | Média |
+| 6 | Áudio e assets de produção | ⬜ | Média (6.0 ⚠️ **áudio mudo no mobile**) |
 | 7 | Internacionalização (fechamento) | ⬜ | Média |
 | 8 | Monetização — AdMob + Billing | ⬜ | Média |
 | 9 | Ranking global (Play Games Services) | ⬜ | Baixa |
@@ -222,8 +222,45 @@ problema crítico de a formação parar sobre o herói e drenar as 3 vidas em ~4
 
 ## Épico 6 — Áudio e assets de produção
 
+### 6.0 ⚠️ Áudio mudo no browser mobile — verificar (aberto em 31/07/2026)
+
+**Sintoma reproduzido:** o áudio procedural toca normalmente no **browser do
+desktop**, mas fica **mudo no Chrome do Android e no Safari do iPhone**. Não é
+regressão — no mobile nunca chegou a tocar.
+
+- [ ] **Investigar em dispositivo, com depurador conectado** (Safari Web
+      Inspector via cabo para o iPhone; `chrome://inspect` para o Android).
+      Sem ler o estado real do `AudioContext` no aparelho, qualquer correção é
+      chute — foi o erro cometido na primeira tentativa.
+- [ ] Confirmar o `AudioContext.state` **depois** do primeiro gesto: se ficar
+      em `suspended`, o problema é o gate de gesto do Web Audio; se for
+      `running` e ainda assim não houver som, a causa é outra (roteamento de
+      saída, switch de silencioso do iOS, volume de mídia).
+- [ ] **iOS:** o interruptor lateral de silencioso corta Web Audio (tratada como
+      som "ambiente"), enquanto `<audio>`/`<video>` continuam tocando. Confirmar
+      se é isso antes de mexer em código — pode não ser bug do jogo.
+- [ ] Testar a hipótese do gesto: `resume()` é assíncrono e o desbloqueio no iOS
+      só vale se algo for tocado **sincronamente dentro do handler**. Validar em
+      aparelho antes de adotar.
+- [ ] Reavaliar depois de decidir procedural × CC0 (item abaixo): elementos
+      `<audio>` com arquivos têm regras de autoplay diferentes da Web Audio e
+      **podem tornar o problema irrelevante**.
+- [ ] Cobrir também o retorno de background (o iOS suspende o contexto e não o
+      retoma sozinho) e validar dentro do **WebView do Capacitor**, que é o alvo
+      real de produção — o comportamento pode diferir do browser.
+
+> **Tentativa revertida (31/07/2026):** uma primeira correção (gate `_ready`,
+> reenfileiramento de sons em Promise, buffer silencioso para iOS, listeners de
+> gesto) foi escrita e **revertida sem commit** por não resolver em nenhum dos
+> dois aparelhos. Passou em teste sintético no Node, o que só provou que o teste
+> não reproduzia a causa real. **Lição:** este bug precisa de depurador em
+> dispositivo, não de teste simulado.
+
+### 6.1 Produção de áudio
+
 - [ ] **Decidir:** manter o áudio procedural (Web Audio) ou migrar para arquivos
-      CC0. *(Pendência #6)*
+      CC0. *(Pendência #6)* — decidir **junto** com o 6.0: se a migração para
+      `<audio>` resolver o mudo no mobile, ela deixa de ser só preferência.
 - [ ] Se migrar: selecionar e licenciar SFX + música (CC0 / uso comercial) e
       **arquivar os comprovantes de licença**.
 - [ ] Cobrir todos os eventos: laser, tick de acerto, explosão de nave, explosão

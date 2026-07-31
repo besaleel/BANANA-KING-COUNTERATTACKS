@@ -577,6 +577,7 @@ estrutura.
 | 8 | Textos legais reais (Termos de Uso + Política de Privacidade) | §13.14 |
 | 9 | **Valor de X do marco de pontuação** que solta a banana bônus (a cada X pontos, repetindo) — calibrar junto com o teste "7 bananas vs. 20 naves" | §4.4 |
 | 10 | Frequência de coco por fase e velocidade/degrau por fase (curva numérica) | §4.3, §5.1 |
+| 11 | **Áudio procedural fica mudo no browser mobile** (Android e iOS); funciona no desktop. Investigar com depurador em dispositivo — ver épico 6.0 do backlog | §8 |
 
 O plano de execução dessas pendências e de todo o trabalho até a publicação está
 em [BACKLOG.md](BACKLOG.md).
