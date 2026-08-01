@@ -3,13 +3,15 @@
 Passo a passo para gerar o pacote `.aab` assinado, pronto para upload na Google
 Play Console, e deixá-lo em `DEPLOY/`.
 
-> ⚠️ **Documento adaptado de outro projeto.** O processo abaixo veio do projeto
-> anterior "Banana King" (distinto deste — ver §0 da
-> [ESPECFICATION.md](ESPECFICATION.md)) e assume **Angular + Capacitor**.
-> **O stack de empacotamento deste jogo ainda não foi decidido** — a POC atual é
-> HTML + canvas puro. Os comandos dos passos 4 em diante só valem depois que o
-> stack for definido e o projeto Capacitor existir em `APK/`. Os passos 1–3
-> (JDK/SDK e keystore) valem para qualquer stack que gere um AAB Android.
+> ✅ **Validado de ponta a ponta em 01/08/2026** com o stack real
+> (**vanilla JS + canvas + Capacitor**, decidido no épico 2): keystore gerado,
+> assinatura ligada ao Gradle, R8 configurado e **AAB assinado produzido e
+> verificado** (`jarsigner` → `jar verified`).
+>
+> O aviso anterior de "documento adaptado de outro projeto, stack indefinido"
+> não vale mais. O que **ainda não foi feito** é o upload à Play Console (conta
+> de desenvolvedor, ficha da loja, Play App Signing) — épico 11.1 do
+> [BACKLOG.md](BACKLOG.md).
 
 ## Identidade do app (confirmada)
 
@@ -110,8 +112,48 @@ O `keytool` vai pedir uma senha do keystore, uma senha da chave (pode ser a
 mesma) e alguns dados (nome, organização, cidade, etc. — podem ser
 genéricos, não são validados). Guarde a senha com cuidado.
 
-Esse arquivo **nunca deve ser commitado**. ⚠️ **O `.gitignore` atual NÃO cobre
-`*.jks`** — execute o §0 antes de rodar este comando.
+Esse arquivo **nunca deve ser commitado**. ✅ Coberto pelo `.gitignore` desde
+31/07/2026 (`*.jks`, e a pasta `APK/android/` inteira) — ver §0.
+
+> ✅ **Feito em 01/08/2026.** Keystore gerado e conferido com `keytool -list`:
+> RSA 2048, alias `bkcounterattacks`, `PrivateKeyEntry`, válido até **dez/2053**
+> (o Google Play exige no mínimo out/2033).
+
+### 2.1 Backup — o que guardar, e onde
+
+> ✅ **`.jks` copiado para o Google Drive em 01/08/2026** (junto com os
+> keystores de outros jogos).
+
+O arquivo sozinho **não basta**. Para conseguir assinar no futuro você precisa
+das três coisas, e a senha **não está** dentro do `.jks`:
+
+| O quê | Valor | Onde guardar |
+|---|---|---|
+| `banana-king-counterattacks-release.jks` | o arquivo | nuvem pessoal (feito) |
+| Senha do keystore / da chave | — | **gerenciador de senhas** |
+| Alias | `bkcounterattacks` | junto da senha |
+
+⚠️ **Não guarde a senha num `.txt` na mesma pasta do `.jks`.** Quem obtiver
+acesso àquela pasta teria as duas peças de uma vez. Use um gerenciador de
+senhas, e anote a qual app cada keystore pertence — com vários jogos na mesma
+pasta, é fácil trocar um pelo outro depois.
+
+**Guardando keystores de vários apps no mesmo lugar:** confirme que a pasta
+**não está compartilhada** e que a conta tem **2FA**. Um `.jks` vazado permite
+publicar updates falsos, e a chave **não pode ser revogada** depois da primeira
+publicação — o estrago vale por app, então uma pasta comprometida atinge todos.
+
+### 2.2 Play App Signing reduz esse risco — decidir antes do primeiro upload
+
+Com **Play App Signing** ativado, o Google gera e custodia a *chave de
+assinatura do app*, e o seu `.jks` passa a ser apenas a **upload key**.
+
+A diferença que importa: **upload key perdida ou comprometida pode ser
+substituída** pelo suporte do Google. A chave de assinatura do app, não.
+
+Sem Play App Signing, o `.jks` local é ponto único de falha **permanente**.
+A adesão é oferecida **no primeiro envio** do app — e a escolha não se desfaz
+depois. Ver §7 do épico 11 no [BACKLOG.md](BACKLOG.md).
 
 ## 3. Configurar as credenciais do keystore no projeto
 
@@ -143,16 +185,25 @@ escape com barra invertida (`ab#cd` → `ab\#cd`). Em caminhos, use `/` ou `\\`.
 
 ## 4. Build de produção + sync Android
 
-> Depende do stack escolhido. Exemplo para Angular/Capacitor:
-
 ```powershell
 Set-Location "C:\Sistemas\BANANA-KING-COUNTERATTACKS\APK"
 npm run build
 npx cap sync android
 ```
 
-Isso gera `APK/www` (build otimizado de produção) e copia para
+Isso gera **`APK/dist`** (build de produção pelo Vite, ~1,2 MB) e copia para
 `APK/android/app/src/main/assets/public`.
+
+> `dist` — e não `www`, que era o padrão do Angular no documento original.
+> O diretório de saída está declarado em `capacitor.config.json`
+> (`"webDir": "dist"`).
+
+Se os assets tiverem mudado, regere os WebP antes deste passo — ver
+[GERAR-ASSETS.md](GERAR-ASSETS.md):
+
+```powershell
+python "C:\Sistemas\BANANA-KING-COUNTERATTACKS\APK\tools\gerar-assets.py"
+```
 
 ## 5. Gerar o AAB assinado
 
@@ -223,12 +274,21 @@ Set-Location "C:\Sistemas\BANANA-KING-COUNTERATTACKS\APK\android"
 .\gradlew bundleRelease
 
 Copy-Item "app\build\outputs\bundle\release\app-release.aab" "C:\Sistemas\BANANA-KING-COUNTERATTACKS\DEPLOY\banana-king-counterattacks-release.aab"
+
+# guarde o mapping DESTA versao - ele some no proximo `gradlew clean` (§5.1)
+Copy-Item "app\build\outputs\mapping\release\mapping.txt" "C:\Sistemas\BANANA-KING-COUNTERATTACKS\DEPLOY\mapping-v<VERSION_CODE>.txt"
 ```
 
-## Assets de loja (a gerar)
+## Assets de loja
 
-- Ícone de alta resolução (512×512) para a ficha da Play Store:
-  `DEPLOY/store-assets/icon-512.png`, a gerar a partir de
-  `PROJECT/assets/logo.png` ou `PROJECT/assets/icon.png`.
-- Screenshots (retrato), feature graphic 1024×500 — ver épico de release no
-  [BACKLOG.md](BACKLOG.md).
+| Asset | Exigência | Status |
+|---|---|---|
+| Ícone da ficha | **512×512**, PNG **sem alpha**, ≤ 1 MB | ✅ `store-assets/icon-512.png` (512×512, 258 KB, opaco) |
+| Feature graphic | exatamente **1024×500** | ✅ `store-assets/feature-graphic.png` |
+| Screenshots | retrato, **mín. 2** por idioma | ⬜ |
+
+> **Nome do produto (§0 da [ESPECFICATION.md](ESPECFICATION.md)):** o ícone traz
+> "BANANA KING COUNTERATTACKS" completo ✅. O feature graphic mostra só
+> "BANANA KING" — aceitável como arte promocional, já que o ícone e o título da
+> ficha carregam o nome completo, mas **o título cadastrado na Play Console tem
+> de ser "Banana King Counterattacks"**, sem exceção.

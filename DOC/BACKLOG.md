@@ -503,10 +503,21 @@ Detalhes e o bloco pronto para colar estão no §0 do
       alias `bkcounterattacks`, `PrivateKeyEntry` válido até **dez/2053**, bem
       além do mínimo exigido pelo Google Play (out/2033). Senha e alias
       conferidos com `keytool -list`.)*
-- [ ] ⚠️ **BACKUP do `.jks` em 2 locais seguros fora do repositório** —
-      gerenciador de senhas + nuvem pessoal. **Ainda não feito.** Perder o
-      arquivo ou a senha impede publicar qualquer atualização do app para
-      sempre; só restaria lançar outro app, com pacote diferente.
+- [x] **Backup do `.jks` fora do repositório.** *(01/08/2026 — enviado ao
+      Google Drive, junto com os keystores de outros jogos.)*
+- [ ] ⚠️ **Guardar a SENHA do keystore junto do backup.** O `.jks` sozinho é
+      inútil: sem a senha não há como assinar, e não existe recuperação. Como o
+      backup está no Drive, use um **gerenciador de senhas** (não um `.txt` na
+      mesma pasta — quem obtiver acesso ao Drive teria as duas peças juntas).
+      Anote também o **alias** (`bkcounterattacks`) e a qual app o arquivo
+      pertence.
+- [ ] **Conferir que o backup do Drive não está numa pasta compartilhada** e que
+      a conta tem 2FA. Um `.jks` vazado permite publicar updates falsos do app,
+      e a chave **não pode ser revogada** depois da primeira publicação.
+- [ ] Considerar o **Play App Signing** (item abaixo): com ele o Google passa a
+      guardar a chave de assinatura final, e a chave local vira apenas *upload
+      key* — que **pode ser trocada** se for perdida ou comprometida. É a
+      mitigação real para o risco de chave única.
 - [x] Ligar o `signingConfig` de release no `app/build.gradle`, lendo de
       `keystore.properties`. *(01/08/2026 — senhas ficam só no `.properties`
       não versionado; sem ele, `bundleRelease` falha com mensagem explícita em
@@ -515,10 +526,27 @@ Detalhes e o bloco pronto para colar estão no §0 do
       `-keep` do Capacitor. *(01/08/2026 — sem essas regras o app compila mas
       quebra em runtime: o Capacitor resolve os plugins por reflexão, e o R8
       não enxerga essas referências)*
-- [ ] Configurar **Play App Signing**.
+- [ ] **Configurar Play App Signing** — ⚠️ **decidir ANTES do primeiro upload.**
+      Com ele ativado, o Google gera e guarda a *chave de assinatura do app*, e
+      o `.jks` local passa a ser só a *upload key*. A diferença que importa:
+      **upload key perdida ou comprometida pode ser substituída** pelo suporte
+      do Google; a chave de assinatura do app, não. Sem Play App Signing, o
+      `.jks` local é ponto único de falha permanente. É opt-in **no primeiro
+      envio** — depois a escolha não se desfaz.
 - [ ] **Cadastrar o game** na loja: título, descrições localizadas (6 idiomas),
-      ícone 512×512, screenshots retrato, feature graphic 1024×500, categoria,
-      classificação etária (content rating).
+      ícone 512×512, screenshots retrato, categoria, classificação etária
+      (content rating).
+- [x] **Feature graphic 1024×500.** *(01/08/2026 —
+      `DEPLOY/store-assets/feature-graphic.png`, dimensão conferida)*
+- [x] **Ícone 512×512 da ficha.** *(01/08/2026 —
+      `DEPLOY/store-assets/icon-512.png`: 512×512, 258 KB, **sem canal alpha**
+      (a Play Store rejeita ícone com transparência) e com o nome
+      "BANANA KING COUNTERATTACKS" completo, atendendo à §0 da spec)*
+- [ ] **Screenshots em retrato** (mínimo 2 por idioma).
+- [ ] Ao cadastrar: o **título na Play Console** tem de ser
+      **"Banana King Counterattacks"**. O feature graphic mostra só
+      "BANANA KING", o que é aceitável como arte promocional — mas o título e o
+      ícone carregam o nome completo.
 - [ ] Definir países/regiões de distribuição (app gratuito + IAP).
 - [ ] Gerar `DEPLOY/store-assets/icon-512.png` a partir de
       `PROJECT/assets/logo.png` ou `icon.png`.
