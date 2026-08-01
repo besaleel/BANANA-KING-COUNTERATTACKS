@@ -1,0 +1,44 @@
+Fontes embutidas em Banana King Counterattacks
+==============================================
+
+Baixadas do Google Fonts em 31/07/2026 (épico 6.1 do backlog) e redistribuídas
+dentro do app para cumprir o requisito offline-first (§8 da ESPECFICATION.md).
+
+Apenas os subsets `latin` e `latin-ext` foram incluídos — suficientes para os
+6 idiomas suportados (pt-BR, en, es, fr, it, de). Os subsets cirílico, grego e
+vietnamita foram omitidos por não haver idioma que os utilize.
+
+
+1) Press Start 2P
+   Autor:   CodeMan38
+   Origem:  https://fonts.google.com/specimen/Press+Start+2P
+   Versão:  v16 (conforme a URL servida pelo Google Fonts)
+   Licença: SIL Open Font License 1.1
+   Arquivos: pressstart2p-latin.woff2, pressstart2p-latin-ext.woff2
+
+2) VT323
+   Autor:   Peter Hull
+   Origem:  https://fonts.google.com/specimen/VT323
+   Versão:  v18 (conforme a URL servida pelo Google Fonts)
+   Licença: SIL Open Font License 1.1
+   Arquivos: vt323-latin.woff2, vt323-latin-ext.woff2
+
+
+SIL Open Font License 1.1 — resumo das permissões relevantes
+------------------------------------------------------------
+A OFL permite expressamente:
+
+  - uso comercial;
+  - embutir a fonte em um aplicativo e redistribuí-la junto com ele;
+  - modificar a fonte (não fizemos: os arquivos são os subsets originais
+    servidos pelo Google Fonts, sem alteração de glifos).
+
+Condições que este projeto cumpre:
+
+  - os arquivos de fonte não são vendidos isoladamente;
+  - o aviso de copyright e a licença acompanham os arquivos (este documento);
+  - nenhuma fonte foi renomeada usando os Reserved Font Names.
+
+Texto integral da licença: https://openfontlicense.org/
+(também disponível em https://fonts.google.com/specimen/VT323/license e
+https://fonts.google.com/specimen/Press+Start+2P/license)

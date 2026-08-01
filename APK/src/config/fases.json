@@ -46,7 +46,7 @@
   "fases": [
     {
       "id": 1,
-      "background": "background-fase01.png",
+      "background": "background-fase01.webp",
       "rows": [
         {
           "lv": 2,
@@ -72,7 +72,7 @@
     },
     {
       "id": 2,
-      "background": "background-fase02.png",
+      "background": "background-fase02.webp",
       "rows": [
         {
           "lv": 2,
@@ -98,7 +98,7 @@
     },
     {
       "id": 3,
-      "background": "background-fase03.png",
+      "background": "background-fase03.webp",
       "rows": [
         {
           "lv": 3,
@@ -124,7 +124,7 @@
     },
     {
       "id": 4,
-      "background": "background-fase04.png",
+      "background": "background-fase04.webp",
       "rows": [
         {
           "lv": 3,
@@ -150,7 +150,7 @@
     },
     {
       "id": 5,
-      "background": "background-fase05.png",
+      "background": "background-fase05.webp",
       "rows": [
         {
           "lv": 4,
@@ -176,7 +176,7 @@
     },
     {
       "id": 6,
-      "background": "background-fase06.png",
+      "background": "background-fase06.webp",
       "rows": [
         {
           "lv": 4,
@@ -202,7 +202,7 @@
     },
     {
       "id": 7,
-      "background": "background-fase07.png",
+      "background": "background-fase07.webp",
       "rows": [
         {
           "lv": 5,
@@ -228,7 +228,7 @@
     },
     {
       "id": 8,
-      "background": "background-fase08.png",
+      "background": "background-fase08.webp",
       "rows": [
         {
           "lv": 5,
@@ -254,7 +254,7 @@
     },
     {
       "id": 9,
-      "background": "background-fase09.png",
+      "background": "background-fase09.webp",
       "rows": [
         {
           "lv": 5,
@@ -280,7 +280,7 @@
     },
     {
       "id": 10,
-      "background": "background-fase10.png",
+      "background": "background-fase10.webp",
       "rows": [
         {
           "lv": 5,

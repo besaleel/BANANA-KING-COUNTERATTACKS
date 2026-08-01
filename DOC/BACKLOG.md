@@ -344,10 +344,45 @@ regressão — no mobile nunca chegou a tocar.
 - [ ] Cobrir todos os eventos: laser, tick de acerto, explosão de nave, explosão
       de banana, impacto no herói, power-up, vitória, derrota, clique de UI.
 - [ ] Otimizar/comprimir áudios e **embutir offline** no pacote.
-- [ ] **Embutir as fontes** `Press Start 2P` e `VT323` no pacote — a POC as
+- [x] **Embutir as fontes** `Press Start 2P` e `VT323` no pacote — a POC as
       carrega do Google Fonts, o que viola o requisito offline-first (§8 da spec).
-- [ ] Converter `background-fase01..10.png` (~1 MB cada) para **WebP**.
+      *(31/07/2026 — WOFF2, subsets `latin` + `latin-ext`, 57 KB no total, em
+      `APK/public/fonts/`. **Descoberta:** o port para `APK/` nunca chegou a
+      carregar as fontes — não havia `<link>` nem `@font-face`, então o app
+      rodava inteiro no fallback `monospace`. Agora usa a pixel art de
+      verdade. Licença SIL OFL arquivada em `public/fonts/LICENSE.txt`.)*
+- [x] Converter `background-fase01..10.png` (~1 MB cada) para **WebP**.
+      *(31/07/2026 — junto com todos os demais sprites; ver a nota abaixo)*
 - [ ] Gerar sprite atlas das naves e do herói.
+      *(prioridade caiu: os sprites somam 40 KB depois da otimização — o ganho
+      agora seria de draw calls, não de tamanho)*
+
+> **✅ Concluído em 31/07/2026 — assets otimizados.** Processo documentado em
+> [GERAR-ASSETS.md](GERAR-ASSETS.md), reproduzível por
+> `python APK/tools/gerar-assets.py`.
+>
+> | | Antes | Depois |
+> |---|---|---|
+> | `APK/public/assets/` | 26 MB | **1,0 MB** |
+> | `APK/dist/` | 26 MB | **1,2 MB** |
+> | APK de debug | — | **~5,4 MB** |
+>
+> Duas economias somadas: **resolução** (os sprites vinham em 1024×1024 mas são
+> desenhados em ~60 px) e **formato** (WebP no lugar de PNG).
+>
+> **Achado que vale registrar:** reduzir 1024→200 e *depois* comprimir com lossy
+> degrada muito mais que cada operação isolada — o herói caía para 32,2 dB de
+> PSNR, contra 48 dB de cada etapa sozinha. Reduzir demais concentra o detalhe
+> em poucos pixels, que é onde o compressor erra. Os alvos ficaram em ~4× o
+> tamanho de exibição, não 2×, ao custo de poucos KB. **Qualidade final: 36,6 a
+> 44,7 dB em todos os sprites.**
+>
+> O favicon caiu de 851 KB para 55 KB (1024→192 px): ele não é a fonte do ícone
+> do launcher Android, que vem dos mipmaps em `android/app/src/main/res/`.
+>
+> **O que domina o APK agora não são os assets** (1 MB), e sim o `classes.dex`
+> do runtime do Capacitor (7,2 MB sem otimização em debug). O R8/ProGuard do
+> build de release deve reduzir isso — a medir no épico 11.
 
 > **⚠️ Elevado a requisito de release (31/07/2026):** os assets somam **26 MB de
 > PNG cru** (só os 10 backgrounds são ~10 MB), contra o teto de **50 MB** do AAB.
@@ -360,8 +395,13 @@ regressão — no mobile nunca chegou a tocar.
 > `PROJECT/assets/`; para rodar em dev, copie para `APK/public/assets/`. Quando
 > este épico gerar os **WebP**, só a versão otimizada é commitada em `APK/`.
 
-- [ ] Ao gerar os WebP, remover `public/assets/` do `APK/.gitignore` e versionar
-      apenas os assets otimizados.
+- [x] Ao gerar os WebP, remover `public/assets/` do `APK/.gitignore` e versionar
+      apenas os assets otimizados. *(31/07/2026 — o ignore agora bloqueia só
+      `public/assets/*.png`, com exceção do `icon.png`)*
+- [ ] **Reaplicar `android:screenOrientation="portrait"` se a pasta `android/`
+      for regerada.** Ela está no `.gitignore` (é saída do `cap add`), então a
+      edição manual do `AndroidManifest.xml` se perde. Detalhes em
+      [GERAR-ASSETS.md](GERAR-ASSETS.md). Automatizar no épico 11.
 
 ---
 

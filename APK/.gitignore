@@ -3,8 +3,9 @@ dist/
 android/
 .vite/
 
-# Assets: hoje sao copias byte a byte de PROJECT/assets (~26 MB de PNG cru).
-# Nao versionar a duplicata. A fonte continua sendo PROJECT/assets ate o
-# epico 6 gerar os WebP otimizados, que ai sim serao commitados aqui.
-# Para rodar em dev: copie PROJECT/assets para APK/public/assets.
-public/assets/
+# Assets: os WebP otimizados do epico 6.1 SAO versionados (1,8 MB no total,
+# contra os 26 MB de PNG cru que ficavam de fora). A fonte de arte continua
+# sendo PROJECT/assets/; APK/public/assets/ e' a saida otimizada, gerada por
+# DOC/GERAR-ASSETS.md. PNG solto aqui e' engano - nao commitar.
+public/assets/*.png
+!public/assets/icon.png

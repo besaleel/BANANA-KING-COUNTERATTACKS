@@ -1,7 +1,59 @@
-/* Banana King Counterattacks - UI shell (retrato, 480x854 logico).
-   As fontes Press Start 2P / VT323 devem ser EMBUTIDAS (epico 6 do backlog):
-   a POC as carregava do Google Fonts, o que viola o offline-first.
-   Ate la, cai no fallback monospace. */
+/* Banana King Counterattacks - UI shell (retrato, 480x854 logico). */
+
+/* Fontes EMBUTIDAS no pacote (epico 6.1): a POC as carregava do Google Fonts,
+   o que quebrava o offline-first (SS8). Servidas de public/fonts/, sem
+   nenhuma requisicao de rede.
+
+   Subsets: so `latin` e `latin-ext`. Os 6 idiomas do jogo (pt/en/es/fr/it/de)
+   cabem nesses dois; cirilico, grego e vietnamita foram deixados de fora
+   porque nao ha idioma que os use e custariam ~60 KB a mais.
+
+   Licenca: ambas SIL Open Font License 1.1 - uso comercial e embutir no app
+   sao permitidos. Ver public/fonts/LICENSE.txt. */
+
+@font-face {
+  font-family: 'Press Start 2P';
+  font-style: normal;
+  font-weight: 400;
+  font-display: block;   /* pixel art: melhor esperar que piscar em monospace */
+  src: url('/fonts/pressstart2p-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+    U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
+    U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Press Start 2P';
+  font-style: normal;
+  font-weight: 400;
+  font-display: block;
+  src: url('/fonts/pressstart2p-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF,
+    U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020,
+    U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+@font-face {
+  font-family: 'VT323';
+  font-style: normal;
+  font-weight: 400;
+  font-display: block;
+  src: url('/fonts/vt323-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+    U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
+    U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'VT323';
+  font-style: normal;
+  font-weight: 400;
+  font-display: block;
+  src: url('/fonts/vt323-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF,
+    U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020,
+    U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
 
 * { box-sizing: border-box; }
 

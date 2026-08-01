@@ -10,16 +10,16 @@
 export const ASSET_BASE = 'assets/';
 
 const FILES = {
-  hero: 'banana-king-no-espaco.png',
-  hero2: 'banana-king-no-espaco-espelhado.png',
-  vil: 'vilao-Trasho.png',
-  vil2: 'vilao-Trasho-espelhado.png',
-  n00: 'nave-inimiga-00.png',
-  n01: 'nave-inimiga-01.png',
-  n02: 'nave-inimiga-02.png',
-  n03: 'nave-inimiga-03.png',
-  n04: 'nave-inimiga-04.png',
-  n05: 'nave-inimiga-05.png'
+  hero: 'banana-king-no-espaco.webp',
+  hero2: 'banana-king-no-espaco-espelhado.webp',
+  vil: 'vilao-Trasho.webp',
+  vil2: 'vilao-Trasho-espelhado.webp',
+  n00: 'nave-inimiga-00.webp',
+  n01: 'nave-inimiga-01.webp',
+  n02: 'nave-inimiga-02.webp',
+  n03: 'nave-inimiga-03.webp',
+  n04: 'nave-inimiga-04.webp',
+  n05: 'nave-inimiga-05.webp'
 };
 
 /**
@@ -34,10 +34,10 @@ const FILES = {
  * y 467-1001, que e' o proprio personagem).
  */
 export const WIN_FRAMES = [
-  'win_Walk-Frame-1-Phone.png',
-  'win_Walk-Frame-2-Phone.png',
-  'win_Walk-Frame-5-Phone.png',
-  'win_Walk-Frame-2-Phone.png'
+  'win_Walk-Frame-1-Phone.webp',
+  'win_Walk-Frame-2-Phone.webp',
+  'win_Walk-Frame-5-Phone.webp',
+  'win_Walk-Frame-2-Phone.webp'
 ];
 
 /** Dispara o carregamento de todos os sprites de gameplay. */

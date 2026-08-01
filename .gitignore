@@ -3,6 +3,8 @@ APK/*.apk
 APK/*.aab
 DEPLOY/build/
 DEPLOY/*.aab
+DEPLOY/*.apk
+*.apk
 dist/
 build/
 

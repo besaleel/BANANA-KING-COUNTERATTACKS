@@ -408,6 +408,10 @@ uma animação por camadas.
 
 - **Offline-first:** todas as **fontes** e **arquivos de áudio** devem ser
   **incorporados/empacotados** no jogo (nada carregado da rede em runtime).
+  ✅ **Fontes: feito em 31/07/2026** — `Press Start 2P` e `VT323` em WOFF2
+  (subsets `latin` + `latin-ext`, 57 KB) em `APK/public/fonts/`, declaradas por
+  `@font-face` local. Licença SIL OFL arquivada em `public/fonts/LICENSE.txt`.
+  Ver [GERAR-ASSETS.md](GERAR-ASSETS.md). ⬜ Áudio: pendente.
 - **Licença livre para uso comercial** (preferir **CC0**), com comprovantes
   arquivados.
 - Eventos com som: **tiro laser**, **acerto sem destruir** (tick), **explosão de
