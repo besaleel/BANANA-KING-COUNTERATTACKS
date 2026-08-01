@@ -18,24 +18,24 @@
 | Política de Privacidade (6 idiomas) | `docs/privacy/` → GitHub Pages |
 | Termos de Uso (6 idiomas) | `docs/terms/` → GitHub Pages |
 
-## ⚠️ Passo 0 — Habilitar o GitHub Pages (antes de tudo)
+## ✅ Passo 0 — GitHub Pages *(concluído em 01/08/2026)*
 
-A Play Console **exige uma URL pública** de política de privacidade. Sem ela o
-app não sai da faixa de rascunho.
+A Play Console **exige uma URL pública** de política de privacidade. Já está no
+ar, com HTTPS forçado:
 
-1. Faça o push do repositório (as páginas estão em `docs/`).
-2. No GitHub: **Settings → Pages**
-   - *Source:* `Deploy from a branch`
-   - *Branch:* `main` · *Folder:* **`/docs`**
-   - Salvar.
-3. Aguarde ~1 min e confirme que abre:
+| Página | URL |
+|---|---|
+| **Política de Privacidade** (informar na Console e no AdMob) | `https://besaleel.github.io/BANANA-KING-COUNTERATTACKS/privacy/` |
+| Termos de Uso | `https://besaleel.github.io/BANANA-KING-COUNTERATTACKS/terms/` |
+| Índice | `https://besaleel.github.io/BANANA-KING-COUNTERATTACKS/` |
 
-```
-https://besaleel.github.io/BANANA-KING-COUNTERATTACKS/privacy/
-```
+Cada página traz seletor dos 6 idiomas (`privacy/pt.html`, `privacy/de.html`…).
 
-> Se retornar 404, confira se o repositório é **público** — o Pages não publica
-> de repositório privado em conta gratuita.
+> ⚠️ **Não renomeie** as pastas `docs/privacy` e `docs/terms` depois de cadastrar
+> essas URLs na loja — o link quebraria e a ficha seria reprovada na revisão.
+>
+> Para republicar após editar os textos: `python docs/gerar.py`, commit e push —
+> o Pages reconstrói sozinho em ~1 min.
 
 ## Identidade do app
 
@@ -193,7 +193,7 @@ nunca mais publicar atualização deste app. Ver §2.2 do
 
 ## Checklist antes de enviar
 
-- [ ] GitHub Pages publicado e a URL de privacidade abre (passo 0)
+- [x] GitHub Pages publicado e a URL de privacidade abre (passo 0)
 - [ ] Título com o nome completo, "Counterattacks" incluído
 - [ ] Política de privacidade cadastrada com a URL do Pages
 - [ ] Data Safety preenchido (**não coleta dados**)

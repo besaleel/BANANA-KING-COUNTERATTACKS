@@ -23,8 +23,7 @@ tela de vitória final animada, i18n nos 6 idiomas, áudio e recorde local, tudo
 | AAB assinado | ✅ 2,5 MB, `jar verified` |
 | APK de release | ✅ 2,2 MB |
 | Assets de loja (ícone, feature graphic, screenshots) | ✅ `DEPLOY/store-assets/` |
-| Política de Privacidade e Termos (6 idiomas) | ✅ `docs/` |
-| **GitHub Pages** | ⬜ **habilitar** — a Play Console exige a URL pública |
+| Política de Privacidade e Termos (6 idiomas) | ✅ [no ar](https://besaleel.github.io/BANANA-KING-COUNTERATTACKS/) |
 | Teste em aparelho real | ⬜ pendente |
 
 **Em aberto:** playtest humano da curva de dificuldade (épicos 3–4), bug de áudio
@@ -35,10 +34,12 @@ O protótipo em `PROJECT/` permanece como referência histórica.
 
 ### Como publicar
 
-1. `git push` e habilite o **GitHub Pages** (Settings → Pages → branch `main`,
-   pasta `/docs`).
-2. Siga o [DOC/PUBLICAR-PLAY-CONSOLE.md](DOC/PUBLICAR-PLAY-CONSOLE.md) — traz as
-   descrições prontas, as respostas do Data Safety e o checklist de envio.
+Siga o [DOC/PUBLICAR-PLAY-CONSOLE.md](DOC/PUBLICAR-PLAY-CONSOLE.md) — traz as
+descrições prontas em pt/en, as respostas do Data Safety, a classificação etária
+e o checklist de envio.
+
+**URL da Política de Privacidade** (para a Play Console e o AdMob):
+`https://besaleel.github.io/BANANA-KING-COUNTERATTACKS/privacy/`
 
 ## Documentação
 

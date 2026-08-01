@@ -18,7 +18,7 @@
 | 7 | Internacionalização (fechamento) | ⬜ | Média |
 | 8 | Monetização — AdMob + Billing | ⬜ | Média |
 | 9 | Ranking global (Play Games Services) | ⬜ | Baixa |
-| 10 | Textos legais e conformidade | 🟡 | textos ✅ · falta publicar o **GitHub Pages** |
+| 10 | Textos legais e conformidade | ✅ | páginas **no ar** no GitHub Pages |
 | 11 | Empacotamento e release | 🟡 | **AAB assinado pronto** · falta o cadastro na loja |
 | 12 | QA e testes em dispositivo | ⬜ | Alta |
 
@@ -463,10 +463,15 @@ regressão — no mobile nunca chegou a tocar.
       *(Pendência #8)* *(01/08/2026 — `docs/terms/`)*
 - [x] Redigir a **Política de Privacidade** real. *(01/08/2026 —
       `docs/privacy/`, 6 idiomas)*
-- [ ] ⚠️ **Habilitar o GitHub Pages** (Settings → Pages → branch `main`, pasta
-      `/docs`) e confirmar que a URL abre. **Sem isso o app não é publicável** —
-      a Play Console exige URL pública de política de privacidade.
-      Passo a passo em [PUBLICAR-PLAY-CONSOLE.md](PUBLICAR-PLAY-CONSOLE.md) §0.
+- [x] **Habilitar o GitHub Pages.** *(01/08/2026 — `main` + `/docs`, HTTPS
+      forçado, build concluído e as 6 URLs conferidas com HTTP 200 e conteúdo
+      correto)*
+
+> ✅ **URL da Política de Privacidade — informar na Play Console e no AdMob:**
+> `https://besaleel.github.io/BANANA-KING-COUNTERATTACKS/privacy/`
+> Termos: `.../terms/` · Índice: `.../`
+> Não renomeie as pastas `docs/privacy` e `docs/terms` depois de cadastrar
+> essas URLs na loja — o link quebraria.
 
 > **Nota (01/08/2026) — o conteúdo reflete o app auditado, não texto genérico.**
 > Verificado no código: **nenhuma chamada de rede**, nenhum SDK de terceiros, e
