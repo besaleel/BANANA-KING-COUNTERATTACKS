@@ -38,7 +38,7 @@ const input = new Input();
 const images = loadImages();
 
 const canvas = $('cv');
-const winAnim = new WinAnimation($('winFrame'));
+const winAnim = new WinAnimation($('winFrame'), $('winBg'));
 let game = null;
 
 /* ---------- i18n ---------- */

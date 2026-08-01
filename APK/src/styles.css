@@ -253,7 +253,7 @@ a { color: #ffd23f; }
   overflow: hidden;
 }
 
-#winFrame {
+#winBg {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -263,6 +263,37 @@ a { color: #ffd23f; }
   /* pixel art: sem suavizacao ao escalar */
   image-rendering: pixelated;
   z-index: 0;
+}
+
+/* O personagem e' uma camada propria sobre o cenario. Tamanho e posicao vem do
+   enquadramento medido por tools/extrair-walk-sprites.py (411x553 dentro da
+   arte 768x1376), em porcentagem para acompanhar o `cover` do fundo.
+   `bottom` alinha os pes ao chao do cenario: e' o que mantem o personagem
+   plantado no lugar certo em qualquer proporcao de tela. */
+#winFrame {
+  position: absolute;
+  left: 0;
+  bottom: 25.9%;              /* 1 - 1019/1376 */
+  width: 53.5%;               /* 411/768 */
+  height: auto;
+  image-rendering: pixelated;
+  z-index: 0;
+  /* a translacao e' o que transforma "trocar de pose" em "caminhar" */
+  animation: bkwalk 13s linear infinite;
+}
+
+/* Atravessa a tela da esquerda para a direita e reaparece. O passeio vai de
+   -60% a 160% para o personagem entrar e sair por fora da borda, sem "nascer"
+   no meio da tela. */
+@keyframes bkwalk {
+  from { transform: translateX(-60%); }
+  to   { transform: translateX(160%); }
+}
+
+/* Acessibilidade: sem movimento, o personagem fica parado num ponto de leitura
+   confortavel e so o ciclo de poses continua. */
+@media (prefers-reduced-motion: reduce) {
+  #winFrame { animation: none; transform: translateX(18%); }
 }
 
 .win-top, .win-bottom {

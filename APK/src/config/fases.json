@@ -1,16 +1,22 @@
 {
   "_doc": "Config de fases - Banana King Counterattacks. Composicao conforme SS5.1 da ESPECFICATION.md (verificada 1:1 contra a tabela). Mapeamento nivel->nave: 1=nave-inimiga-05, 2=nave-inimiga-03|nave-inimiga-04, 3=nave-inimiga-02, 4=nave-inimiga-01, 5=nave-inimiga-00.",
   "baseline": {
-    "formationSpeed": 26,
-    "formationAccel": 80,
+    "formationSpeed": 42,
+    "formationAccel": 55,
     "stepDown": 5,
     "cocoIntervalS": 4.5,
     "cocoFactorMin": 0.6,
     "cocoFactorMax": 1.5,
-    "fireRateMs": 350,
-    "bulletSpeed": 430,
+    "fireRateMs": 300,
+    "bulletSpeed": 760,
     "heroKeyboardSpeed": 320,
-    "powerupDropPct": 4,
+    "powerupDropPct": 7,
+    "powerupWeights": {
+      "triple": 5,
+      "rapid": 2,
+      "shield": 2,
+      "life": 1
+    },
     "powerupDurationS": 8,
     "invulnS": 2,
     "cols": 5,
@@ -19,8 +25,8 @@
     "rowY0": 130,
     "bananaCount": 7,
     "bananaHp": 2,
-    "_calibracao_provisoria": "PROVISORIOS - pendencias #9 e #3 da spec, a fechar em playtest humano. Ajustar aqui, sem tocar em codigo. Referencia medida: uma fase limpa com combo perfeito vale ~7.8k (fase 01) a ~25.8k (fase 10); campanha completa ~166k. Com X=20000 o jogador habilidoso recebe ~1 reposicao a cada 1,4 fases e o jogador fraco ~1 a cada 2,5 - a barreira continua escassa (SS4.4) sem deixar ninguem sem defesa por muito tempo.",
-    "bananaBonusScoreMilestone": 20000,
+    "_calibracao_provisoria": "Calibracao v2 - ajustada apos o primeiro playtest humano completo (campanha zerada, 230200 pts). Ajustar aqui, sem tocar em codigo. Referencia medida: uma fase limpa com combo perfeito vale ~7.8k (fase 01) a ~25.8k (fase 10); campanha completa ~166k. O marco caiu de 20000 para 12000 porque o playtest apontou a barreira escassa demais: com X=12000 o jogador habilidoso recebe ~1 reposicao por fase e o jogador fraco ~1 a cada 1,5 - continua sendo um recurso a merecer (SS4.4), mas a defesa deixa de ficar zerada por fases inteiras.",
+    "bananaBonusScoreMilestone": 12000,
     "phaseClearBonus": 1000,
     "lifeBonusPerLife": 5000,
     "bananaBonusFallSpeed": 95
@@ -65,7 +71,7 @@
           "img": "n05"
         }
       ],
-      "formationSpeed": 26,
+      "formationSpeed": 42,
       "stepDown": 5,
       "cocoIntervalS": 4.5,
       "bananaBonusGuaranteed": false
@@ -91,7 +97,7 @@
           "img": "n05"
         }
       ],
-      "formationSpeed": 27,
+      "formationSpeed": 44,
       "stepDown": 5,
       "cocoIntervalS": 4.3,
       "bananaBonusGuaranteed": false
@@ -117,10 +123,10 @@
           "img": "n05"
         }
       ],
-      "formationSpeed": 28,
+      "formationSpeed": 46,
       "stepDown": 5,
       "cocoIntervalS": 4.1,
-      "bananaBonusGuaranteed": false
+      "bananaBonusGuaranteed": true
     },
     {
       "id": 4,
@@ -143,7 +149,7 @@
           "img": "n05"
         }
       ],
-      "formationSpeed": 30,
+      "formationSpeed": 48,
       "stepDown": 5,
       "cocoIntervalS": 3.9,
       "bananaBonusGuaranteed": false
@@ -169,7 +175,7 @@
           "img": "n05"
         }
       ],
-      "formationSpeed": 31,
+      "formationSpeed": 50,
       "stepDown": 5,
       "cocoIntervalS": 3.7,
       "bananaBonusGuaranteed": true
@@ -195,7 +201,7 @@
           "img": "n03"
         }
       ],
-      "formationSpeed": 32,
+      "formationSpeed": 52,
       "stepDown": 5,
       "cocoIntervalS": 3.4,
       "bananaBonusGuaranteed": false
@@ -221,10 +227,10 @@
           "img": "n04"
         }
       ],
-      "formationSpeed": 34,
+      "formationSpeed": 54,
       "stepDown": 5,
       "cocoIntervalS": 3.2,
-      "bananaBonusGuaranteed": false
+      "bananaBonusGuaranteed": true
     },
     {
       "id": 8,
@@ -247,7 +253,7 @@
           "img": "n02"
         }
       ],
-      "formationSpeed": 35,
+      "formationSpeed": 56,
       "stepDown": 5,
       "cocoIntervalS": 3,
       "bananaBonusGuaranteed": false
@@ -273,10 +279,10 @@
           "img": "n02"
         }
       ],
-      "formationSpeed": 36,
+      "formationSpeed": 58,
       "stepDown": 5,
       "cocoIntervalS": 2.8,
-      "bananaBonusGuaranteed": false
+      "bananaBonusGuaranteed": true
     },
     {
       "id": 10,
@@ -299,11 +305,11 @@
           "img": "n01"
         }
       ],
-      "formationSpeed": 38,
+      "formationSpeed": 60,
       "stepDown": 5,
       "cocoIntervalS": 2.6,
-      "bananaBonusGuaranteed": false
+      "bananaBonusGuaranteed": true
     }
   ],
-  "_curva_dificuldade": "PROVISORIA - pendencias #4 e #10 da spec, a fechar em playtest humano. Fase 01 NAO muda (baseline v1 aprovado em playtest). Curva medida por simulacao: a composicao sozinha ja triplica o HP da formacao (30 na fase 01 -> 90 na fase 10) enquanto o tempo de descida e' constante, entao a fase 05 em diante a formacao ja alcanca a barreira sem nenhum ajuste. Por isso formationSpeed sobe de forma SUAVE (26->38, faixa 10-90) e stepDown fica FIXO em 5: subir o degrau multiplica por 4 (SS4.2 - cada uma das 4 fileiras aplica o degrau ao tocar a borda) e esgota a barreira, que nao regenera entre fases (SS4.4). O grosso da curva de ameaca fica no cocoIntervalS (4.5s -> 2.6s), que pressiona sem consumir a barreira: os cocos por fase sobem de ~2 para ~11."
+  "_curva_dificuldade": "Curva v2 - revisada apos o playtest humano da campanha completa. A v1 (26->38) foi reprovada por LEITURA DE PERFORMANCE, nao por dificuldade: a 26 px/s a formacao parece travada no inicio da fase e o jogador le isso como celular lento / lag, nao como jogo facil. Como formationAccel soma ate +80 conforme as naves morrem, o fim da fase rodava ~4x mais rapido que o comeco e so ai o jogo 'acordava'. A v2 sobe o piso para 42->60 e reduz formationAccel para 55, comprimindo a razao fim/inicio de ~4,1x para ~2,3x: o movimento le como intencional desde o primeiro frame e a fase ainda ganha ritmo ao esvaziar. stepDown continua FIXO em 5: subir o degrau multiplica por 4 (SS4.2 - cada uma das 4 fileiras aplica o degrau ao tocar a borda) e esgota a barreira, que nao regenera entre fases (SS4.4). O grosso da curva de ameaca segue no cocoIntervalS (4.5s -> 2.6s), que pressiona sem consumir a barreira: os cocos por fase sobem de ~2 para ~11. Bananas garantidas nas fases 3/5/7/9/10 (era so a 5) para acompanhar o marco de 12000 pontos."
 }

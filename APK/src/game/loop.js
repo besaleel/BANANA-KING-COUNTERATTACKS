@@ -16,6 +16,8 @@ import { Renderer } from './render.js';
 const DT_MAX = 0.033;      // SS12: dt limitado a 33 ms
 const HUD_INTERVAL = 150;  // SS12: HUD re-render no maximo a cada 150 ms
 const POWERUP_TYPES = ['triple', 'rapid', 'shield', 'life'];
+/** Peso usado quando `baseline.powerupWeights` nao traz o tipo. */
+const POWERUP_WEIGHT_FALLBACK = 1;
 
 export class Game {
   /**
@@ -298,7 +300,7 @@ export class Game {
             if (Math.random() * 100 < base.powerupDropPct) {
               const pu = this.pools.powerups.obtain();
               pu.x = p.x; pu.y = p.y; pu.vy = 95;
-              pu.type = POWERUP_TYPES[Math.floor(Math.random() * POWERUP_TYPES.length)];
+              pu.type = this.rollPowerupType();
             }
           } else {
             this.audio.sfx('tick');
@@ -461,6 +463,28 @@ export class Game {
         this.spawnBananaBonus(x, y);
       }
     }
+  }
+
+  /**
+   * Sorteia o tipo do power-up que cai de uma nave destruida.
+   *
+   * O sorteio e' PONDERADO por `baseline.powerupWeights` em vez de uniforme:
+   * o playtest apontou o tiro triplo como o power-up que mais muda a sensacao
+   * de jogo, e com 4 tipos equiprovaveis ele aparecia em so 1/4 dos drops.
+   * Sem os pesos configurados o comportamento cai de volta no uniforme.
+   */
+  rollPowerupType() {
+    const weights = this.baseline.powerupWeights;
+    if (!weights) return POWERUP_TYPES[Math.floor(Math.random() * POWERUP_TYPES.length)];
+
+    let total = 0;
+    for (const t of POWERUP_TYPES) total += weights[t] ?? POWERUP_WEIGHT_FALLBACK;
+    let r = Math.random() * total;
+    for (const t of POWERUP_TYPES) {
+      r -= weights[t] ?? POWERUP_WEIGHT_FALLBACK;
+      if (r < 0) return t;
+    }
+    return POWERUP_TYPES[0];   // so alcancavel por erro de arredondamento
   }
 
   /** Solta uma banana bonus caindo (SS4.4). Nao e' drop aleatorio. */

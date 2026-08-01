@@ -63,9 +63,12 @@
     </div>
 
     <!-- vitoria final da campanha (epico 5): walk-cycle em tela cheia.
-         Os overlays ficam no topo e na base; a faixa central (~34%-73% da
-         altura da arte) e' onde o personagem aparece e fica livre de texto. -->
+         Cenario (#winBg) e personagem (#winFrame) sao camadas separadas: o
+         personagem troca de pose E atravessa a tela, senao a animacao le como
+         alguem pisando no mesmo lugar. Os overlays ficam no topo e na base; a
+         faixa central e' onde o personagem caminha e fica livre de texto. -->
     <div id="scWin" class="overlay win" hidden>
+      <img id="winBg" alt="">
       <img id="winFrame" alt="">
       <div class="win-top">
         <div id="winTitle" class="title c-yellow"></div>

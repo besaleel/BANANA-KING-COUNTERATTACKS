@@ -25,19 +25,27 @@ const FILES = {
 /**
  * Walk-cycle da vitoria final (epico 5).
  *
- * Sao cenas completas (768x1376, mesmo cenario), nao sprites recortados: a
- * animacao troca a imagem inteira. Os frames 3 e 4 existem nos assets mas
- * ficam de fora - foram renderizados em 937x1679 com o personagem em outra
- * escala e enquadramento, entao intercala-los com 1/2/5 produz um salto de
- * zoom em vez de um passo. A ordem 1-2-5-2 usa so os tres frames que
- * compartilham cenario (diferenca medida: ~1% dos pixels, restrita a faixa
- * y 467-1001, que e' o proprio personagem).
+ * O cenario e o personagem sao imagens SEPARADAS, geradas por
+ * tools/extrair-walk-sprites.py a partir das cenas achatadas originais.
+ *
+ * A versao anterior trocava a cena inteira (768x1376) e nao convencia: o
+ * personagem alternava a pose parado no mesmo ponto. Como os frames 1 e 5 sao
+ * quase a mesma pose, a sequencia 1-2-5-2 valia como duas poses piscando -
+ * lia como "pisando em falso", nao como caminhada. Com o personagem separado
+ * do fundo, a pose alterna E ele atravessa a tela (a translacao fica no CSS,
+ * ver .win-walker em styles.css), que e' o que faz a caminhada ler.
+ *
+ * Os frames 3 e 4 continuam de fora: foram renderizados em 937x1679, com o
+ * personagem em outra escala, entao intercala-los produz um salto de zoom.
  */
+export const WIN_BG = 'win_bg.webp';
+
+/** Poses do ciclo, na ordem de exibicao. 1 = passo aberto, 2 = pes juntos. */
 export const WIN_FRAMES = [
-  'win_Walk-Frame-1-Phone.webp',
-  'win_Walk-Frame-2-Phone.webp',
-  'win_Walk-Frame-5-Phone.webp',
-  'win_Walk-Frame-2-Phone.webp'
+  'win_walk-1.webp',
+  'win_walk-2.webp',
+  'win_walk-5.webp',
+  'win_walk-2.webp'
 ];
 
 /** Dispara o carregamento de todos os sprites de gameplay. */
