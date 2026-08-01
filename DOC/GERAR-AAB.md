@@ -22,7 +22,7 @@ Play Console, e deixá-lo em `DEPLOY/`.
 | App ID AdMob | `ca-app-pub-XXX` *(a substituir pelo real)* |
 | Keystore | `banana-king-counterattacks-release.jks` |
 | Alias da chave | `bkcounterattacks` |
-| AAB de saída | `DEPLOY/banana-king-counterattacks-release.aab` |
+| AAB de saída | `DEPLOY/banana-king-counterattacks-v<versionName>-<versionCode>.aab` |
 
 > Rode todos os comandos a partir da pasta `APK/` do projeto, exceto onde
 > indicado.
@@ -205,6 +205,29 @@ Se os assets tiverem mudado, regere os WebP antes deste passo — ver
 python "C:\Sistemas\BANANA-KING-COUNTERATTACKS\APK\tools\gerar-assets.py"
 ```
 
+### 4.1 Ícone e splash — obrigatório a cada `cap sync`
+
+```powershell
+python "C:\Sistemas\BANANA-KING-COUNTERATTACKS\APK\tools\gerar-icones.py"
+```
+
+> ⚠️ **Não pule este passo.** `APK/android/` é saída do `cap add`/`cap sync` e
+> está no `.gitignore`: a cada regeração o Capacitor repõe o **ícone placeholder**
+> (um "X" azul sobre fundo branco) e a splash em branco. Foi exatamente assim que
+> o **AAB v1.0.1-2 chegou à Play Store com o ícone errado** — o problema só
+> aparece depois de instalar o app, porque esses arquivos não passam pelo diff.
+>
+> O script é idempotente: rodar duas vezes não muda nada. Ele reescreve
+> `mipmap-*/ic_launcher*.png` (5 densidades), `values/ic_launcher_background.xml`
+> e `drawable*/splash.png` (11 variações) a partir da arte versionada em
+> `DEPLOY/store-assets/icon-512.png` e `PROJECT/assets/logo-transparente.png`.
+
+Confira antes de empacotar — o ícone deve mostrar o gorila no disco voador:
+
+```powershell
+Start-Process "C:\Sistemas\BANANA-KING-COUNTERATTACKS\APK\android\app\src\main\res\mipmap-xxxhdpi\ic_launcher.png"
+```
+
 ## 5. Gerar o AAB assinado
 
 ```powershell
@@ -261,25 +284,71 @@ APK\android\app\build\outputs\mapping\release\mapping.txt
 
 Ele fica dentro de `build/`, que é **apagado a cada `gradlew clean`**. Copie-o
 para fora junto de cada AAB publicado, nomeado com a versão — por exemplo
-`DEPLOY/mapping-v1.txt`. Na Play Console, envie-o em
+`DEPLOY/mapping-v2.txt`. Na Play Console, envie-o em
 *Qualidade do app → Android vitals → Desofuscar arquivos*.
 
 ## 6. Copiar para DEPLOY
 
+⚠️ **O nome do arquivo tem de carregar a versão** — regra §12.1 da
+[ESPECFICATION.md](ESPECFICATION.md). O trecho abaixo lê `versionName` e
+`versionCode` do próprio `build.gradle` e monta o nome sozinho, para não
+depender de ninguém lembrar:
+
 ```powershell
-Copy-Item "C:\Sistemas\BANANA-KING-COUNTERATTACKS\APK\android\app\build\outputs\bundle\release\app-release.aab" "C:\Sistemas\BANANA-KING-COUNTERATTACKS\DEPLOY\banana-king-counterattacks-release.aab"
+Set-Location "C:\Sistemas\BANANA-KING-COUNTERATTACKS"
+$g  = Get-Content "APK\android\app\build.gradle" -Raw
+$vc = [regex]::Match($g, 'versionCode\s+(\d+)').Groups[1].Value
+$vn = [regex]::Match($g, 'versionName\s+"([^"]+)"').Groups[1].Value
+$base = "banana-king-counterattacks-v$vn-$vc"
+
+Copy-Item "APK\android\app\build\outputs\bundle\release\app-release.aab" "DEPLOY\$base.aab"
+Copy-Item "APK\android\app\build\outputs\apk\release\app-release.apk"    "DEPLOY\$base.apk"
+Copy-Item "APK\android\app\build\outputs\mapping\release\mapping.txt"    "DEPLOY\mapping-v$vc.txt"
+"gerado: $base"
 ```
 
-O binário **não deve ser versionado**. ✅ Coberto pelo `.gitignore` desde
-31/07/2026 (`DEPLOY/*.aab`, `DEPLOY/*.apk`, `*.apk`) — ver §0.
+O binário **não deve ser versionado** no git. ✅ Coberto pelo `.gitignore` desde
+31/07/2026 (`DEPLOY/*.aab`, `DEPLOY/*.apk`, `*.apk`) — os globs pegam o nome
+versionado do mesmo jeito. Ver §0.
 
 ## 7. Antes de cada novo release
 
-- Suba `versionCode` e `versionName` em `APK/android/app/build.gradle`
-  (`versionCode` é um inteiro que deve **sempre aumentar**; `versionName` é o
-  texto visível ao usuário, ex. `"1.1"`).
+- **Suba `versionCode` e `versionName`** em `APK/android/app/build.gradle` —
+  este é o passo que mais se esquece, e sem ele a Play recusa o upload.
+  `versionCode` é um inteiro que deve **sempre aumentar**, inclusive quando o
+  envio anterior foi **rejeitado** (o número já foi consumido); `versionName` é
+  o texto visível ao usuário, ex. `"1.1"`. Regra completa: §12.1 da
+  [ESPECFICATION.md](ESPECFICATION.md).
 - Repita os passos 4–6.
 - Use **o mesmo keystore** do passo 2 — nunca gere um novo para o mesmo app.
+- Confira o `targetSdkVersion` exigido pela Play (ver abaixo).
+
+### `targetSdkVersion` exigido pela Play Store
+
+A Play recusa o upload quando o `targetSdkVersion` está abaixo do mínimo da
+janela vigente. O primeiro envio (01/08/2026) foi barrado assim:
+
+> No momento, o nível desejado da API do app é 34. No entanto, esse nível
+> precisa ser de pelo menos 35.
+
+Correção aplicada em `APK/android/variables.gradle` (`compileSdkVersion` e
+`targetSdkVersion` = 35). Subir o SDK exigiu também subir o toolchain, porque
+o AGP 8.2 não compila contra o SDK 35:
+
+| Item | Antes | Depois |
+|---|---|---|
+| `targetSdkVersion` / `compileSdkVersion` | 34 | **35** |
+| Android Gradle Plugin (`build.gradle` raiz) | 8.2.1 | **8.5.2** |
+| Gradle wrapper (`gradle-wrapper.properties`) | 8.2.1 | **8.7** |
+
+O mínimo sobe cerca de uma vez por ano. Confira o nível atual em
+*Play Console → Política → Níveis de API desejados* antes de cada release e
+repita esse mesmo trio de ajustes quando ele mudar. Verifique o resultado no
+binário gerado, não só no Gradle:
+
+```powershell
+& "$env:LOCALAPPDATA\Android\Sdk\build-tools\35.0.0\aapt2.exe" dump badging "C:\Sistemas\BANANA-KING-COUNTERATTACKS\DEPLOY\banana-king-counterattacks-release.apk" | Select-String "targetSdkVersion|versionCode"
+```
 
 ---
 
@@ -295,10 +364,15 @@ Set-Item -Path Env:PATH -Value "$Env:JAVA_HOME\bin;$Env:PATH"
 Set-Location "C:\Sistemas\BANANA-KING-COUNTERATTACKS\APK\android"
 .\gradlew bundleRelease
 
-Copy-Item "app\build\outputs\bundle\release\app-release.aab" "C:\Sistemas\BANANA-KING-COUNTERATTACKS\DEPLOY\banana-king-counterattacks-release.aab"
+# nome versionado, montado a partir do build.gradle (regra §12.1 da spec)
+$g  = Get-Content "app\build.gradle" -Raw
+$vc = [regex]::Match($g, 'versionCode\s+(\d+)').Groups[1].Value
+$vn = [regex]::Match($g, 'versionName\s+"([^"]+)"').Groups[1].Value
+$d  = "C:\Sistemas\BANANA-KING-COUNTERATTACKS\DEPLOY"
+Copy-Item "app\build\outputs\bundle\release\app-release.aab" "$d\banana-king-counterattacks-v$vn-$vc.aab"
 
 # guarde o mapping DESTA versao - ele some no proximo `gradlew clean` (§5.1)
-Copy-Item "app\build\outputs\mapping\release\mapping.txt" "C:\Sistemas\BANANA-KING-COUNTERATTACKS\DEPLOY\mapping-v<VERSION_CODE>.txt"
+Copy-Item "app\build\outputs\mapping\release\mapping.txt" "$d\mapping-v$vc.txt"
 ```
 
 ## Assets de loja
@@ -308,6 +382,9 @@ Copy-Item "app\build\outputs\mapping\release\mapping.txt" "C:\Sistemas\BANANA-KI
 | Ícone da ficha | **512×512**, PNG **sem alpha**, ≤ 1 MB | ✅ `store-assets/icon-512.png` (512×512, 258 KB, opaco) |
 | Feature graphic | exatamente **1024×500** | ✅ `store-assets/feature-graphic.png` |
 | Screenshots | retrato, **mín. 2** por idioma | ⬜ |
+| Ícone do launcher | 5 densidades + adaptive icon, **sem placeholder** | ✅ gerado por `tools/gerar-icones.py` (§4.1) — reconferir a cada `cap sync` |
+| Splash | 11 variações (retrato/paisagem × densidade) | ✅ gerado por `tools/gerar-icones.py` (§4.1) |
+| Favicon web | usa a mesma marca do ícone da loja | ✅ `APK/public/assets/icon.png` (192×192, 55 KB) |
 
 > **Nome do produto (§0 da [ESPECFICATION.md](ESPECFICATION.md)):** o ícone traz
 > "BANANA KING COUNTERATTACKS" completo ✅. O feature graphic mostra só

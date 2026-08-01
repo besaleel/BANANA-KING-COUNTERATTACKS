@@ -86,7 +86,7 @@ A POC roda no framework `DCLogic`/`support.js`, que não é um alvo de produçã
       port do código da POC.
 - [ ] Montar o projeto em `APK/` com o stack escolhido.
 - [ ] Portar a lógica de jogo da POC (`update`/`draw`/`loop`) preservando os
-      valores de *baseline v1* (§12.1 da spec).
+      valores de *baseline v1* (§12.2 da spec).
 - [ ] **Padronizar os caminhos de assets.** Hoje o protótipo é incoerente:
       `support.js` é relativo ao HTML (`./support.js`) e os assets são relativos à
       raiz (`PROJECT/assets/...`) — nenhuma raiz de servidor satisfaz os dois, e
@@ -404,6 +404,11 @@ regressão — no mobile nunca chegou a tocar.
       for regerada.** Ela está no `.gitignore` (é saída do `cap add`), então a
       edição manual do `AndroidManifest.xml` se perde. Detalhes em
       [GERAR-ASSETS.md](GERAR-ASSETS.md). Automatizar no épico 11.
+- [x] **Reaplicar ícone e splash se a pasta `android/` for regerada.** Mesma
+      causa do item acima: os mipmaps são saída do `cap add` e voltam ao
+      placeholder do Capacitor (o "X" azul). *(01/08/2026 — automatizado em
+      `APK/tools/gerar-icones.py`; basta rodar o script, não há mais edição
+      manual a perder.)*
 
 ---
 
@@ -536,8 +541,26 @@ Detalhes e o bloco pronto para colar estão no §0 do
 ### 11.1 Build e publicação
 
 - [ ] Criar conta de **desenvolvedor** no Google Play Console (se não existir).
-- [ ] Configurar **ícone, splash e nome** por plataforma
-      (`com.bananaking.counterattacks`).
+- [x] Configurar **ícone, splash e nome** por plataforma
+      (`com.bananaking.counterattacks`). *(01/08/2026 — o AAB v1.0.1-2 subiu com
+      o placeholder do Capacitor (o "X" azul), detectado ao instalar o app da
+      Play Store para teste. Corrigido por `APK/tools/gerar-icones.py`, que gera
+      os 5 mipmaps (legado + round + foreground do adaptive icon) a partir de
+      `DEPLOY/store-assets/icon-512.png` e as 11 splashes a partir de
+      `PROJECT/assets/logo-transparente.png`. **Exige novo build e novo
+      `versionCode`** — ver §11.1 em [GERAR-AAB.md](GERAR-AAB.md).)*
+
+> **Por que o placeholder passou:** `APK/android/` está no `.gitignore` (é saída
+> do `cap add`), então o ícone não era revisável no diff — só aparece depois de
+> instalar o APK. O `gerar-icones.py` fecha o buraco: o ícone volta a ser
+> reproduzível a partir de arte versionada.
+>
+> **Adaptive icon:** a arte do jogo já traz moldura preta própria, então a camada
+> `background` usa o **mesmo preto** (`#000000`), não o roxo do jogo — senão o
+> recorte do launcher deixa um quadrado preto flutuando dentro do círculo. E o
+> `foreground` usa só o **personagem** (gorila + disco voador), sem o texto
+> "BANANA KING": o launcher exibe apenas os 72dp centrais de 108dp, um zoom de
+> 1,5× que cortaria as letras no meio — e o texto seria ilegível a 48dp.
 - [x] Gerar o **keystore** exclusivo deste app
       (`banana-king-counterattacks-release.jks`). *(01/08/2026 — RSA 2048,
       alias `bkcounterattacks`, `PrivateKeyEntry` válido até **dez/2053**, bem

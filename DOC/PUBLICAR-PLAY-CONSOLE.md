@@ -9,9 +9,9 @@
 
 | Item | Onde |
 |---|---|
-| AAB assinado (2,4 MB) | `DEPLOY/banana-king-counterattacks-release.aab` |
-| APK de release (2,05 MB, para testar) | `DEPLOY/banana-king-counterattacks-release.apk` |
-| Mapping do R8 | `DEPLOY/mapping-v1.txt` |
+| AAB assinado (2,54 MB) | `DEPLOY/banana-king-counterattacks-v1.0.1-2.aab` |
+| APK de release (2,07 MB, para testar) | `DEPLOY/banana-king-counterattacks-v1.0.1-2.apk` |
+| Mapping do R8 | `DEPLOY/mapping-v2.txt` |
 | Ícone 512×512 | `DEPLOY/store-assets/icon-512.png` |
 | Feature graphic 1024×500 | `DEPLOY/store-assets/feature-graphic.png` |
 | Screenshots (pt-BR e en-US) | `DEPLOY/store-assets/screenshots/` |
@@ -57,6 +57,9 @@ Cada página traz seletor dos 6 idiomas (`privacy/pt.html`, `privacy/de.html`…
 |---|---|
 | pt-BR | `Defenda a Terra do chimpanzé Trasho! Arcade espacial offline com 10 fases.` (73) |
 | en-US | `Defend Earth from Trasho the chimp! Offline space arcade with 10 levels.` (71) |
+
+> Os seis idiomas, prontos para copiar e colar na Play Console, estão em
+> [`DEPLOY/descricao-app.md`](../DEPLOY/descricao-app.md).
 
 ## Descrição completa
 

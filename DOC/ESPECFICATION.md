@@ -518,7 +518,46 @@ estrutura.
   avaliação são vanilla+Capacitor, Angular+Capacitor ou TWA — ver
   [GERAR-AAB.md](GERAR-AAB.md) e o backlog.
 
-### 12.1 Tabela consolidada de calibração (*baseline v1*)
+### 12.1 Versionamento do pacote de release ⚠️ **regra obrigatória**
+
+> **Todo pacote gerado deve carregar a versão no nome do arquivo.** Nenhum
+> `.aab` ou `.apk` de release entra em `DEPLOY/` com nome genérico.
+
+Padrão de nome:
+
+```
+banana-king-counterattacks-v<versionName>-<versionCode>.aab
+banana-king-counterattacks-v<versionName>-<versionCode>.apk
+mapping-v<versionCode>.txt
+```
+
+Exemplo do release atual: `banana-king-counterattacks-v1.0.1-2.aab`.
+
+**Antes de cada `bundleRelease`**, suba os dois campos em
+[`APK/android/app/build.gradle`](../APK/android/app/build.gradle):
+
+| Campo | Regra |
+|---|---|
+| `versionCode` | Inteiro que **sempre aumenta**. A Play recusa reenvio com um número já usado — **mesmo que o envio anterior tenha sido rejeitado**. |
+| `versionName` | Texto visível ao usuário (`"1.0.1"`). Acompanha o `versionCode`, mas não precisa ser único. |
+
+Por que a regra existe: nome genérico (`...-release.aab`) faz cada build
+sobrescrever o anterior em `DEPLOY/`. Quando a Play rejeita um envio, ou quando
+é preciso comparar dois pacotes, não há como saber qual versão está no disco sem
+abrir o binário. **O `mapping.txt` é o caso mais grave** — ele é apagado a cada
+`gradlew clean` e é o único jeito de ler os relatórios de crash da versão
+correspondente; perder o pareamento entre mapping e `versionCode` deixa os
+crashes daquela versão ilegíveis para sempre.
+
+Conferência no binário gerado — o Gradle não é a fonte da verdade, o pacote é:
+
+```powershell
+& "$env:LOCALAPPDATA\Android\Sdk\build-tools\35.0.0\aapt2.exe" dump badging <arquivo>.apk | Select-String "versionCode|targetSdkVersion"
+```
+
+Passo a passo completo em [GERAR-AAB.md](GERAR-AAB.md) §7.
+
+### 12.2 Tabela consolidada de calibração (*baseline v1*)
 
 | Parâmetro | Valor | Faixa ajustável |
 |---|---|---|
@@ -577,6 +616,9 @@ estrutura.
 16. **Assets:** layout único (Phone escalado); assets Tablet não usados.
 17. **Nome do produto:** "Banana King Counterattacks" (app) vs. "Banana King"
     (personagem) — ver §0.
+18. **Versionamento do pacote:** todo `.aab`/`.apk` de release leva
+    `versionName` e `versionCode` **no nome do arquivo**; o `versionCode` sempre
+    aumenta, inclusive após uma rejeição da Play — ver §12.1.
 
 ---
 
