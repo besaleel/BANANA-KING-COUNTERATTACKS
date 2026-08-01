@@ -14,6 +14,11 @@ build/
 keystore.properties
 local.properties
 
+# Mapeamento do R8: desofusca stack traces, então expõe a estrutura interna
+# do código. Guarde junto do AAB publicado, FORA do repositório (§5.1).
+mapping*.txt
+DEPLOY/mapping*.txt
+
 # Dependências
 node_modules/
 

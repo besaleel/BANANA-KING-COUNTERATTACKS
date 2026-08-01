@@ -27,11 +27,17 @@ Play Console, e deixá-lo em `DEPLOY/`.
 
 ---
 
-## 0. ⚠️ Pré-requisito bloqueante — proteger segredos no `.gitignore`
+## 0. ✅ Pré-requisito — proteger segredos no `.gitignore` *(concluído)*
 
-**Faça isto ANTES de gerar o keystore (§2).** O `.gitignore` da raiz hoje cobre
-apenas `APK/*.apk` e `APK/*.aab`. Os arquivos sensíveis do processo de release
-**não estão protegidos**:
+> **Resolvido em 31/07/2026.** Os cinco padrões abaixo foram adicionados ao
+> `.gitignore` da raiz e verificados com `git check-ignore -v` **antes** da
+> geração do keystore (01/08/2026). A pasta `APK/android/` inteira também é
+> ignorada, o que cobre o `.jks` e o `keystore.properties` em segunda camada.
+>
+> A seção fica aqui como referência de *por que* isso importa — releia antes de
+> mexer no `.gitignore`.
+
+Arquivos sensíveis do processo de release e o risco de cada um:
 
 | Arquivo | Risco se commitado |
 |---|---|
@@ -40,7 +46,7 @@ apenas `APK/*.apk` e `APK/*.aab`. Os arquivos sensíveis do processo de release
 | `local.properties` | Caminho local do SDK (vaza estrutura da máquina). |
 | `DEPLOY/*.aab` | Binário grande e desnecessário no histórico do git. |
 
-Adicione ao `.gitignore` da raiz:
+Padrões ativos no `.gitignore` da raiz:
 
 ```gitignore
 # Assinatura Android — NUNCA commitar
@@ -49,6 +55,15 @@ Adicione ao `.gitignore` da raiz:
 keystore.properties
 local.properties
 DEPLOY/*.aab
+DEPLOY/*.apk
+*.apk
+```
+
+Para reconferir a qualquer momento (deve listar a regra que casa com cada um):
+
+```powershell
+Set-Location "C:\Sistemas\BANANA-KING-COUNTERATTACKS"
+git check-ignore -v APK/android/banana-king-counterattacks-release.jks APK/android/keystore.properties APK/android/local.properties DEPLOY/x.aab
 ```
 
 > Se um keystore já tiver sido commitado por acidente, **remover em um commit
@@ -113,11 +128,18 @@ keyPassword=SENHA_DA_CHAVE
 `storeFile` é relativo à pasta `APK/android`. Se preferir manter o `.jks` em
 outro local (recomendado, fora do repositório), use um caminho absoluto.
 
-> Sem esse arquivo, o Gradle assina o release com a chave de **debug**
-> automaticamente (útil para testar o processo, mas esse AAB **não pode ser
-> enviado à Play Store** — o Google rejeita builds assinados com chave
-> debug). O `APK/android/app/build.gradle` precisa estar preparado para usar
-> `keystore.properties` quando ele existir.
+**Cuidados de formato** (erram silenciosamente e o build só falha depois):
+sem aspas, sem espaço em volta do `=`, e senhas com `\ : = #` precisam de
+escape com barra invertida (`ab#cd` → `ab\#cd`). Em caminhos, use `/` ou `\\`.
+
+> ✅ **Já implementado (01/08/2026).** O `app/build.gradle` lê esse arquivo e
+> monta o `signingConfig` de release automaticamente. As senhas ficam só no
+> `.properties` (não versionado) — nunca no `build.gradle`.
+>
+> **Se o arquivo não existir ou estiver incompleto,** `bundleRelease` e
+> `assembleRelease` **falham com mensagem explícita**, em vez de gerar um AAB
+> assinado com a chave de debug que a Play Console recusaria no upload. O build
+> de **debug continua funcionando** normalmente sem ele.
 
 ## 4. Build de produção + sync Android
 
@@ -146,14 +168,37 @@ O arquivo assinado sai em:
 APK\android\app\build\outputs\bundle\release\app-release.aab
 ```
 
+Para conferir que ele saiu assinado com a **sua** chave (e não com a de debug):
+
+```powershell
+& "C:\Program Files\Android\Android Studio\jbr\bin\jarsigner.exe" -verify -verbose:summary -certs "C:\Sistemas\BANANA-KING-COUNTERATTACKS\APK\android\app\build\outputs\bundle\release\app-release.aab"
+```
+
+Deve terminar com **`jar verified.`** e mostrar o `CN=` do seu certificado.
+
+### 5.1 ⚠️ Guarde o `mapping.txt` de cada release
+
+O R8 está ligado (`minifyEnabled true`), então o código do AAB é **ofuscado**.
+Sem o arquivo de mapeamento, os relatórios de crash da Play Console vêm
+ilegíveis (`a.b.c()` em vez dos nomes reais).
+
+```
+APK\android\app\build\outputs\mapping\release\mapping.txt
+```
+
+Ele fica dentro de `build/`, que é **apagado a cada `gradlew clean`**. Copie-o
+para fora junto de cada AAB publicado, nomeado com a versão — por exemplo
+`DEPLOY/mapping-v1.txt`. Na Play Console, envie-o em
+*Qualidade do app → Android vitals → Desofuscar arquivos*.
+
 ## 6. Copiar para DEPLOY
 
 ```powershell
 Copy-Item "C:\Sistemas\BANANA-KING-COUNTERATTACKS\APK\android\app\build\outputs\bundle\release\app-release.aab" "C:\Sistemas\BANANA-KING-COUNTERATTACKS\DEPLOY\banana-king-counterattacks-release.aab"
 ```
 
-O binário **não deve ser versionado**. ⚠️ O `.gitignore` atual cobre `APK/*.aab`,
-mas **não** `DEPLOY/*.aab` — ver §0.
+O binário **não deve ser versionado**. ✅ Coberto pelo `.gitignore` desde
+31/07/2026 (`DEPLOY/*.aab`, `DEPLOY/*.apk`, `*.apk`) — ver §0.
 
 ## 7. Antes de cada novo release
 

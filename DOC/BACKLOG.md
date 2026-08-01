@@ -498,9 +498,23 @@ Detalhes e o bloco pronto para colar estão no §0 do
 - [ ] Criar conta de **desenvolvedor** no Google Play Console (se não existir).
 - [ ] Configurar **ícone, splash e nome** por plataforma
       (`com.bananaking.counterattacks`).
-- [ ] Gerar o **keystore** exclusivo deste app
-      (`banana-king-counterattacks-release.jks`) e fazer backup em 2 locais
-      seguros — ver [GERAR-AAB.md](GERAR-AAB.md) §2.
+- [x] Gerar o **keystore** exclusivo deste app
+      (`banana-king-counterattacks-release.jks`). *(01/08/2026 — RSA 2048,
+      alias `bkcounterattacks`, `PrivateKeyEntry` válido até **dez/2053**, bem
+      além do mínimo exigido pelo Google Play (out/2033). Senha e alias
+      conferidos com `keytool -list`.)*
+- [ ] ⚠️ **BACKUP do `.jks` em 2 locais seguros fora do repositório** —
+      gerenciador de senhas + nuvem pessoal. **Ainda não feito.** Perder o
+      arquivo ou a senha impede publicar qualquer atualização do app para
+      sempre; só restaria lançar outro app, com pacote diferente.
+- [x] Ligar o `signingConfig` de release no `app/build.gradle`, lendo de
+      `keystore.properties`. *(01/08/2026 — senhas ficam só no `.properties`
+      não versionado; sem ele, `bundleRelease` falha com mensagem explícita em
+      vez de gerar um AAB com chave de debug que a loja recusaria)*
+- [x] Ligar **R8/ProGuard** (`minifyEnabled` + `shrinkResources`) com as regras
+      `-keep` do Capacitor. *(01/08/2026 — sem essas regras o app compila mas
+      quebra em runtime: o Capacitor resolve os plugins por reflexão, e o R8
+      não enxerga essas referências)*
 - [ ] Configurar **Play App Signing**.
 - [ ] **Cadastrar o game** na loja: título, descrições localizadas (6 idiomas),
       ícone 512×512, screenshots retrato, feature graphic 1024×500, categoria,
