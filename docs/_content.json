@@ -1,0 +1,225 @@
+{
+  "_comment": "Textos legais nos 6 idiomas. O conteudo descreve o comportamento REAL do app verificado em 01/08/2026: nenhuma chamada de rede no codigo, nenhum SDK de terceiros, unica permissao INTERNET (adicionada pelo WebView do Capacitor, nao usada para enviar dados). Tudo o que o jogo salva fica em localStorage no aparelho: nome, idioma, ultima pontuacao, recorde e fase atual. Se AdMob ou Play Games entrarem (epicos 8 e 9), ESTES TEXTOS PRECISAM SER REVISTOS.",
+
+  "pt": {
+    "lang": "pt-BR",
+    "dir": "Português",
+    "privacy": {
+      "title": "Política de Privacidade",
+      "updated": "Vigente desde",
+      "intro": "Esta Política descreve como o aplicativo <strong>Banana King Counterattacks</strong> trata as suas informações. Ela é curta porque o aplicativo faz muito pouco com dados: <strong>nada sai do seu aparelho</strong>.",
+      "sections": [
+        ["Resumo", "<p>O Banana King Counterattacks <strong>não coleta, não transmite e não compartilha</strong> dados pessoais. O jogo funciona inteiramente offline. Não há contas, login, anúncios, analytics ou rastreamento.</p>"],
+        ["O que o aplicativo guarda no seu aparelho", "<p>Para o jogo funcionar, estas informações ficam salvas <strong>localmente</strong>, no armazenamento do próprio aplicativo:</p><ul><li>o <strong>nome ou apelido</strong> que você digita na tela inicial;</li><li>o <strong>idioma</strong> escolhido;</li><li>a <strong>última pontuação</strong> e o seu <strong>recorde</strong>;</li><li>a <strong>fase atual</strong> e as preferências de som.</li></ul><p>Esses dados <strong>nunca são enviados</strong> para nós nem para terceiros. Ficam apenas no aparelho e são <strong>apagados quando você desinstala</strong> o aplicativo. O nome que você digita é usado somente para exibição na tela, e você pode escrever o que quiser — não pedimos seu nome real.</p>"],
+        ["O que o aplicativo NÃO faz", "<ul><li>não pede cadastro, e-mail, telefone ou senha;</li><li>não acessa contatos, fotos, câmera, microfone ou localização;</li><li>não usa cookies, identificadores de publicidade ou ferramentas de análise;</li><li>não exibe anúncios;</li><li>não envia nenhuma informação pela internet.</li></ul>"],
+        ["Permissões", "<p>O aplicativo declara a permissão de <strong>acesso à internet</strong>. Ela é incluída automaticamente pela tecnologia usada para construir o app (Capacitor/WebView) e <strong>não é utilizada para enviar ou receber dados</strong>. Todo o conteúdo do jogo — imagens, fontes e sons — já vem dentro do aplicativo.</p>"],
+        ["Crianças", "<p>O jogo é adequado a todas as idades, inclusive crianças. Como <strong>nenhum dado é coletado de nenhum usuário</strong>, também não coletamos dados de crianças. Não há publicidade, compras nem comunicação entre jogadores.</p>"],
+        ["Compras", "<p>Esta versão do aplicativo <strong>não possui compras</strong> ativas. Caso venham a existir no futuro, os pagamentos são processados inteiramente pela <strong>Google Play</strong>, sob as políticas de privacidade dela — nós não recebemos nem armazenamos dados de pagamento.</p>"],
+        ["Seus direitos", "<p>Como não guardamos nenhum dado seu, não há informação para consultar, corrigir ou excluir do nosso lado. Para apagar tudo o que o jogo salvou, basta <strong>desinstalar o aplicativo</strong> ou limpar os dados dele nas configurações do aparelho.</p>"],
+        ["Alterações", "<p>Se o aplicativo passar a tratar dados de forma diferente — por exemplo, ao incluir anúncios ou ranking online —, esta Política será atualizada <strong>antes</strong> da mudança entrar em vigor, e a data no topo desta página será alterada.</p>"],
+        ["Contato", "<p>Dúvidas sobre esta Política podem ser enviadas para <a href=\"mailto:besaleel@gmail.com\">besaleel@gmail.com</a>.</p>"]
+      ]
+    },
+    "terms": {
+      "title": "Termos de Uso",
+      "updated": "Vigentes desde",
+      "intro": "Ao usar o <strong>Banana King Counterattacks</strong>, você concorda com estes Termos.",
+      "sections": [
+        ["Licença de uso", "<p>Concedemos a você uma licença <strong>gratuita, pessoal e não exclusiva</strong> para instalar e jogar o Banana King Counterattacks nos seus dispositivos. O jogo é fornecido para entretenimento.</p>"],
+        ["O que você não pode fazer", "<ul><li>copiar, distribuir ou vender o aplicativo ou seu conteúdo;</li><li>modificar, descompilar ou fazer engenharia reversa do aplicativo;</li><li>usar o nome, os personagens ou a arte do jogo em outros produtos sem autorização.</li></ul>"],
+        ["Propriedade intelectual", "<p>O jogo, seus personagens, arte, textos e código pertencem a <strong>Maratimba Games</strong>. As fontes tipográficas utilizadas (<em>Press Start 2P</em> e <em>VT323</em>) são de terceiros e distribuídas sob a <em>SIL Open Font License 1.1</em>.</p>"],
+        ["Sem garantias", "<p>O aplicativo é fornecido <strong>\"como está\"</strong>. Fazemos o possível para que funcione bem em todos os aparelhos, mas não garantimos que estará livre de falhas ou que funcionará sem interrupções em qualquer dispositivo.</p>"],
+        ["Limitação de responsabilidade", "<p>Na máxima extensão permitida pela lei aplicável, não nos responsabilizamos por danos indiretos decorrentes do uso do aplicativo. Nada nestes Termos afasta direitos que a legislação de defesa do consumidor garanta a você.</p>"],
+        ["Progresso do jogo", "<p>Sua pontuação e progresso ficam salvos <strong>apenas no seu aparelho</strong>. Desinstalar o aplicativo, limpar os dados dele ou trocar de aparelho <strong>apaga esse progresso</strong>, e não temos como recuperá-lo.</p>"],
+        ["Alterações e encerramento", "<p>Estes Termos podem ser atualizados; a data no topo desta página indicará a versão vigente. Podemos descontinuar o aplicativo ou deixar de publicar atualizações a qualquer momento.</p>"],
+        ["Lei aplicável", "<p>Estes Termos são regidos pelas leis do <strong>Brasil</strong>.</p>"],
+        ["Contato", "<p><a href=\"mailto:besaleel@gmail.com\">besaleel@gmail.com</a></p>"]
+      ]
+    }
+  },
+
+  "en": {
+    "lang": "en",
+    "dir": "English",
+    "privacy": {
+      "title": "Privacy Policy",
+      "updated": "Effective from",
+      "intro": "This Policy describes how the <strong>Banana King Counterattacks</strong> app handles your information. It is short because the app does very little with data: <strong>nothing leaves your device</strong>.",
+      "sections": [
+        ["Summary", "<p>Banana King Counterattacks <strong>does not collect, transmit or share</strong> personal data. The game runs entirely offline. There are no accounts, no sign-in, no ads, no analytics and no tracking.</p>"],
+        ["What the app stores on your device", "<p>For the game to work, the following is saved <strong>locally</strong>, in the app's own storage:</p><ul><li>the <strong>name or nickname</strong> you type on the start screen;</li><li>your chosen <strong>language</strong>;</li><li>your <strong>last score</strong> and <strong>high score</strong>;</li><li>your <strong>current level</strong> and sound preferences.</li></ul><p>This data is <strong>never sent</strong> to us or to anyone else. It stays on the device and is <strong>deleted when you uninstall</strong> the app. The name you type is only shown on screen, and you may enter anything you like — we do not ask for your real name.</p>"],
+        ["What the app does NOT do", "<ul><li>no registration, e-mail, phone number or password;</li><li>no access to contacts, photos, camera, microphone or location;</li><li>no cookies, advertising identifiers or analytics tools;</li><li>no advertising;</li><li>no information sent over the internet.</li></ul>"],
+        ["Permissions", "<p>The app declares the <strong>internet access</strong> permission. It is added automatically by the technology used to build the app (Capacitor/WebView) and is <strong>not used to send or receive data</strong>. All game content — images, fonts and sounds — ships inside the app.</p>"],
+        ["Children", "<p>The game is suitable for all ages, including children. Since <strong>no data is collected from any user</strong>, no data is collected from children either. There is no advertising, no purchases and no communication between players.</p>"],
+        ["Purchases", "<p>This version of the app has <strong>no active purchases</strong>. Should any be added in the future, payments are handled entirely by <strong>Google Play</strong> under its own privacy policy — we neither receive nor store payment data.</p>"],
+        ["Your rights", "<p>Because we hold no data about you, there is nothing on our side to access, correct or delete. To erase everything the game has saved, simply <strong>uninstall the app</strong> or clear its data in your device settings.</p>"],
+        ["Changes", "<p>If the app ever handles data differently — for example by adding ads or an online leaderboard — this Policy will be updated <strong>before</strong> that change takes effect, and the date at the top of this page will change.</p>"],
+        ["Contact", "<p>Questions about this Policy may be sent to <a href=\"mailto:besaleel@gmail.com\">besaleel@gmail.com</a>.</p>"]
+      ]
+    },
+    "terms": {
+      "title": "Terms of Use",
+      "updated": "Effective from",
+      "intro": "By using <strong>Banana King Counterattacks</strong>, you agree to these Terms.",
+      "sections": [
+        ["Licence", "<p>We grant you a <strong>free, personal and non-exclusive</strong> licence to install and play Banana King Counterattacks on your devices. The game is provided for entertainment.</p>"],
+        ["What you may not do", "<ul><li>copy, distribute or sell the app or its content;</li><li>modify, decompile or reverse-engineer the app;</li><li>use the game's name, characters or artwork in other products without permission.</li></ul>"],
+        ["Intellectual property", "<p>The game, its characters, artwork, text and code belong to <strong>Maratimba Games</strong>. The typefaces used (<em>Press Start 2P</em> and <em>VT323</em>) are third-party works distributed under the <em>SIL Open Font License 1.1</em>.</p>"],
+        ["No warranties", "<p>The app is provided <strong>\"as is\"</strong>. We do our best to make it run well on every device, but we do not warrant that it will be free of faults or run uninterrupted on any given device.</p>"],
+        ["Limitation of liability", "<p>To the fullest extent permitted by applicable law, we are not liable for indirect damages arising from use of the app. Nothing in these Terms removes rights granted to you by consumer protection law.</p>"],
+        ["Game progress", "<p>Your score and progress are saved <strong>only on your device</strong>. Uninstalling the app, clearing its data or switching devices <strong>erases that progress</strong>, and we cannot recover it.</p>"],
+        ["Changes and discontinuation", "<p>These Terms may be updated; the date at the top of this page indicates the current version. We may discontinue the app or stop publishing updates at any time.</p>"],
+        ["Governing law", "<p>These Terms are governed by the laws of <strong>Brazil</strong>.</p>"],
+        ["Contact", "<p><a href=\"mailto:besaleel@gmail.com\">besaleel@gmail.com</a></p>"]
+      ]
+    }
+  },
+
+  "es": {
+    "lang": "es",
+    "dir": "Español",
+    "privacy": {
+      "title": "Política de Privacidad",
+      "updated": "Vigente desde",
+      "intro": "Esta Política describe cómo la aplicación <strong>Banana King Counterattacks</strong> trata su información. Es breve porque la aplicación hace muy poco con los datos: <strong>nada sale de su dispositivo</strong>.",
+      "sections": [
+        ["Resumen", "<p>Banana King Counterattacks <strong>no recopila, no transmite ni comparte</strong> datos personales. El juego funciona totalmente sin conexión. No hay cuentas, inicio de sesión, anuncios, analítica ni rastreo.</p>"],
+        ["Qué guarda la aplicación en su dispositivo", "<p>Para que el juego funcione, lo siguiente se guarda <strong>localmente</strong>, en el almacenamiento de la propia aplicación:</p><ul><li>el <strong>nombre o apodo</strong> que escribe en la pantalla inicial;</li><li>el <strong>idioma</strong> elegido;</li><li>su <strong>última puntuación</strong> y su <strong>récord</strong>;</li><li>la <strong>fase actual</strong> y las preferencias de sonido.</li></ul><p>Estos datos <strong>nunca se envían</strong> ni a nosotros ni a terceros. Permanecen en el dispositivo y se <strong>eliminan al desinstalar</strong> la aplicación. El nombre que escribe solo se muestra en pantalla y puede poner lo que quiera: no pedimos su nombre real.</p>"],
+        ["Lo que la aplicación NO hace", "<ul><li>no pide registro, correo, teléfono ni contraseña;</li><li>no accede a contactos, fotos, cámara, micrófono ni ubicación;</li><li>no usa cookies, identificadores publicitarios ni herramientas de analítica;</li><li>no muestra anuncios;</li><li>no envía ninguna información por internet.</li></ul>"],
+        ["Permisos", "<p>La aplicación declara el permiso de <strong>acceso a internet</strong>. Lo incluye automáticamente la tecnología usada para construir la app (Capacitor/WebView) y <strong>no se utiliza para enviar ni recibir datos</strong>. Todo el contenido del juego —imágenes, fuentes y sonidos— ya viene dentro de la aplicación.</p>"],
+        ["Menores", "<p>El juego es apto para todas las edades, incluidos los niños. Como <strong>no se recopilan datos de ningún usuario</strong>, tampoco se recopilan datos de menores. No hay publicidad, compras ni comunicación entre jugadores.</p>"],
+        ["Compras", "<p>Esta versión de la aplicación <strong>no tiene compras</strong> activas. Si llegaran a existir, los pagos los procesa íntegramente <strong>Google Play</strong> bajo su propia política de privacidad: nosotros no recibimos ni almacenamos datos de pago.</p>"],
+        ["Sus derechos", "<p>Como no guardamos ningún dato suyo, no hay información que consultar, corregir o eliminar por nuestra parte. Para borrar todo lo que el juego haya guardado, basta con <strong>desinstalar la aplicación</strong> o borrar sus datos en los ajustes del dispositivo.</p>"],
+        ["Cambios", "<p>Si la aplicación pasara a tratar datos de otra forma —por ejemplo al incluir anuncios o una clasificación en línea—, esta Política se actualizará <strong>antes</strong> de que el cambio entre en vigor, y cambiará la fecha en la parte superior de esta página.</p>"],
+        ["Contacto", "<p>Las dudas sobre esta Política pueden enviarse a <a href=\"mailto:besaleel@gmail.com\">besaleel@gmail.com</a>.</p>"]
+      ]
+    },
+    "terms": {
+      "title": "Términos de Uso",
+      "updated": "Vigentes desde",
+      "intro": "Al usar <strong>Banana King Counterattacks</strong>, usted acepta estos Términos.",
+      "sections": [
+        ["Licencia de uso", "<p>Le concedemos una licencia <strong>gratuita, personal y no exclusiva</strong> para instalar y jugar a Banana King Counterattacks en sus dispositivos. El juego se ofrece con fines de entretenimiento.</p>"],
+        ["Lo que no puede hacer", "<ul><li>copiar, distribuir o vender la aplicación o su contenido;</li><li>modificar, descompilar o realizar ingeniería inversa de la aplicación;</li><li>usar el nombre, los personajes o el arte del juego en otros productos sin autorización.</li></ul>"],
+        ["Propiedad intelectual", "<p>El juego, sus personajes, arte, textos y código pertenecen a <strong>Maratimba Games</strong>. Las tipografías utilizadas (<em>Press Start 2P</em> y <em>VT323</em>) son de terceros y se distribuyen bajo la <em>SIL Open Font License 1.1</em>.</p>"],
+        ["Sin garantías", "<p>La aplicación se ofrece <strong>\"tal cual\"</strong>. Hacemos lo posible para que funcione bien en todos los dispositivos, pero no garantizamos que esté libre de fallos ni que funcione sin interrupciones en cualquier aparato.</p>"],
+        ["Limitación de responsabilidad", "<p>En la máxima medida permitida por la ley aplicable, no respondemos por daños indirectos derivados del uso de la aplicación. Nada en estos Términos suprime los derechos que le otorgue la normativa de protección al consumidor.</p>"],
+        ["Progreso del juego", "<p>Su puntuación y progreso se guardan <strong>solo en su dispositivo</strong>. Desinstalar la aplicación, borrar sus datos o cambiar de dispositivo <strong>elimina ese progreso</strong>, y no podemos recuperarlo.</p>"],
+        ["Cambios y cese", "<p>Estos Términos pueden actualizarse; la fecha en la parte superior de esta página indica la versión vigente. Podemos descontinuar la aplicación o dejar de publicar actualizaciones en cualquier momento.</p>"],
+        ["Ley aplicable", "<p>Estos Términos se rigen por las leyes de <strong>Brasil</strong>.</p>"],
+        ["Contacto", "<p><a href=\"mailto:besaleel@gmail.com\">besaleel@gmail.com</a></p>"]
+      ]
+    }
+  },
+
+  "fr": {
+    "lang": "fr",
+    "dir": "Français",
+    "privacy": {
+      "title": "Politique de Confidentialité",
+      "updated": "En vigueur depuis le",
+      "intro": "Cette Politique décrit la manière dont l'application <strong>Banana King Counterattacks</strong> traite vos informations. Elle est brève car l'application fait très peu de choses avec les données : <strong>rien ne quitte votre appareil</strong>.",
+      "sections": [
+        ["Résumé", "<p>Banana King Counterattacks <strong>ne collecte, ne transmet ni ne partage</strong> de données personnelles. Le jeu fonctionne entièrement hors ligne. Il n'y a ni compte, ni connexion, ni publicité, ni analytique, ni suivi.</p>"],
+        ["Ce que l'application enregistre sur votre appareil", "<p>Pour que le jeu fonctionne, les éléments suivants sont enregistrés <strong>localement</strong>, dans le stockage propre à l'application :</p><ul><li>le <strong>nom ou pseudonyme</strong> que vous saisissez sur l'écran d'accueil ;</li><li>la <strong>langue</strong> choisie ;</li><li>votre <strong>dernier score</strong> et votre <strong>record</strong> ;</li><li>le <strong>niveau en cours</strong> et les préférences sonores.</li></ul><p>Ces données ne nous sont <strong>jamais transmises</strong>, ni à des tiers. Elles restent sur l'appareil et sont <strong>supprimées lors de la désinstallation</strong> de l'application. Le nom que vous saisissez sert uniquement à l'affichage : vous pouvez indiquer ce que vous voulez, nous ne demandons pas votre vrai nom.</p>"],
+        ["Ce que l'application NE fait PAS", "<ul><li>aucune inscription, adresse e-mail, téléphone ou mot de passe ;</li><li>aucun accès aux contacts, photos, caméra, microphone ou position ;</li><li>aucun cookie, identifiant publicitaire ou outil d'analyse ;</li><li>aucune publicité ;</li><li>aucune information envoyée par internet.</li></ul>"],
+        ["Autorisations", "<p>L'application déclare l'autorisation d'<strong>accès à internet</strong>. Elle est ajoutée automatiquement par la technologie utilisée pour construire l'application (Capacitor/WebView) et <strong>n'est pas utilisée pour envoyer ou recevoir des données</strong>. Tout le contenu du jeu — images, polices et sons — est inclus dans l'application.</p>"],
+        ["Enfants", "<p>Le jeu convient à tous les âges, y compris aux enfants. Puisque <strong>aucune donnée n'est collectée auprès d'aucun utilisateur</strong>, aucune donnée n'est collectée auprès des enfants non plus. Il n'y a ni publicité, ni achats, ni communication entre joueurs.</p>"],
+        ["Achats", "<p>Cette version de l'application <strong>ne comporte aucun achat</strong> actif. S'il devait y en avoir à l'avenir, les paiements sont traités intégralement par <strong>Google Play</strong>, selon sa propre politique de confidentialité : nous ne recevons ni ne conservons de données de paiement.</p>"],
+        ["Vos droits", "<p>Comme nous ne conservons aucune donnée vous concernant, il n'y a rien à consulter, corriger ou supprimer de notre côté. Pour effacer tout ce que le jeu a enregistré, il suffit de <strong>désinstaller l'application</strong> ou d'effacer ses données dans les réglages de l'appareil.</p>"],
+        ["Modifications", "<p>Si l'application venait à traiter les données différemment — par exemple en ajoutant de la publicité ou un classement en ligne —, cette Politique serait mise à jour <strong>avant</strong> l'entrée en vigueur du changement, et la date en haut de cette page serait modifiée.</p>"],
+        ["Contact", "<p>Toute question sur cette Politique peut être adressée à <a href=\"mailto:besaleel@gmail.com\">besaleel@gmail.com</a>.</p>"]
+      ]
+    },
+    "terms": {
+      "title": "Conditions d'Utilisation",
+      "updated": "En vigueur depuis le",
+      "intro": "En utilisant <strong>Banana King Counterattacks</strong>, vous acceptez ces Conditions.",
+      "sections": [
+        ["Licence d'utilisation", "<p>Nous vous accordons une licence <strong>gratuite, personnelle et non exclusive</strong> pour installer et jouer à Banana King Counterattacks sur vos appareils. Le jeu est fourni à des fins de divertissement.</p>"],
+        ["Ce que vous ne pouvez pas faire", "<ul><li>copier, distribuer ou vendre l'application ou son contenu ;</li><li>modifier, décompiler ou faire de l'ingénierie inverse sur l'application ;</li><li>utiliser le nom, les personnages ou les illustrations du jeu dans d'autres produits sans autorisation.</li></ul>"],
+        ["Propriété intellectuelle", "<p>Le jeu, ses personnages, ses illustrations, ses textes et son code appartiennent à <strong>Maratimba Games</strong>. Les polices utilisées (<em>Press Start 2P</em> et <em>VT323</em>) sont des œuvres tierces distribuées sous <em>SIL Open Font License 1.1</em>.</p>"],
+        ["Absence de garantie", "<p>L'application est fournie <strong>« en l'état »</strong>. Nous faisons notre possible pour qu'elle fonctionne bien sur tous les appareils, mais nous ne garantissons ni l'absence de défauts ni un fonctionnement ininterrompu sur un appareil donné.</p>"],
+        ["Limitation de responsabilité", "<p>Dans toute la mesure permise par la loi applicable, nous ne sommes pas responsables des dommages indirects résultant de l'utilisation de l'application. Rien dans ces Conditions ne supprime les droits que vous confère le droit de la consommation.</p>"],
+        ["Progression du jeu", "<p>Votre score et votre progression sont enregistrés <strong>uniquement sur votre appareil</strong>. Désinstaller l'application, effacer ses données ou changer d'appareil <strong>supprime cette progression</strong>, et nous ne pouvons pas la récupérer.</p>"],
+        ["Modifications et arrêt", "<p>Ces Conditions peuvent être mises à jour ; la date en haut de cette page indique la version en vigueur. Nous pouvons interrompre l'application ou cesser de publier des mises à jour à tout moment.</p>"],
+        ["Droit applicable", "<p>Ces Conditions sont régies par le droit <strong>brésilien</strong>.</p>"],
+        ["Contact", "<p><a href=\"mailto:besaleel@gmail.com\">besaleel@gmail.com</a></p>"]
+      ]
+    }
+  },
+
+  "it": {
+    "lang": "it",
+    "dir": "Italiano",
+    "privacy": {
+      "title": "Informativa sulla Privacy",
+      "updated": "In vigore dal",
+      "intro": "Questa Informativa descrive come l'applicazione <strong>Banana King Counterattacks</strong> tratta le sue informazioni. È breve perché l'applicazione fa pochissimo con i dati: <strong>nulla esce dal suo dispositivo</strong>.",
+      "sections": [
+        ["Sintesi", "<p>Banana King Counterattacks <strong>non raccoglie, non trasmette e non condivide</strong> dati personali. Il gioco funziona interamente offline. Non ci sono account, accessi, pubblicità, analisi né tracciamento.</p>"],
+        ["Cosa l'applicazione salva sul suo dispositivo", "<p>Perché il gioco funzioni, quanto segue viene salvato <strong>localmente</strong>, nella memoria dell'applicazione stessa:</p><ul><li>il <strong>nome o soprannome</strong> digitato nella schermata iniziale;</li><li>la <strong>lingua</strong> scelta;</li><li>l'<strong>ultimo punteggio</strong> e il suo <strong>record</strong>;</li><li>la <strong>fase attuale</strong> e le preferenze audio.</li></ul><p>Questi dati <strong>non vengono mai inviati</strong> a noi né a terzi. Restano sul dispositivo e vengono <strong>cancellati alla disinstallazione</strong> dell'applicazione. Il nome digitato serve solo per la visualizzazione a schermo e può inserire ciò che preferisce: non chiediamo il suo nome reale.</p>"],
+        ["Cosa l'applicazione NON fa", "<ul><li>nessuna registrazione, e-mail, telefono o password;</li><li>nessun accesso a contatti, foto, fotocamera, microfono o posizione;</li><li>nessun cookie, identificativo pubblicitario o strumento di analisi;</li><li>nessuna pubblicità;</li><li>nessuna informazione inviata tramite internet.</li></ul>"],
+        ["Autorizzazioni", "<p>L'applicazione dichiara l'autorizzazione di <strong>accesso a internet</strong>. Viene inclusa automaticamente dalla tecnologia usata per costruire l'app (Capacitor/WebView) e <strong>non è utilizzata per inviare o ricevere dati</strong>. Tutti i contenuti del gioco — immagini, caratteri e suoni — sono già inclusi nell'applicazione.</p>"],
+        ["Minori", "<p>Il gioco è adatto a tutte le età, bambini compresi. Poiché <strong>non viene raccolto alcun dato da alcun utente</strong>, non vengono raccolti dati nemmeno dai minori. Non ci sono pubblicità, acquisti né comunicazione tra giocatori.</p>"],
+        ["Acquisti", "<p>Questa versione dell'applicazione <strong>non prevede acquisti</strong> attivi. Qualora venissero introdotti, i pagamenti sono gestiti interamente da <strong>Google Play</strong> secondo la sua informativa sulla privacy: noi non riceviamo né conserviamo dati di pagamento.</p>"],
+        ["I suoi diritti", "<p>Poiché non conserviamo alcun suo dato, non c'è nulla da consultare, correggere o cancellare da parte nostra. Per eliminare tutto ciò che il gioco ha salvato è sufficiente <strong>disinstallare l'applicazione</strong> o cancellarne i dati nelle impostazioni del dispositivo.</p>"],
+        ["Modifiche", "<p>Se l'applicazione dovesse trattare i dati in modo diverso — ad esempio introducendo pubblicità o una classifica online —, questa Informativa sarà aggiornata <strong>prima</strong> che la modifica entri in vigore, e la data in cima a questa pagina cambierà.</p>"],
+        ["Contatti", "<p>Domande su questa Informativa possono essere inviate a <a href=\"mailto:besaleel@gmail.com\">besaleel@gmail.com</a>.</p>"]
+      ]
+    },
+    "terms": {
+      "title": "Termini di Utilizzo",
+      "updated": "In vigore dal",
+      "intro": "Utilizzando <strong>Banana King Counterattacks</strong>, l'utente accetta questi Termini.",
+      "sections": [
+        ["Licenza d'uso", "<p>Le concediamo una licenza <strong>gratuita, personale e non esclusiva</strong> per installare e giocare a Banana King Counterattacks sui suoi dispositivi. Il gioco è fornito a scopo di intrattenimento.</p>"],
+        ["Cosa non è consentito", "<ul><li>copiare, distribuire o vendere l'applicazione o i suoi contenuti;</li><li>modificare, decompilare o effettuare reverse engineering dell'applicazione;</li><li>usare il nome, i personaggi o le illustrazioni del gioco in altri prodotti senza autorizzazione.</li></ul>"],
+        ["Proprietà intellettuale", "<p>Il gioco, i suoi personaggi, le illustrazioni, i testi e il codice appartengono a <strong>Maratimba Games</strong>. I caratteri tipografici utilizzati (<em>Press Start 2P</em> e <em>VT323</em>) sono opere di terzi distribuite con <em>SIL Open Font License 1.1</em>.</p>"],
+        ["Assenza di garanzie", "<p>L'applicazione è fornita <strong>\"così com'è\"</strong>. Facciamo il possibile perché funzioni bene su ogni dispositivo, ma non garantiamo che sia priva di difetti né che funzioni senza interruzioni su un determinato apparecchio.</p>"],
+        ["Limitazione di responsabilità", "<p>Nella massima misura consentita dalla legge applicabile, non rispondiamo di danni indiretti derivanti dall'uso dell'applicazione. Nulla in questi Termini pregiudica i diritti riconosciuti dalla normativa a tutela dei consumatori.</p>"],
+        ["Progressi di gioco", "<p>Punteggio e progressi sono salvati <strong>solo sul suo dispositivo</strong>. Disinstallare l'applicazione, cancellarne i dati o cambiare dispositivo <strong>elimina tali progressi</strong>, che non possiamo recuperare.</p>"],
+        ["Modifiche e cessazione", "<p>Questi Termini possono essere aggiornati; la data in cima a questa pagina indica la versione vigente. Possiamo interrompere l'applicazione o cessare la pubblicazione di aggiornamenti in qualsiasi momento.</p>"],
+        ["Legge applicabile", "<p>Questi Termini sono regolati dalla legge <strong>brasiliana</strong>.</p>"],
+        ["Contatti", "<p><a href=\"mailto:besaleel@gmail.com\">besaleel@gmail.com</a></p>"]
+      ]
+    }
+  },
+
+  "de": {
+    "lang": "de",
+    "dir": "Deutsch",
+    "privacy": {
+      "title": "Datenschutzerklärung",
+      "updated": "Gültig ab",
+      "intro": "Diese Erklärung beschreibt, wie die App <strong>Banana King Counterattacks</strong> mit Ihren Informationen umgeht. Sie ist kurz, weil die App sehr wenig mit Daten tut: <strong>nichts verlässt Ihr Gerät</strong>.",
+      "sections": [
+        ["Zusammenfassung", "<p>Banana King Counterattacks <strong>erhebt, übermittelt und teilt keine</strong> personenbezogenen Daten. Das Spiel läuft vollständig offline. Es gibt keine Konten, keine Anmeldung, keine Werbung, keine Analyse und kein Tracking.</p>"],
+        ["Was die App auf Ihrem Gerät speichert", "<p>Damit das Spiel funktioniert, wird Folgendes <strong>lokal</strong> im Speicher der App abgelegt:</p><ul><li>der <strong>Name oder Spitzname</strong>, den Sie im Startbildschirm eingeben;</li><li>die gewählte <strong>Sprache</strong>;</li><li>Ihre <strong>letzte Punktzahl</strong> und Ihr <strong>Rekord</strong>;</li><li>das <strong>aktuelle Level</strong> und die Toneinstellungen.</li></ul><p>Diese Daten werden <strong>niemals</strong> an uns oder Dritte <strong>gesendet</strong>. Sie verbleiben auf dem Gerät und werden <strong>beim Deinstallieren gelöscht</strong>. Der eingegebene Name dient nur der Anzeige; Sie können eingeben, was Sie möchten — wir fragen nicht nach Ihrem echten Namen.</p>"],
+        ["Was die App NICHT tut", "<ul><li>keine Registrierung, E-Mail, Telefonnummer oder Passwort;</li><li>kein Zugriff auf Kontakte, Fotos, Kamera, Mikrofon oder Standort;</li><li>keine Cookies, Werbe-IDs oder Analysewerkzeuge;</li><li>keine Werbung;</li><li>keine Übertragung von Informationen über das Internet.</li></ul>"],
+        ["Berechtigungen", "<p>Die App deklariert die Berechtigung für den <strong>Internetzugriff</strong>. Sie wird automatisch von der zum Bau der App verwendeten Technologie (Capacitor/WebView) hinzugefügt und <strong>nicht zum Senden oder Empfangen von Daten genutzt</strong>. Sämtliche Spielinhalte — Bilder, Schriften und Klänge — sind in der App enthalten.</p>"],
+        ["Kinder", "<p>Das Spiel ist für alle Altersgruppen geeignet, auch für Kinder. Da <strong>von keinem Nutzer Daten erhoben werden</strong>, werden auch von Kindern keine Daten erhoben. Es gibt keine Werbung, keine Käufe und keine Kommunikation zwischen Spielern.</p>"],
+        ["Käufe", "<p>Diese Version der App enthält <strong>keine aktiven Käufe</strong>. Sollten künftig welche hinzukommen, werden Zahlungen vollständig von <strong>Google Play</strong> nach dessen eigener Datenschutzerklärung abgewickelt — wir erhalten und speichern keine Zahlungsdaten.</p>"],
+        ["Ihre Rechte", "<p>Da wir keine Daten über Sie speichern, gibt es auf unserer Seite nichts einzusehen, zu berichtigen oder zu löschen. Um alles zu löschen, was das Spiel gespeichert hat, genügt es, die <strong>App zu deinstallieren</strong> oder ihre Daten in den Geräteeinstellungen zu löschen.</p>"],
+        ["Änderungen", "<p>Sollte die App künftig anders mit Daten umgehen — etwa durch Werbung oder eine Online-Rangliste —, wird diese Erklärung <strong>vor</strong> Inkrafttreten der Änderung aktualisiert, und das Datum oben auf dieser Seite ändert sich.</p>"],
+        ["Kontakt", "<p>Fragen zu dieser Erklärung richten Sie bitte an <a href=\"mailto:besaleel@gmail.com\">besaleel@gmail.com</a>.</p>"]
+      ]
+    },
+    "terms": {
+      "title": "Nutzungsbedingungen",
+      "updated": "Gültig ab",
+      "intro": "Mit der Nutzung von <strong>Banana King Counterattacks</strong> stimmen Sie diesen Bedingungen zu.",
+      "sections": [
+        ["Nutzungslizenz", "<p>Wir gewähren Ihnen eine <strong>kostenlose, persönliche und nicht ausschließliche</strong> Lizenz, Banana King Counterattacks auf Ihren Geräten zu installieren und zu spielen. Das Spiel dient der Unterhaltung.</p>"],
+        ["Was nicht erlaubt ist", "<ul><li>die App oder ihre Inhalte kopieren, verbreiten oder verkaufen;</li><li>die App verändern, dekompilieren oder zurückentwickeln;</li><li>Name, Figuren oder Grafiken des Spiels ohne Erlaubnis in anderen Produkten verwenden.</li></ul>"],
+        ["Geistiges Eigentum", "<p>Das Spiel, seine Figuren, Grafiken, Texte und der Quellcode gehören <strong>Maratimba Games</strong>. Die verwendeten Schriftarten (<em>Press Start 2P</em> und <em>VT323</em>) stammen von Dritten und stehen unter der <em>SIL Open Font License 1.1</em>.</p>"],
+        ["Keine Gewährleistung", "<p>Die App wird <strong>„wie besehen“</strong> bereitgestellt. Wir bemühen uns, dass sie auf allen Geräten gut läuft, garantieren aber weder Fehlerfreiheit noch einen unterbrechungsfreien Betrieb auf einem bestimmten Gerät.</p>"],
+        ["Haftungsbeschränkung", "<p>Soweit gesetzlich zulässig, haften wir nicht für mittelbare Schäden aus der Nutzung der App. Diese Bedingungen berühren nicht die Ihnen nach Verbraucherschutzrecht zustehenden Rechte.</p>"],
+        ["Spielfortschritt", "<p>Punktzahl und Fortschritt werden <strong>ausschließlich auf Ihrem Gerät</strong> gespeichert. Das Deinstallieren der App, das Löschen ihrer Daten oder ein Gerätewechsel <strong>löscht diesen Fortschritt</strong>; wir können ihn nicht wiederherstellen.</p>"],
+        ["Änderungen und Einstellung", "<p>Diese Bedingungen können aktualisiert werden; das Datum oben auf dieser Seite kennzeichnet die geltende Fassung. Wir können die App einstellen oder die Veröffentlichung von Updates jederzeit beenden.</p>"],
+        ["Anwendbares Recht", "<p>Es gilt das Recht <strong>Brasiliens</strong>.</p>"],
+        ["Kontakt", "<p><a href=\"mailto:besaleel@gmail.com\">besaleel@gmail.com</a></p>"]
+      ]
+    }
+  }
+}

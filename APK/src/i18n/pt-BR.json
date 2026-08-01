@@ -7,8 +7,8 @@
   "on": "ON",
   "off": "OFF",
   "terms": "Termos de uso e privacidade",
-  "termsTitle": "TERMOS DE USO",
-  "termsBody": "[Placeholder] Os Termos de Uso e a Política de Privacidade reais serão adicionados antes do lançamento.",
+  "termsTitle": "TERMOS E PRIVACIDADE",
+  "termsBody": "Este jogo funciona totalmente offline e não coleta nenhum dado pessoal. Seu nome, idioma, pontuação e progresso ficam salvos apenas no seu aparelho e são apagados se você desinstalar o jogo.",
   "close": "Fechar",
   "lastScore": "Última pontuação",
   "removeAds": "Remover Anúncio",
@@ -38,5 +38,7 @@
   "winPhrase": "A galáxia está livre. Longa vida ao Banana King!",
   "winFinalScore": "PONTUAÇÃO FINAL",
   "winBest": "RECORDE",
-  "winNewBest": "NOVO RECORDE!"
+  "winNewBest": "NOVO RECORDE!",
+  "privacyLink": "Política de Privacidade",
+  "termsLink": "Termos de Uso"
 }

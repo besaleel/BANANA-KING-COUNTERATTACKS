@@ -6,9 +6,9 @@
   "fx": "Effets",
   "on": "ON",
   "off": "OFF",
-  "terms": "Conditions d’utilisation et confidentialité",
-  "termsTitle": "CONDITIONS",
-  "termsBody": "[Placeholder] Les Conditions et la Politique de confidentialité réelles seront ajoutées avant la sortie.",
+  "terms": "Conditions d'utilisation et confidentialité",
+  "termsTitle": "CONDITIONS ET CONFIDENTIALITÉ",
+  "termsBody": "Ce jeu fonctionne entièrement hors ligne et ne collecte aucune donnée personnelle. Votre nom, votre langue, votre score et votre progression sont enregistrés uniquement sur votre appareil et sont supprimés si vous désinstallez le jeu.",
   "close": "Fermer",
   "lastScore": "Dernier score",
   "removeAds": "Supprimer les pubs",
@@ -38,5 +38,7 @@
   "winPhrase": "La galaxie est libre. Vive le Banana King !",
   "winFinalScore": "SCORE FINAL",
   "winBest": "RECORD",
-  "winNewBest": "NOUVEAU RECORD !"
+  "winNewBest": "NOUVEAU RECORD !",
+  "privacyLink": "Politique de Confidentialité",
+  "termsLink": "Conditions d'Utilisation"
 }

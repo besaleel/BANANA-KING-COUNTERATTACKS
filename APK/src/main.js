@@ -46,6 +46,22 @@ let game = null;
 const t = () => dict(state.lang);
 const pad = (n) => String(n).padStart(6, '0');
 
+/**
+ * URL das paginas legais no GitHub Pages (epico 10).
+ *
+ * A de privacidade e' a MESMA informada a Play Console e ao AdMob - se este
+ * endereco mudar, atualize tambem la, senao a ficha da loja fica com link
+ * quebrado (motivo de reprovacao na revisao).
+ *
+ * O ingles mora em index.html; os demais idiomas em <lang>.html.
+ */
+const LEGAL_BASE = 'https://besaleel.github.io/BANANA-KING-COUNTERATTACKS';
+
+function legalUrl(kind) {
+  const page = state.lang === 'en' ? 'index.html' : state.lang + '.html';
+  return `${LEGAL_BASE}/${kind}/${page}`;
+}
+
 function applyI18n() {
   const d = t();
   $('tagline').textContent = d.tagline;
@@ -69,8 +85,11 @@ function applyI18n() {
     : d.winBest + ' ' + pad(state.highScore);
   $('btnWinAgain').textContent = d.again;
   $('btnWinMenu').textContent = d.menu;
-  $('btnVicNext').textContent = d.nextPhase +
-    (game ? ' ' + String(Math.min(game.phase + 1, config.fases.length)).padStart(2, '0') : '');
+  // Sem `game` (antes da primeira partida) o alvo e' a fase 02, que e' o que
+  // esta tela ofereceria depois de vencer a 01. Antes caia num rotulo "FASE"
+  // solto, sem numero.
+  const nextN = game ? Math.min(game.phase + 1, config.fases.length) : 2;
+  $('btnVicNext').textContent = d.nextPhase + ' ' + String(nextN).padStart(2, '0');
   $('btnVicMenu').textContent = d.menu;
   $('overTitle').textContent = d.overTitle;
   $('overSub').textContent = d.overSub;
@@ -87,6 +106,10 @@ function applyI18n() {
   $('btnCancelAds').textContent = d.cancel;
   $('termsTitle').textContent = d.termsTitle;
   $('termsBody').textContent = d.termsBody;
+  $('linkPrivacyUrl').textContent = d.privacyLink;
+  $('linkTermsUrl').textContent = d.termsLink;
+  $('linkPrivacyUrl').href = legalUrl('privacy');
+  $('linkTermsUrl').href = legalUrl('terms');
   $('btnCloseTerms').textContent = d.close;
   updateToggleLabels();
 }
@@ -384,6 +407,25 @@ function wire() {
     audio.sfx('click');
     $('mdTerms').hidden = true;
   });
+
+  // No app nativo, `target=_blank` abriria DENTRO do WebView e prenderia o
+  // usuario numa pagina sem barra de navegacao, sem botao de voltar. Abrimos
+  // no navegador do sistema. No browser, o comportamento padrao ja e' correto.
+  for (const id of ['linkPrivacyUrl', 'linkTermsUrl']) {
+    $(id).addEventListener('click', async (e) => {
+      audio.sfx('click');
+      if (!window.Capacitor?.isNativePlatform?.()) return;   // browser: deixa passar
+      e.preventDefault();
+      const url = e.currentTarget.href;
+      try {
+        const { Browser } = await import('@capacitor/browser');
+        await Browser.open({ url });
+      } catch (_) {
+        // plugin ausente: cai no navegador externo pelo proprio sistema
+        window.open(url, '_system');
+      }
+    });
+  }
 
   input.attachKeyboard();
   input.onEscape = () => {

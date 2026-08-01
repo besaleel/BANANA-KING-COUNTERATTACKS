@@ -1,0 +1,9 @@
+{
+  "app": "Banana King Counterattacks",
+  "package": "com.bananaking.counterattacks",
+  "publisher": "Maratimba Games",
+  "contact": "besaleel@gmail.com",
+  "effectiveDate": "2026-08-01",
+  "baseUrl": "https://besaleel.github.io/BANANA-KING-COUNTERATTACKS",
+  "note": "Fonte de verdade dos dados usados nas páginas legais. Ao mudar algo aqui, rode docs/gerar.py para regerar os HTML."
+}

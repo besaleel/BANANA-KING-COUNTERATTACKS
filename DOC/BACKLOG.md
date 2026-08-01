@@ -1,7 +1,7 @@
 # Backlog — Banana King Counterattacks
 
 > **Documento de referência:** [ESPECFICATION.md](ESPECFICATION.md)
-> **Atualizado:** 31/07/2026
+> **Atualizado:** 01/08/2026
 > **Legenda de status:** ⬜ pendente · 🟡 em andamento · ✅ concluído · ⏸️ bloqueado
 
 ## Sumário de épicos
@@ -14,12 +14,12 @@
 | 3 | Pendências de gameplay da Fase 01 | 🟡 | Alta |
 | 4 | Fases 02–10 e curva de dificuldade | 🟡 | Alta |
 | 5 | Animação de vitória final | ✅ | — |
-| 6 | Áudio e assets de produção | ⬜ | Média (6.0 ⚠️ **áudio mudo no mobile**) |
+| 6 | Áudio e assets de produção | 🟡 | 6.1 ✅ · 6.0 ⚠️ **áudio mudo no mobile** |
 | 7 | Internacionalização (fechamento) | ⬜ | Média |
 | 8 | Monetização — AdMob + Billing | ⬜ | Média |
 | 9 | Ranking global (Play Games Services) | ⬜ | Baixa |
-| 10 | Textos legais e conformidade | ⬜ | **Bloqueante p/ release** |
-| 11 | Empacotamento e release | ⬜ | Alta (11.0 ⚠️ **antes do keystore**) |
+| 10 | Textos legais e conformidade | 🟡 | textos ✅ · falta publicar o **GitHub Pages** |
+| 11 | Empacotamento e release | 🟡 | **AAB assinado pronto** · falta o cadastro na loja |
 | 12 | QA e testes em dispositivo | ⬜ | Alta |
 
 ---
@@ -40,7 +40,9 @@
       próprio documento.
 - [x] Criar `servir-prototipo.py` (contorno dos caminhos inconsistentes do
       protótipo — ver épico 2).
-- [ ] Atualizar `DOC/GOOGLE-ADMOB.md` com o App ID real quando a conta existir.
+- [x] Atualizar `DOC/GOOGLE-ADMOB.md` com o App ID real. *(01/08/2026 — App ID
+      e unidade de banner cadastrados; a **integração do SDK** segue pendente no
+      épico 8.1)*
 - [ ] Decidir se `PROJECT/ESPECIFICACAO-POC.md` vira histórico (marcar como
       superado pela spec de `DOC/`) ou é removido.
 - [ ] Criar `CLAUDE.md` na raiz com convenções do projeto (assets, i18n,
@@ -422,8 +424,12 @@ regressão — no mobile nunca chegou a tocar.
 - [ ] Criar conta/app no **Google AdMob** e vincular à conta de pagamentos.
 - [ ] Cadastrar o **banner** e gerar a **Ad Unit ID** de produção.
 - [ ] Criar unidade de teste (test ad unit) para desenvolvimento.
-- [ ] Registrar o **App ID real** em [GOOGLE-ADMOB.md](GOOGLE-ADMOB.md)
-      (hoje `ca-app-pub-XXX`).
+- [x] Registrar o **App ID real** em [GOOGLE-ADMOB.md](GOOGLE-ADMOB.md).
+      *(01/08/2026 — App ID e unidade de banner cadastrados)*
+      ⚠️ **Estes IDs ainda NÃO estão no app** — o banner continua sendo o
+      placeholder 320×50. A integração do SDK é a próxima tarefa deste épico.
+      ⚠️ Como o público-alvo inclui crianças (épico 10), a integração terá de
+      usar `tagForChildDirectedTreatment` e anúncios não personalizados.
 - [ ] Integrar o SDK e exibir o banner real na base (substituir o placeholder
       320×50).
 - [ ] Implementar a lógica de **ocultar o banner** quando `remove_ads` estiver ativo.
@@ -451,12 +457,31 @@ regressão — no mobile nunca chegou a tocar.
 
 ---
 
-## Épico 10 — Textos legais e conformidade ⏸️ *bloqueia o release*
+## Épico 10 — Textos legais e conformidade
 
-- [ ] Redigir os **Termos de Uso** reais, localizados nos 6 idiomas.
-      *(Pendência #8)*
-- [ ] Redigir a **Política de Privacidade** real e **hospedar em URL pública**
-      (exigida pelas lojas e pelo AdMob).
+- [x] Redigir os **Termos de Uso** reais, localizados nos 6 idiomas.
+      *(Pendência #8)* *(01/08/2026 — `docs/terms/`)*
+- [x] Redigir a **Política de Privacidade** real. *(01/08/2026 —
+      `docs/privacy/`, 6 idiomas)*
+- [ ] ⚠️ **Habilitar o GitHub Pages** (Settings → Pages → branch `main`, pasta
+      `/docs`) e confirmar que a URL abre. **Sem isso o app não é publicável** —
+      a Play Console exige URL pública de política de privacidade.
+      Passo a passo em [PUBLICAR-PLAY-CONSOLE.md](PUBLICAR-PLAY-CONSOLE.md) §0.
+
+> **Nota (01/08/2026) — o conteúdo reflete o app auditado, não texto genérico.**
+> Verificado no código: **nenhuma chamada de rede**, nenhum SDK de terceiros, e
+> a única permissão (`INTERNET`) é adicionada pelo WebView do Capacitor sem ser
+> usada. Tudo o que o jogo salva (nome, idioma, pontuação, fase) fica em
+> `localStorage` e some ao desinstalar. Por isso a política pode afirmar
+> honestamente que **nada é coletado**.
+>
+> ⚠️ **Ao implementar AdMob (épico 8) ou Play Games (épico 9), estes textos e o
+> formulário de Data Safety precisam ser refeitos** — anúncios coletam
+> identificador de publicidade.
+>
+> As páginas são geradas por `python docs/gerar.py` a partir de
+> `docs/_content.json` (textos) e `docs/_data.json` (titular, datas). Não edite
+> os HTML à mão.
 
 > **Nota (31/07/2026) — hospedagem dos textos legais:** os **Termos de Uso** e a
 > **Política de Privacidade** serão publicados no **GitHub Pages** deste
@@ -465,12 +490,22 @@ regressão — no mobile nunca chegou a tocar.
 > É essa URL pública que será informada no Play Console e no AdMob, e para onde
 > apontam os links da tela inicial (§7.1 da spec).
 
-- [ ] Habilitar **GitHub Pages** no repositório e criar as páginas `terms` e
-      `privacy` (6 idiomas).
-- [ ] Substituir os placeholders da tela inicial pelos textos/links reais.
-- [ ] Revisar conformidade **COPPA / público infantil** — afeta anúncios e coleta
-      de dados, e o jogo tem apelo infantil.
-- [ ] Preencher **Data safety / Segurança de dados** no Play Console.
+- [x] Criar as páginas `terms` e `privacy` (6 idiomas). *(01/08/2026 — 13
+      páginas, 108 links internos verificados, sem dependência de JavaScript)*
+- [x] Substituir os placeholders da tela inicial pelos textos/links reais.
+      *(01/08/2026 — o modal agora traz um resumo honesto e dois links que
+      abrem as páginas **no idioma escolhido**. No app nativo usam o
+      `@capacitor/browser`: com `target=_blank` a página abriria dentro do
+      WebView, prendendo o usuário numa tela sem botão de voltar.)*
+- [x] Revisar conformidade **COPPA / público infantil**. *(01/08/2026 —
+      público-alvo decidido: **todas as idades, incluindo crianças**. O app já
+      está conforme por não coletar dado algum, não ter anúncios nem compras e
+      não permitir comunicação entre jogadores.)*
+      ⚠️ **Consequência para o épico 8:** os anúncios terão de usar
+      `tagForChildDirectedTreatment` e ser não personalizados, o que **reduz a
+      receita por anúncio**. É o custo consciente da escolha.
+- [ ] Preencher **Data safety** no Play Console — respostas prontas em
+      [PUBLICAR-PLAY-CONSOLE.md](PUBLICAR-PLAY-CONSOLE.md).
 
 ---
 
@@ -542,7 +577,14 @@ Detalhes e o bloco pronto para colar estão no §0 do
       `DEPLOY/store-assets/icon-512.png`: 512×512, 258 KB, **sem canal alpha**
       (a Play Store rejeita ícone com transparência) e com o nome
       "BANANA KING COUNTERATTACKS" completo, atendendo à §0 da spec)*
-- [ ] **Screenshots em retrato** (mínimo 2 por idioma).
+- [x] **Screenshots em retrato.** *(01/08/2026 — 4 capturas em pt-BR, 480×854,
+      conformes: menu, gameplay com formação cheia, gameplay avançado com combo
+      x5, e a vitória final. O mínimo da loja é 2.)*
+      ⚠️ **Só pt-BR.** As capturas em inglês não saíram: o Chrome headless
+      passou a expirar nesta máquina depois de dezenas de execuções. Para
+      regerar, subir `npm run preview` e usar `APK/tools/_shots.html`
+      (`?s=menu|gameplay|gameplay2|victory|win&lang=pt|en`). A loja aceita o
+      envio só com pt-BR; as demais fichas de idioma reaproveitam essas.
 - [ ] Ao cadastrar: o **título na Play Console** tem de ser
       **"Banana King Counterattacks"**. O feature graphic mostra só
       "BANANA KING", o que é aceitável como arte promocional — mas o título e o

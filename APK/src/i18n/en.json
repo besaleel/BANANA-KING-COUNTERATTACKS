@@ -7,8 +7,8 @@
   "on": "ON",
   "off": "OFF",
   "terms": "Terms of use & privacy",
-  "termsTitle": "TERMS OF USE",
-  "termsBody": "[Placeholder] Real Terms of Use and Privacy Policy will be added before release.",
+  "termsTitle": "TERMS & PRIVACY",
+  "termsBody": "This game runs entirely offline and collects no personal data. Your name, language, score and progress are saved only on your device and are deleted if you uninstall the game.",
   "close": "Close",
   "lastScore": "Last score",
   "removeAds": "Remove Ads",
@@ -38,5 +38,7 @@
   "winPhrase": "The galaxy is free. Long live the Banana King!",
   "winFinalScore": "FINAL SCORE",
   "winBest": "BEST",
-  "winNewBest": "NEW BEST!"
+  "winNewBest": "NEW BEST!",
+  "privacyLink": "Privacy Policy",
+  "termsLink": "Terms of Use"
 }

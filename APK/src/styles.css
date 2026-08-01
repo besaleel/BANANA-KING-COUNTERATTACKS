@@ -363,6 +363,9 @@ input {
 
 .btn-ghost.danger { border-color: #ff6b57; color: #ff6b57; }
 
+/* links legais no modal: <a> com aparencia de botao (epico 10) */
+.link-btn { text-decoration: none; text-align: center; display: block; }
+
 /* ---------- modais ---------- */
 
 .modal {

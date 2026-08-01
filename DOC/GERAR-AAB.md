@@ -227,6 +227,28 @@ Para conferir que ele saiu assinado com a **sua** chave (e não com a de debug):
 
 Deve terminar com **`jar verified.`** e mostrar o `CN=` do seu certificado.
 
+### 5.0 ⚠️ Ao adicionar um plugin Capacitor, atualize o ProGuard
+
+O R8 está ligado e o Capacitor resolve plugins **por reflexão** — o R8 não
+enxerga essas referências e pode remover a classe. O app **compila normalmente**
+e falha só em runtime, no build de release.
+
+Sempre que instalar um plugin novo, acrescente a regra em
+`android/app/proguard-rules.pro`:
+
+```proguard
+-keep class com.capacitorjs.plugins.<nome>.** { *; }
+```
+
+Plugins cobertos hoje: `app`, `screenorientation`, `browser`.
+
+Para descobrir o pacote de um plugin:
+
+```powershell
+Get-ChildItem -Recurse "APK\node_modules\@capacitor\<plugin>\android\src" -Filter *.java |
+  Select-Object -First 1 | Get-Content | Select-String "^package"
+```
+
 ### 5.1 ⚠️ Guarde o `mapping.txt` de cada release
 
 O R8 está ligado (`minifyEnabled true`), então o código do AAB é **ofuscado**.

@@ -1,0 +1,68 @@
+<!DOCTYPE html><meta charset="utf-8"><title>shots</title>
+<style>html,body{margin:0;background:#000}iframe{width:480px;height:854px;border:0;display:block}</style>
+<script>
+// O idioma e o nome sao gravados ANTES do iframe carregar: o jogo le
+// localStorage na inicializacao, entao ja nasce no idioma certo. Assim a
+// captura nao depende de nenhum passo assincrono meu - o --screenshot do
+// Chrome dispara no load e nao espera setTimeout encadeado.
+const P = new URLSearchParams(location.search);
+const lang = P.get('lang') || 'pt';
+try {
+  localStorage.clear();
+  localStorage.setItem('bkc_lang', lang);
+  localStorage.setItem('bkc_name', 'BANANA KING');
+} catch (e) {}
+document.write('<iframe id="f" src="/"></iframe>');
+</script>
+<script>
+const shot = P.get('s') || 'menu';
+const L = {
+  pt:{win:['VOCÊ VENCEU!','A galáxia está livre. Longa vida ao Banana King!','PONTUAÇÃO FINAL','NOVO RECORDE!','BONUS DE FASE +1000','BONUS DE VIDAS +15000','JOGAR DE NOVO','Menu'],vic:'BONUS DE FASE +1000'},
+  en:{win:['YOU WIN!','The galaxy is free. Long live the Banana King!','FINAL SCORE','NEW BEST!','LEVEL BONUS +1000','LIVES BONUS +15000','PLAY AGAIN','Menu'],vic:'LEVEL BONUS +1000'}
+};
+document.getElementById('f').addEventListener('load', async () => {
+  const w = document.getElementById('f').contentWindow, doc = w.document;
+  const $ = (id) => doc.getElementById(id);
+  const sleep = (ms) => new Promise(r => setTimeout(r, ms));
+  const d = L[lang] || L.en;
+  await doc.fonts.ready;
+  if (shot === 'menu') return;
+
+  $('btnPlay').click();
+  await sleep(200);
+  if (shot === 'gameplay') { await sleep(4200); return; }
+  if (shot === 'gameplay2') {
+    // sem input o heroi morre e a captura viraria GAME OVER
+    const key=(t,c)=>doc.dispatchEvent(new w.KeyboardEvent(t,{key:c,code:c,bubbles:true}));
+    const t0=Date.now(); let dir='ArrowLeft';
+    while (Date.now()-t0 < 8000) {
+      key('keydown',dir); await sleep(420); key('keyup',dir);
+      dir = dir==='ArrowLeft'?'ArrowRight':'ArrowLeft'; await sleep(60);
+    }
+    return;
+  }
+  if (shot === 'victory') {
+    await sleep(600);
+    $('scMenu').hidden=true; $('hud').hidden=true; $('adsBar').hidden=true;
+    $('scVictory').hidden=false;
+    $('vicScore').textContent='SCORE 018740';
+    $('vicBonus').textContent=d.vic; $('vicBonus').hidden=false;
+    $('vicSoon').hidden=true;
+    return;
+  }
+  if (shot === 'win') {
+    await sleep(400);
+    $('scMenu').hidden=true; $('hud').hidden=true; $('adsBar').hidden=true;
+    $('scVictory').hidden=true; $('scWin').hidden=false;
+    $('winFrame').src='assets/win_Walk-Frame-1-Phone.webp';
+    const t=d.win;
+    $('winTitle').textContent=t[0]; $('winPhrase').textContent=t[1];
+    $('winScoreLabel').textContent=t[2]; $('winScore').textContent='166420';
+    $('winBest').textContent=t[3]; $('winBest').className='score sm c-blue is-new';
+    const bn=$('winBonus'); bn.textContent='';
+    for (const s of [t[4],t[5]]) { const dv=doc.createElement('div'); dv.textContent=s; bn.appendChild(dv); }
+    bn.hidden=false;
+    $('btnWinAgain').textContent=t[6]; $('btnWinMenu').textContent=t[7];
+  }
+});
+</script>

@@ -11,16 +11,34 @@ tropa estelar ao longo de **10 fases**.
 
 ## Status
 
-**Fase de protótipo.** A Fase 01 está jogável de ponta a ponta em
-[PROJECT/Banana King - Fase 01.dc.html](PROJECT/Banana%20King%20-%20Fase%2001.dc.html)
-— tela inicial, gameplay completo, power-ups, vitória/derrota, pausa, i18n nos 6
-idiomas, áudio e recorde local.
+**Pronto para o envio à Play Console** *(01/08/2026)* — falta apenas publicar o
+GitHub Pages e fazer o cadastro na loja.
 
-O **stack de produção foi decidido em 31/07/2026: vanilla JS/canvas + Capacitor**
-(épico 2 do [backlog](DOC/BACKLOG.md)). O projeto de produção vive em
-[APK/](APK/), onde a lógica da Fase 01 já foi portada do protótipo — sem o
-framework de prototipagem, com config de fases e i18n em JSON e pooling de
-entidades. O protótipo em `PROJECT/` permanece como referência histórica.
+O jogo está completo: **10 fases**, barreira de bananas, power-ups, banana bônus,
+tela de vitória final animada, i18n nos 6 idiomas, áudio e recorde local, tudo
+**100% offline**. Stack: **vanilla JS/canvas + Vite + Capacitor**, em [APK/](APK/).
+
+| Artefato | Estado |
+|---|---|
+| AAB assinado | ✅ 2,5 MB, `jar verified` |
+| APK de release | ✅ 2,2 MB |
+| Assets de loja (ícone, feature graphic, screenshots) | ✅ `DEPLOY/store-assets/` |
+| Política de Privacidade e Termos (6 idiomas) | ✅ `docs/` |
+| **GitHub Pages** | ⬜ **habilitar** — a Play Console exige a URL pública |
+| Teste em aparelho real | ⬜ pendente |
+
+**Em aberto:** playtest humano da curva de dificuldade (épicos 3–4), bug de áudio
+mudo no mobile (épico 6.0, precisa de depurador em dispositivo), AdMob e Billing
+(épico 8) e ranking global (épico 9).
+
+O protótipo em `PROJECT/` permanece como referência histórica.
+
+### Como publicar
+
+1. `git push` e habilite o **GitHub Pages** (Settings → Pages → branch `main`,
+   pasta `/docs`).
+2. Siga o [DOC/PUBLICAR-PLAY-CONSOLE.md](DOC/PUBLICAR-PLAY-CONSOLE.md) — traz as
+   descrições prontas, as respostas do Data Safety e o checklist de envio.
 
 ## Documentação
 
@@ -28,7 +46,9 @@ entidades. O protótipo em `PROJECT/` permanece como referência histórica.
 | --- | --- |
 | [DOC/ESPECFICATION.md](DOC/ESPECFICATION.md) | **Especificação técnica e de design.** Fonte da verdade das regras de jogo, calibração, telas, i18n e monetização. |
 | [DOC/BACKLOG.md](DOC/BACKLOG.md) | Backlog de produção em 13 épicos, do protótipo à publicação. |
-| [DOC/GERAR-AAB.md](DOC/GERAR-AAB.md) | Processo de build do AAB assinado para a Play Store. Herdado de outro projeto — válido só a partir da decisão de stack. |
+| [DOC/GERAR-AAB.md](DOC/GERAR-AAB.md) | Build do AAB assinado, keystore, R8 e backup das chaves. Validado de ponta a ponta em 01/08/2026. |
+| [DOC/PUBLICAR-PLAY-CONSOLE.md](DOC/PUBLICAR-PLAY-CONSOLE.md) | **Cadastro na loja:** descrições prontas, Data Safety, classificação etária e checklist de envio. |
+| [DOC/GERAR-ASSETS.md](DOC/GERAR-ASSETS.md) | Geração dos assets otimizados (WebP) e fontes embutidas. |
 | [DOC/GOOGLE-ADMOB.md](DOC/GOOGLE-ADMOB.md) | Identificadores do AdMob (App ID ainda placeholder). |
 
 > Regras de jogo mudam **primeiro na especificação**, depois no código.
@@ -42,7 +62,10 @@ entidades. O protótipo em `PROJECT/` permanece como referência histórica.
 | `PROJECT/uploads/` | Mocks de referência visual |
 | `DOC/` | Documentação do projeto |
 | `APK/` | **Projeto de produção** — vanilla JS + Vite + Capacitor |
-| `DEPLOY/` | Artefatos de publicação e assets de loja |
+| `APK/public/assets/` | Assets otimizados em WebP (1 MB) — gerados de `PROJECT/assets/` |
+| `APK/tools/` | Scripts de build (geração de assets, driver de screenshots) |
+| `docs/` | **Páginas legais** publicadas no GitHub Pages (privacidade e termos, 6 idiomas) |
+| `DEPLOY/` | Artefatos de publicação e assets de loja (binários não versionados) |
 
 ## Como rodar o projeto de produção (`APK/`)
 

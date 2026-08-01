@@ -7,8 +7,8 @@
   "on": "AN",
   "off": "AUS",
   "terms": "Nutzungsbedingungen & Datenschutz",
-  "termsTitle": "NUTZUNGSBEDINGUNGEN",
-  "termsBody": "[Placeholder] Die echten Nutzungsbedingungen und die Datenschutzerklärung werden vor dem Release ergänzt.",
+  "termsTitle": "BEDINGUNGEN & DATENSCHUTZ",
+  "termsBody": "Dieses Spiel läuft vollständig offline und erhebt keine personenbezogenen Daten. Name, Sprache, Punktzahl und Fortschritt werden nur auf Ihrem Gerät gespeichert und beim Deinstallieren gelöscht.",
   "close": "Schließen",
   "lastScore": "Letzte Punktzahl",
   "removeAds": "Werbung entfernen",
@@ -38,5 +38,7 @@
   "winPhrase": "Die Galaxie ist frei. Lang lebe der Banana King!",
   "winFinalScore": "ENDPUNKTZAHL",
   "winBest": "REKORD",
-  "winNewBest": "NEUER REKORD!"
+  "winNewBest": "NEUER REKORD!",
+  "privacyLink": "Datenschutzerklärung",
+  "termsLink": "Nutzungsbedingungen"
 }
