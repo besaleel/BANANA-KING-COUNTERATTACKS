@@ -133,3 +133,20 @@ Detalhes e valores de calibração: [DOC/ESPECFICATION.md](DOC/ESPECFICATION.md)
 | Idiomas | PT-BR (padrão), EN, ES, FR, IT, DE |
 | Monetização | Banner AdMob + compra única `remove_ads` (ref. USD 1,90) |
 | Orientação | Retrato, layout único (Phone) escalado |
+
+## Licença
+
+**© 2026 Maratimba Games — todos os direitos reservados.**
+
+Este repositório é **público apenas para leitura**: a visibilidade existe para
+transparência, portfólio e para hospedar as páginas de Política de Privacidade e
+Termos de Uso exigidas pelas lojas de aplicativos.
+
+**Nenhuma licença de uso é concedida.** Copiar, modificar, redistribuir ou
+reaproveitar o código, a arte ou o design deste jogo — em projetos comerciais ou
+não — **não é permitido** sem autorização por escrito. Ver [LICENSE](LICENSE).
+
+> Exceção: as fontes em `APK/public/fonts/` são de terceiros, sob **SIL Open
+> Font License 1.1** — ver [APK/public/fonts/LICENSE.txt](APK/public/fonts/LICENSE.txt).
+
+Licenciamento: besaleel@gmail.com

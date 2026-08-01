@@ -1,0 +1,110 @@
+Copyright (c) 2026 Maratimba Games. All rights reserved.
+Todos os direitos reservados.
+
+================================================================================
+PROPRIETARY SOFTWARE LICENSE — LICENÇA DE SOFTWARE PROPRIETÁRIO
+Banana King Counterattacks (com.bananaking.counterattacks)
+================================================================================
+
+--------------------------------------------------------------------------------
+ENGLISH
+--------------------------------------------------------------------------------
+
+This repository and all of its contents — including but not limited to source
+code, artwork, images, sprites, level design, game rules, audio, text, and
+documentation (collectively, the "Work") — are the exclusive property of
+Maratimba Games and are protected by copyright law and international treaties.
+
+NO LICENSE IS GRANTED.
+
+The Work is made publicly visible for the sole purposes of transparency,
+portfolio presentation, and hosting the legally required Privacy Policy and
+Terms of Use pages. Public visibility does NOT constitute a grant of any
+license or right whatsoever.
+
+Without the prior express written permission of the copyright holder, you may
+NOT:
+
+  1. copy, reproduce, or store the Work, in whole or in part, other than the
+     transient copy your browser or Git client makes to view it;
+  2. modify, adapt, translate, or create derivative works from the Work;
+  3. distribute, publish, sublicense, sell, rent, or lease the Work;
+  4. use the Work, in whole or in part, in any other project, whether
+     commercial or non-commercial, whether free or paid;
+  5. use the Work to train, fine-tune, or evaluate machine learning models,
+     artificial intelligence systems, or automated code-generation tools;
+  6. reverse engineer, decompile, or disassemble any compiled artifact derived
+     from the Work;
+  7. use the names "Banana King Counterattacks", "Banana King", "Trasho", or
+     "Maratimba Games", or any of the characters, logos, or visual identity of
+     the Work, in any product, service, or promotional material.
+
+Reading the code and referring to it for personal study are permitted. Nothing
+beyond that is.
+
+THIRD-PARTY COMPONENTS. The fonts distributed in APK/public/fonts/ ("Press
+Start 2P" and "VT323") are NOT covered by this license: they are third-party
+works licensed under the SIL Open Font License 1.1 and remain governed by it.
+See APK/public/fonts/LICENSE.txt. Software dependencies declared in
+APK/package.json are likewise governed by their own respective licenses.
+
+NO WARRANTY. THE WORK IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND NONINFRINGEMENT. IN NO
+EVENT SHALL THE COPYRIGHT HOLDER BE LIABLE FOR ANY CLAIM, DAMAGES, OR OTHER
+LIABILITY ARISING FROM, OUT OF, OR IN CONNECTION WITH THE WORK OR THE USE OR
+OTHER DEALINGS IN THE WORK.
+
+Licensing enquiries: besaleel@gmail.com
+
+
+--------------------------------------------------------------------------------
+PORTUGUÊS
+--------------------------------------------------------------------------------
+
+Este repositório e todo o seu conteúdo — incluindo, sem limitação, código-fonte,
+arte, imagens, sprites, design de fases, regras de jogo, áudio, textos e
+documentação (em conjunto, a "Obra") — são propriedade exclusiva da Maratimba
+Games e estão protegidos pela legislação de direitos autorais (Lei nº 9.610/1998
+e Lei nº 9.609/1998) e por tratados internacionais.
+
+NENHUMA LICENÇA É CONCEDIDA.
+
+A Obra é tornada publicamente visível apenas para fins de transparência,
+apresentação de portfólio e hospedagem das páginas de Política de Privacidade e
+Termos de Uso exigidas por lei. A visibilidade pública NÃO constitui concessão
+de licença ou direito de qualquer natureza.
+
+Sem a prévia e expressa autorização por escrito do titular dos direitos, é
+PROIBIDO:
+
+  1. copiar, reproduzir ou armazenar a Obra, no todo ou em parte, salvo a cópia
+     transitória feita pelo navegador ou cliente Git para visualização;
+  2. modificar, adaptar, traduzir ou criar obras derivadas da Obra;
+  3. distribuir, publicar, sublicenciar, vender, alugar ou arrendar a Obra;
+  4. utilizar a Obra, no todo ou em parte, em qualquer outro projeto, seja
+     comercial ou não comercial, gratuito ou pago;
+  5. utilizar a Obra para treinar, ajustar ou avaliar modelos de aprendizado de
+     máquina, sistemas de inteligência artificial ou ferramentas automatizadas
+     de geração de código;
+  6. realizar engenharia reversa, descompilar ou desmontar qualquer artefato
+     compilado derivado da Obra;
+  7. utilizar os nomes "Banana King Counterattacks", "Banana King", "Trasho" ou
+     "Maratimba Games", nem quaisquer personagens, logotipos ou elementos da
+     identidade visual da Obra, em qualquer produto, serviço ou material
+     promocional.
+
+É permitido ler o código e consultá-lo para estudo pessoal. Nada além disso.
+
+COMPONENTES DE TERCEIROS. As fontes distribuídas em APK/public/fonts/ ("Press
+Start 2P" e "VT323") NÃO são abrangidas por esta licença: são obras de terceiros
+licenciadas sob a SIL Open Font License 1.1 e permanecem regidas por ela. Ver
+APK/public/fonts/LICENSE.txt. As dependências de software declaradas em
+APK/package.json são igualmente regidas por suas respectivas licenças.
+
+AUSÊNCIA DE GARANTIA. A OBRA É FORNECIDA "COMO ESTÁ", SEM GARANTIA DE QUALQUER
+NATUREZA, EXPRESSA OU IMPLÍCITA. EM NENHUMA HIPÓTESE O TITULAR DOS DIREITOS
+SERÁ RESPONSÁVEL POR QUAISQUER REIVINDICAÇÕES, DANOS OU OUTRAS
+RESPONSABILIDADES DECORRENTES DA OBRA OU DE SEU USO.
+
+Contato para licenciamento: besaleel@gmail.com
