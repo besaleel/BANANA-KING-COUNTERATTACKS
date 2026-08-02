@@ -409,6 +409,21 @@ regressão — no mobile nunca chegou a tocar.
       placeholder do Capacitor (o "X" azul). *(01/08/2026 — automatizado em
       `APK/tools/gerar-icones.py`; basta rodar o script, não há mais edição
       manual a perder.)*
+- [ ] **Reaplicar o trio de versões do build se a pasta `android/` for
+      regerada.** Mesma causa dos dois itens acima, e a de consequência mais
+      cara: sem esses valores a Play **recusa o upload**. O Capacitor repõe os
+      padrões dele, que ficam para trás do exigido. Valores em vigor no
+      **v1.1-3** (01/08/2026):
+
+      | Arquivo | Chave | Valor |
+      |---|---|---|
+      | `android/variables.gradle` | `compileSdkVersion` / `targetSdkVersion` | **36** |
+      | `android/build.gradle` | `com.android.tools.build:gradle` | **8.7.3** |
+      | `android/gradle/wrapper/gradle-wrapper.properties` | `distributionUrl` | **gradle-8.9-all.zip** |
+
+      Depois de reaplicar, rode `.\gradlew clean` antes do `bundleRelease`.
+      Tabela e histórico completos em [GERAR-AAB.md](GERAR-AAB.md) §7.
+      Automatizar junto com os dois itens acima no épico 11.
 
 ---
 

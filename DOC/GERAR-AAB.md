@@ -9,9 +9,12 @@ Play Console, e deixá-lo em `DEPLOY/`.
 > verificado** (`jarsigner` → `jar verified`).
 >
 > O aviso anterior de "documento adaptado de outro projeto, stack indefinido"
-> não vale mais. O que **ainda não foi feito** é o upload à Play Console (conta
-> de desenvolvedor, ficha da loja, Play App Signing) — épico 11.1 do
-> [BACKLOG.md](BACKLOG.md).
+> não vale mais.
+>
+> **Estado atual:** o **v1.0.1-2** chegou à Play Store (foi nele que apareceu o
+> ícone placeholder, corrigido em §4.1). O **v1.1-3** está gerado em `DEPLOY/`,
+> assinado e verificado, com o primeiro playtest humano da campanha completa
+> incorporado — ver §7 do [BACKLOG.md](BACKLOG.md).
 
 ## Identidade do app (confirmada)
 
@@ -326,29 +329,44 @@ versionado do mesmo jeito. Ver §0.
 ### `targetSdkVersion` exigido pela Play Store
 
 A Play recusa o upload quando o `targetSdkVersion` está abaixo do mínimo da
-janela vigente. O primeiro envio (01/08/2026) foi barrado assim:
+janela vigente. Já aconteceu duas vezes neste projeto:
 
-> No momento, o nível desejado da API do app é 34. No entanto, esse nível
-> precisa ser de pelo menos 35.
-
-Correção aplicada em `APK/android/variables.gradle` (`compileSdkVersion` e
-`targetSdkVersion` = 35). Subir o SDK exigiu também subir o toolchain, porque
-o AGP 8.2 não compila contra o SDK 35:
-
-| Item | Antes | Depois |
+| Data | Exigência | Ação |
 |---|---|---|
-| `targetSdkVersion` / `compileSdkVersion` | 34 | **35** |
-| Android Gradle Plugin (`build.gradle` raiz) | 8.2.1 | **8.5.2** |
-| Gradle wrapper (`gradle-wrapper.properties`) | 8.2.1 | **8.7** |
+| 01/08/2026 | "o nível desejado da API é 34, precisa ser pelo menos 35" (upload barrado) | 34 → 35 |
+| 01/08/2026 | aviso da Play: a partir de **30/08/2026** o alvo não pode ficar mais de um ano atrás do Android mais recente — exige **Android 16 (API 36)** | 35 → **36** |
 
-O mínimo sobe cerca de uma vez por ano. Confira o nível atual em
-*Play Console → Política → Níveis de API desejados* antes de cada release e
-repita esse mesmo trio de ajustes quando ele mudar. Verifique o resultado no
-binário gerado, não só no Gradle:
+Subir o SDK exige subir o **toolchain junto**: cada AGP só compila até um
+`compileSdk` conhecido, e avisa (`was tested up to compileSdk = N`) quando
+passa disso. O trio que muda sempre:
+
+| Item | v1.0.1-2 | v1.1-3 (atual) |
+|---|---|---|
+| `targetSdkVersion` / `compileSdkVersion` (`variables.gradle`) | 35 | **36** |
+| Android Gradle Plugin (`build.gradle` raiz) | 8.5.2 | **8.7.3** |
+| Gradle wrapper (`gradle-wrapper.properties`) | 8.7 | **8.9** |
+
+> Depois de mexer no trio, rode **`.\gradlew clean` antes do `bundleRelease`**.
+> Sem isso o Gradle reaproveita artefatos compilados contra o SDK anterior e o
+> build sai inconsistente.
+
+O mínimo sobe cerca de uma vez por ano. Confira em *Play Console → Política →
+Níveis de API desejados* antes de cada release.
+
+**Verifique no binário, não só no Gradle.** O AAB guarda o manifesto em
+protobuf, então `aapt2 dump xmltree` não lê direto do `.aab` — extraia primeiro:
 
 ```powershell
-& "$env:LOCALAPPDATA\Android\Sdk\build-tools\35.0.0\aapt2.exe" dump badging "C:\Sistemas\BANANA-KING-COUNTERATTACKS\DEPLOY\banana-king-counterattacks-release.apk" | Select-String "targetSdkVersion|versionCode"
+$tmp = "$env:TEMP\aabcheck"; Remove-Item -Recurse -Force $tmp -ErrorAction SilentlyContinue
+New-Item -ItemType Directory -Force $tmp | Out-Null
+Copy-Item "C:\Sistemas\BANANA-KING-COUNTERATTACKS\DEPLOY\banana-king-counterattacks-v1.1-3.aab" "$tmp\b.zip"
+Expand-Archive "$tmp\b.zip" -DestinationPath "$tmp\x" -Force
+python -c "d=open(r'$tmp\x\base\manifest\AndroidManifest.xml','rb').read(); [print(k, d[d.find(k.encode()):d.find(k.encode())+24]) for k in ['targetSdkVersion','minSdkVersion','versionName','versionCode']]"
 ```
+
+O valor aparece logo após o nome do atributo (ex. `targetSdkVersion\x1a\x0236`
+→ **36**). Confirmado assim no v1.1-3: target 36, min 22, versionName 1.1,
+versionCode 3.
 
 ---
 
