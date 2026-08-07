@@ -58,8 +58,12 @@
       <div id="vicScore" class="score c-blue"></div>
       <div id="vicBonus" class="score bonus c-green" hidden></div>
       <div id="vicSoon" class="txt dim"></div>
-      <button id="btnVicNext" class="btn-primary"></button>
-      <button id="btnVicMenu" class="btn-ghost"></button>
+      <!-- Hierarquia deliberada (playtest): o CTA da proxima fase e' o botao
+           grande e o retorno ao menu fica pequeno, afastado e apagado. Os
+           usuarios estavam saindo da campanha por engano quando os dois tinham
+           peso parecido. A ordem no DOM tambem importa: menu por ultimo. -->
+      <button id="btnVicNext" class="btn-primary btn-xl"></button>
+      <button id="btnVicMenu" class="btn-ghost btn-quiet"></button>
     </div>
 
     <!-- vitoria final da campanha (epico 5): walk-cycle em tela cheia.
@@ -103,6 +107,18 @@
       <div class="row">
         <button id="btnMusic2" class="btn-ghost"></button>
         <button id="btnFx2" class="btn-ghost"></button>
+      </div>
+    </div>
+
+    <!-- modal: confirmar saida para o menu. Voltar ao menu descarta a corrida
+         em andamento (placar, vidas, barreira e fase), entao a acao pede
+         confirmacao explicita - era a origem das saidas acidentais. -->
+    <div id="mdQuit" class="modal" hidden>
+      <div class="modal-box red">
+        <div id="quitTitle" class="title sm c-red"></div>
+        <div id="quitDesc" class="txt"></div>
+        <button id="btnQuitCancel" class="btn-primary"></button>
+        <button id="btnQuitConfirm" class="btn-ghost danger"></button>
       </div>
     </div>
 

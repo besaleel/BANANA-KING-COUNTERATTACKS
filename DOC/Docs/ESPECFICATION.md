@@ -39,7 +39,7 @@ topo, 4 fileiras de naves, cocos caindo, Banana King em disco na base, fileira d
 bananas (barreira) e horizonte de silhueta ao fundo.
 
 **Status atual:** protótipo da Fase 01 jogável em
-[PROJECT/Banana King - Fase 01.dc.html](../PROJECT/Banana%20King%20-%20Fase%2001.dc.html).
+[PROJECT/Banana King - Fase 01.dc.html](../../PROJECT/Banana%20King%20-%20Fase%2001.dc.html).
 Todos os valores marcados como *baseline v1* nesta especificação foram medidos
 desse protótipo.
 
@@ -411,7 +411,7 @@ uma animação por camadas.
   ✅ **Fontes: feito em 31/07/2026** — `Press Start 2P` e `VT323` em WOFF2
   (subsets `latin` + `latin-ext`, 57 KB) em `APK/public/fonts/`, declaradas por
   `@font-face` local. Licença SIL OFL arquivada em `public/fonts/LICENSE.txt`.
-  Ver [GERAR-ASSETS.md](GERAR-ASSETS.md). ⬜ Áudio: pendente.
+  Ver [GERAR-ASSETS.md](../MANUAIS/GERAR-ASSETS.md). ⬜ Áudio: pendente.
 - **Licença livre para uso comercial** (preferir **CC0**), com comprovantes
   arquivados.
 - Eventos com som: **tiro laser**, **acerto sem destruir** (tick), **explosão de
@@ -441,7 +441,7 @@ uma animação por camadas.
   placeholder fixo (USD 1,90).
 - Quando `remove_ads` está ativo, **todo o rodapé de anúncio é oculto**.
 - **App ID AdMob:** `ca-app-pub-XXX` (a substituir pelo real — ver
-  [GOOGLE-ADMOB.md](GOOGLE-ADMOB.md)).
+  [GOOGLE-ADMOB.md](../MANUAIS/GOOGLE-ADMOB.md)).
 
 ---
 
@@ -516,7 +516,7 @@ estrutura.
   e/ou gerar atlas no build final.
 - **Empacotamento: decisão pendente.** A POC é HTML + canvas puro. As opções em
   avaliação são vanilla+Capacitor, Angular+Capacitor ou TWA — ver
-  [GERAR-AAB.md](GERAR-AAB.md) e o backlog.
+  [GERAR-AAB.md](../MANUAIS/GERAR-AAB.md) e o backlog.
 
 ### 12.1 Versionamento do pacote de release ⚠️ **regra obrigatória**
 
@@ -534,7 +534,7 @@ mapping-v<versionCode>.txt
 Exemplo do release atual: `banana-king-counterattacks-v1.0.1-2.aab`.
 
 **Antes de cada `bundleRelease`**, suba os dois campos em
-[`APK/android/app/build.gradle`](../APK/android/app/build.gradle):
+[`APK/android/app/build.gradle`](../../APK/android/app/build.gradle):
 
 | Campo | Regra |
 |---|---|
@@ -555,7 +555,7 @@ Conferência no binário gerado — o Gradle não é a fonte da verdade, o pacot
 & "$env:LOCALAPPDATA\Android\Sdk\build-tools\35.0.0\aapt2.exe" dump badging <arquivo>.apk | Select-String "versionCode|targetSdkVersion"
 ```
 
-Passo a passo completo em [GERAR-AAB.md](GERAR-AAB.md) §7.
+Passo a passo completo em [GERAR-AAB.md](../MANUAIS/GERAR-AAB.md) §7.
 
 ### 12.2 Tabela consolidada de calibração (*baseline v1*)
 

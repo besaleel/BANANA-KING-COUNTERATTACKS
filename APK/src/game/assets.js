@@ -40,7 +40,17 @@ const FILES = {
  */
 export const WIN_BG = 'win_bg.webp';
 
-/** Poses do ciclo, na ordem de exibicao. 1 = passo aberto, 2 = pes juntos. */
+/**
+ * Poses do ciclo, na ordem de exibicao. 1 = passo aberto, 2 = pes juntos.
+ *
+ * LIMITACAO CONHECIDA: os sprites mostram o personagem DE FRENTE, erguendo o
+ * trofeu para a camera. A tela final o faz caminhar rumo ao sol (afastando-se
+ * para o fundo), entao o correto seria uma vista DE COSTAS. Como o afastamento
+ * e' feito por escala e o personagem some na luz antes de ficar grande na
+ * retina, a incoerencia passa despercebida na maior parte do ciclo - mas
+ * resolve-la de vez exige um jogo de sprites novo (de costas), que nao existe
+ * no projeto.
+ */
 export const WIN_FRAMES = [
   'win_walk-1.webp',
   'win_walk-2.webp',

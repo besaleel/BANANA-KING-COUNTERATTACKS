@@ -14,7 +14,7 @@ Play Console, e deixá-lo em `DEPLOY/`.
 > **Estado atual:** o **v1.0.1-2** chegou à Play Store (foi nele que apareceu o
 > ícone placeholder, corrigido em §4.1). O **v1.1-3** está gerado em `DEPLOY/`,
 > assinado e verificado, com o primeiro playtest humano da campanha completa
-> incorporado — ver §7 do [BACKLOG.md](BACKLOG.md).
+> incorporado — ver §7 do [BACKLOG.md](../Docs/BACKLOG.md).
 
 ## Identidade do app (confirmada)
 
@@ -156,7 +156,7 @@ substituída** pelo suporte do Google. A chave de assinatura do app, não.
 
 Sem Play App Signing, o `.jks` local é ponto único de falha **permanente**.
 A adesão é oferecida **no primeiro envio** do app — e a escolha não se desfaz
-depois. Ver §7 do épico 11 no [BACKLOG.md](BACKLOG.md).
+depois. Ver §7 do épico 11 no [BACKLOG.md](../Docs/BACKLOG.md).
 
 ## 3. Configurar as credenciais do keystore no projeto
 
@@ -224,6 +224,17 @@ python "C:\Sistemas\BANANA-KING-COUNTERATTACKS\APK\tools\gerar-icones.py"
 > `mipmap-*/ic_launcher*.png` (5 densidades), `values/ic_launcher_background.xml`
 > e `drawable*/splash.png` (11 variações) a partir da arte versionada em
 > `DEPLOY/store-assets/icon-512.png` e `PROJECT/assets/logo-transparente.png`.
+
+> ⚠️ **O `AndroidManifest.xml` corre o mesmo risco.** Ele também é regenerável e
+> também está fora do git, mas **não** é reposto por nenhum script. Uma edição
+> manual que precisa sobreviver a `cap add android`:
+>
+> | Atributo | Valor | Por quê |
+> |---|---|---|
+> | `android:windowSoftInputMode` | `adjustPan` | Sem isso o Android usa `adjustResize`: ao abrir o teclado para digitar o nome do jogador, a janela encolhe e o `#frame` (preso ao `aspect-ratio` 480/854) **se retrai no meio da digitação**. Com `adjustPan` a tela desliza e o jogo mantém o tamanho. |
+>
+> Confira com `grep windowSoftInputMode` depois de qualquer regeração do
+> diretório `android/`.
 
 Confira antes de empacotar — o ícone deve mostrar o gorila no disco voador:
 
@@ -293,7 +304,7 @@ para fora junto de cada AAB publicado, nomeado com a versão — por exemplo
 ## 6. Copiar para DEPLOY
 
 ⚠️ **O nome do arquivo tem de carregar a versão** — regra §12.1 da
-[ESPECFICATION.md](ESPECFICATION.md). O trecho abaixo lê `versionName` e
+[ESPECFICATION.md](../Docs/ESPECFICATION.md). O trecho abaixo lê `versionName` e
 `versionCode` do próprio `build.gradle` e monta o nome sozinho, para não
 depender de ninguém lembrar:
 
@@ -321,7 +332,7 @@ versionado do mesmo jeito. Ver §0.
   `versionCode` é um inteiro que deve **sempre aumentar**, inclusive quando o
   envio anterior foi **rejeitado** (o número já foi consumido); `versionName` é
   o texto visível ao usuário, ex. `"1.1"`. Regra completa: §12.1 da
-  [ESPECFICATION.md](ESPECFICATION.md).
+  [ESPECFICATION.md](../Docs/ESPECFICATION.md).
 - Repita os passos 4–6.
 - Use **o mesmo keystore** do passo 2 — nunca gere um novo para o mesmo app.
 - Confira o `targetSdkVersion` exigido pela Play (ver abaixo).
@@ -404,7 +415,7 @@ Copy-Item "app\build\outputs\mapping\release\mapping.txt" "$d\mapping-v$vc.txt"
 | Splash | 11 variações (retrato/paisagem × densidade) | ✅ gerado por `tools/gerar-icones.py` (§4.1) |
 | Favicon web | usa a mesma marca do ícone da loja | ✅ `APK/public/assets/icon.png` (192×192, 55 KB) |
 
-> **Nome do produto (§0 da [ESPECFICATION.md](ESPECFICATION.md)):** o ícone traz
+> **Nome do produto (§0 da [ESPECFICATION.md](../Docs/ESPECFICATION.md)):** o ícone traz
 > "BANANA KING COUNTERATTACKS" completo ✅. O feature graphic mostra só
 > "BANANA KING" — aceitável como arte promocional, já que o ícone e o título da
 > ficha carregam o nome completo, mas **o título cadastrado na Play Console tem

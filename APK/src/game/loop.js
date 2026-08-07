@@ -10,12 +10,20 @@
  * e bonus de pontuacao (3.3). Fases 02-10 jogaveis continuam fora de escopo
  * (epico 4).
  */
-import { W, H, createPools, createStage, createHero, shipPos } from './entities.js';
+import { W, H, createPools, createStage, createHero, shipPos, spawnReinforcementRow } from './entities.js';
 import { Renderer } from './render.js';
 
 const DT_MAX = 0.033;      // SS12: dt limitado a 33 ms
 const HUD_INTERVAL = 150;  // SS12: HUD re-render no maximo a cada 150 ms
 const POWERUP_TYPES = ['triple', 'rapid', 'shield', 'life'];
+/**
+ * Quantas descidas do bloco separam duas camadas de reforco.
+ *
+ * O gatilho e' sempre o EVENTO DE DESCIDA - nunca um temporizador. As camadas
+ * entram a partir da 2a descida (2a, 4a, 6a...), aparecendo ja visiveis logo
+ * abaixo do vilao.
+ */
+const DESCENTS_PER_REINFORCEMENT = 2;
 /** Peso usado quando `baseline.powerupWeights` nao traz o tipo. */
 const POWERUP_WEIGHT_FALLBACK = 1;
 
@@ -90,6 +98,7 @@ export class Game {
     this._bananas = this.stage.bananas;
     this.hero = createHero();
     this.t = 0;
+    this._descents = 0;   // descidas do bloco, para espacar os reforcos
     this.fireAt = 0;
     this.combo = 0;
     this.over = false;
@@ -236,7 +245,13 @@ export class Game {
     const alive = stage.ships.length;
     const spd = this.fase.formationSpeed + (1 - alive / stage.total) * base.formationAccel;
     const half = (base.cols - 1) * base.colW / 2;
-    stage.rows.forEach((row, ri) => {
+    // O spawn de reforco e' adiado para depois do laco: `spawnReinforcementRow`
+    // faz push em `stage.rows`, e mexer no array durante a iteracao faria a
+    // fileira recem-criada ja processar borda no mesmo frame.
+    let steppedDown = false;
+    const rowCount = stage.rows.length;
+    for (let ri = 0; ri < rowCount; ri++) {
+      const row = stage.rows[ri];
       row.x += row.dir * spd * dt;
       let minC = Infinity, maxC = -Infinity;
       for (const s of stage.ships) {
@@ -244,7 +259,7 @@ export class Game {
         if (s.col < minC) minC = s.col;
         if (s.col > maxC) maxC = s.col;
       }
-      if (minC === Infinity) return;
+      if (minC === Infinity) continue;
       const left = W / 2 + row.x - half + minC * base.colW - 28;
       const right = W / 2 + row.x - half + maxC * base.colW + 28;
       if ((row.dir > 0 && right > W - 8) || (row.dir < 0 && left < 8)) {
@@ -252,8 +267,17 @@ export class Game {
         // qualquer fileira que bate na borda desce o conjunto inteiro (SS4.2)
         for (const r2 of stage.rows) r2.y += this.fase.stepDown;
         this.audio.sfx('tick');
+        steppedDown = true;
       }
-    });
+    }
+
+    // --- reforcos: UMA fileira a cada N eventos de descida ---
+    // Varias fileiras podem tocar a borda no mesmo frame e o bloco desce por
+    // cada uma, mas isso conta como um unico evento de descida.
+    if (steppedDown) {
+      this._descents++;
+      if (this._descents % DESCENTS_PER_REINFORCEMENT === 0) this.spawnReinforcement();
+    }
 
     // --- naves x barreira: linha de defesa (SS4.4) ---
     // Troca mutua: a nave e' destruida e a banana atingida morre junto,
@@ -297,7 +321,8 @@ export class Game {
             this.audio.sfx('boom');
             this.spawnText(p.x, p.y, '+' + pts);
             this.addScore(pts, p.x, p.y);
-            if (Math.random() * 100 < base.powerupDropPct) {
+            // a fase pode sobrescrever a taxa de drop (ver rollPowerupType)
+            if (Math.random() * 100 < (this.fase.powerupDropPct ?? base.powerupDropPct)) {
               const pu = this.pools.powerups.obtain();
               pu.x = p.x; pu.y = p.y; pu.vy = 95;
               pu.type = this.rollPowerupType();
@@ -397,10 +422,24 @@ export class Game {
     // --- vitoria ---
     // SS4.4: a condicao continua sendo "formacao vazia", qualquer que seja a
     // causa - inclusive toda a formacao consumida na barreira.
+    //
+    // Com os reforcos, "vazia" passa a exigir tambem que nao haja camada
+    // pendente: a fase nao pode acabar devendo naves.
+    //
+    // Este caminho e' OBRIGATORIO, nao um refinamento: sem formacao viva
+    // nenhuma fileira toca a borda, o bloco nunca desce e o contador de
+    // descidas congela. Se a camada dependesse so da descida, o jogador que
+    // limpasse a tela ficaria preso olhando uma fase vazia (bug observado na
+    // fase 04). Aqui a proxima onda entra na hora.
     if (!stage.ships.length && !this.over) {
-      this.endGame(true);
-      this.sweepPools();
-      return;
+      if (stage.pendingRows.length) {
+        this.spawnReinforcement();
+        this._descents = 0;   // a proxima camada volta a contar do zero
+      } else {
+        this.endGame(true);
+        this.sweepPools();
+        return;
+      }
     }
 
     // Clamp herdado da POC (linha 414 do HTML): impede a formacao de afundar
@@ -437,6 +476,18 @@ export class Game {
 
   /* ---------- helpers ---------- */
 
+  /**
+   * Traz a proxima camada de reforco para o topo da formacao, se ainda houver.
+   * Anunciada com som e texto: sem aviso, naves entrando por cima da borda
+   * chegam sem o jogador perceber de onde vieram.
+   */
+  spawnReinforcement() {
+    if (!this.stage.pendingRows.length) return;
+    if (!spawnReinforcementRow(this.stage, this.baseline)) return;
+    this.audio.sfx('tick');
+    this.spawnText(W / 2, 150, 'REFORCOS!');
+  }
+
   spawnBullet(x, y, vx) {
     const b = this.pools.bullets.obtain();
     b.x = x; b.y = y; b.vx = vx; b.vy = -this.baseline.bulletSpeed;
@@ -468,13 +519,17 @@ export class Game {
   /**
    * Sorteia o tipo do power-up que cai de uma nave destruida.
    *
-   * O sorteio e' PONDERADO por `baseline.powerupWeights` em vez de uniforme:
-   * o playtest apontou o tiro triplo como o power-up que mais muda a sensacao
-   * de jogo, e com 4 tipos equiprovaveis ele aparecia em so 1/4 dos drops.
-   * Sem os pesos configurados o comportamento cai de volta no uniforme.
+   * O sorteio e' PONDERADO por `powerupWeights` em vez de uniforme: o playtest
+   * apontou o tiro triplo como o power-up que mais muda a sensacao de jogo, e
+   * com 4 tipos equiprovaveis ele aparecia em so 1/4 dos drops. Sem os pesos
+   * configurados o comportamento cai de volta no uniforme.
+   *
+   * A FASE pode sobrescrever os pesos (`fase.powerupWeights`) e a taxa de drop
+   * (`fase.powerupDropPct`); sem isso valem os do baseline. E' o que da armas
+   * mais generosas nas fases finais sem afrouxar a campanha inteira.
    */
   rollPowerupType() {
-    const weights = this.baseline.powerupWeights;
+    const weights = this.fase.powerupWeights || this.baseline.powerupWeights;
     if (!weights) return POWERUP_TYPES[Math.floor(Math.random() * POWERUP_TYPES.length)];
 
     let total = 0;

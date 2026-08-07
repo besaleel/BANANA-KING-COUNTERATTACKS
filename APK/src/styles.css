@@ -72,10 +72,15 @@ body {
 
 a { color: #ffd23f; }
 
+/* `svh` (small viewport height) e' a altura da janela COM a barra de navegacao
+   visivel - um valor ESTAVEL, que nao muda quando o teclado do Android abre.
+   Com `dvh` (dynamic) o teclado encolhia a viewport e o #frame, preso ao
+   aspect-ratio, se retraia junto no meio da digitacao do nome. `vh` continua
+   como fallback para WebViews antigas. */
 #app {
   width: 100%;
   height: 100vh;
-  height: 100dvh;
+  height: 100svh;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -259,41 +264,52 @@ a { color: #ffd23f; }
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center bottom;
+  /* `center` nos dois eixos: o sol e a linha do horizonte sao o assunto da
+     imagem e ficam no meio dela. Com `bottom` o pouco que sobra do `cover`
+     saia todo do topo, empurrando o sol para cima do quadro. */
+  object-position: center;
   /* pixel art: sem suavizacao ao escalar */
   image-rendering: pixelated;
   z-index: 0;
 }
 
-/* O personagem e' uma camada propria sobre o cenario. Tamanho e posicao vem do
-   enquadramento medido por tools/extrair-walk-sprites.py (411x553 dentro da
-   arte 768x1376), em porcentagem para acompanhar o `cover` do fundo.
-   `bottom` alinha os pes ao chao do cenario: e' o que mantem o personagem
-   plantado no lugar certo em qualquer proporcao de tela. */
+/* O personagem caminha RUMO AO SOL - para o fundo da cena, nao de lado.
+   Ancorado no centro horizontal (o caminho de luz do cenario nasce ali) e
+   animado por escala: perto = grande, longe = pequeno. Antes ele atravessava a
+   tela lateralmente, o que lia como "passeando na frente da paisagem".
+
+   `bottom` e `width` sao os do enquadramento medido por
+   tools/extrair-walk-sprites.py (411x553 dentro da arte 768x1376). O
+   transform-origin no rodape mantem os pes plantados no chao enquanto a escala
+   muda - sem isso o personagem "flutuaria" ao encolher. */
 #winFrame {
   position: absolute;
-  left: 0;
-  bottom: 25.9%;              /* 1 - 1019/1376 */
+  left: 50%;
+  bottom: 25.9%;              /* 1 - 1019/1376: linha do horizonte */
   width: 53.5%;               /* 411/768 */
   height: auto;
   image-rendering: pixelated;
   z-index: 0;
-  /* a translacao e' o que transforma "trocar de pose" em "caminhar" */
-  animation: bkwalk 13s linear infinite;
+  transform-origin: 50% 100%;
+  animation: bkwalk 14s ease-in infinite;
 }
 
-/* Atravessa a tela da esquerda para a direita e reaparece. O passeio vai de
-   -60% a 160% para o personagem entrar e sair por fora da borda, sem "nascer"
-   no meio da tela. */
+/* Afasta-se rumo ao horizonte: comeca grande e proximo (embaixo), encolhe e
+   sobe ate o ponto de fuga, junto ao sol, onde desaparece na luz. O ciclo
+   reinicia com o personagem de volta em primeiro plano.
+   `translate(-50%, ...)` centraliza; a escala e o `translateY` juntos e' que
+   produzem a profundidade. */
 @keyframes bkwalk {
-  from { transform: translateX(-60%); }
-  to   { transform: translateX(160%); }
+  0%   { transform: translate(-50%, 18%) scale(1);    opacity: 1; }
+  75%  { transform: translate(-50%, -30%) scale(.28); opacity: 1; }
+  92%  { transform: translate(-50%, -36%) scale(.16); opacity: 0; }
+  100% { transform: translate(-50%, -36%) scale(.16); opacity: 0; }
 }
 
-/* Acessibilidade: sem movimento, o personagem fica parado num ponto de leitura
-   confortavel e so o ciclo de poses continua. */
+/* Acessibilidade: sem movimento, o personagem fica parado em primeiro plano,
+   num tamanho confortavel de leitura, e so o ciclo de poses continua. */
 @media (prefers-reduced-motion: reduce) {
-  #winFrame { animation: none; transform: translateX(18%); }
+  #winFrame { animation: none; transform: translate(-50%, 6%) scale(.72); }
 }
 
 .win-top, .win-bottom {
@@ -307,19 +323,21 @@ a { color: #ffd23f; }
   padding: 18px 20px;
 }
 
-/* Legibilidade sobre a arte sem cobrir o personagem: o degrade some antes
-   de chegar a faixa central. */
+/* Legibilidade sobre a arte sem cobrir a cena: o degrade some antes de chegar
+   a faixa central, onde o personagem caminha e o sol aparece. Mais leve que a
+   versao anterior porque o ceu do cenario novo ja e' escuro no topo - o veu
+   antigo (.92) apagava o roxo do poente. */
 .win-top {
   padding-top: 26px;
-  background: linear-gradient(180deg, rgba(24, 12, 40, .92) 55%, rgba(24, 12, 40, 0));
+  background: linear-gradient(180deg, rgba(24, 12, 40, .8) 42%, rgba(24, 12, 40, 0));
 }
 
 /* `gap` menor que o do topo: com 2 linhas de bonus (DE/FR) o bloco cresce e
-   comecava a alcancar os pes do personagem (~y 620 de 854). */
+   comecava a alcancar a faixa da caminhada. */
 .win-bottom {
   padding: 10px 20px 22px;
   gap: 5px;
-  background: linear-gradient(0deg, rgba(24, 12, 40, .93) 60%, rgba(24, 12, 40, 0));
+  background: linear-gradient(0deg, rgba(24, 12, 40, .95) 58%, rgba(24, 12, 40, 0));
 }
 
 .win-top .title { font-size: 20px; text-shadow: 0 3px 0 #7a4a12; }
@@ -394,6 +412,27 @@ input {
 
 .btn-ghost.danger { border-color: #ff6b57; color: #ff6b57; }
 
+/* Variantes de HIERARQUIA, usadas nas telas em que uma acao continua o jogo e a
+   outra o descarta (vitoria de fase). Nao sao so tamanhos diferentes: o alvo de
+   toque do CTA cresce e o da acao destrutiva encolhe para bem acima do minimo
+   de 44 px recomendado, e o afastamento evita o toque errado por vizinhanca. */
+.btn-xl {
+  font-size: 17px;
+  padding: 20px 34px;
+  width: 88%;
+  max-width: 320px;
+  box-shadow: 0 6px 0 #7a4a12;
+}
+
+.btn-quiet {
+  font-size: 14px;
+  padding: 7px 16px;
+  border-width: 1px;
+  border-color: rgba(159, 227, 255, .45);
+  color: rgba(159, 227, 255, .6);
+  margin-top: 14px;   /* separa do CTA: o erro era tocar no vizinho */
+}
+
 /* links legais no modal: <a> com aparencia de botao (epico 10) */
 .link-btn { text-decoration: none; text-align: center; display: block; }
 
@@ -423,3 +462,4 @@ input {
 
 .modal-box.yellow { border: 3px solid #ffd23f; }
 .modal-box.blue { border: 3px solid #9fe3ff; }
+.modal-box.red { border: 3px solid #ff6b57; }

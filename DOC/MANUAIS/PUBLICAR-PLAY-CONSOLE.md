@@ -49,7 +49,7 @@ Cada página traz seletor dos 6 idiomas (`privacy/pt.html`, `privacy/de.html`…
 | Preço | Gratuito |
 
 > O nome tem de ser o **completo**, com *Counterattacks* — existe um projeto
-> anterior chamado só "Banana King" (§0 da [ESPECFICATION.md](ESPECFICATION.md)).
+> anterior chamado só "Banana King" (§0 da [ESPECFICATION.md](../Docs/ESPECFICATION.md)).
 
 ## Descrição curta (máx. 80 caracteres)
 
@@ -59,7 +59,7 @@ Cada página traz seletor dos 6 idiomas (`privacy/pt.html`, `privacy/de.html`…
 | en-US | `Defend Earth from Trasho the chimp! Offline space arcade with 10 levels.` (71) |
 
 > Os seis idiomas, prontos para copiar e colar na Play Console, estão em
-> [`DEPLOY/descricao-app.md`](../DEPLOY/descricao-app.md).
+> [`DEPLOY/descricao-app.md`](../../DEPLOY/descricao-app.md).
 
 ## Descrição completa
 

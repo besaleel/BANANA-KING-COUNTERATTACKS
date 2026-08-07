@@ -1,7 +1,7 @@
 # Textos da ficha da Play Store — Banana King Counterattacks
 
 > Textos prontos para copiar e colar na Play Console, nos seis idiomas do jogo.
-> Para o passo a passo do cadastro, ver [DOC/PUBLICAR-PLAY-CONSOLE.md](../DOC/PUBLICAR-PLAY-CONSOLE.md).
+> Para o passo a passo do cadastro, ver [../DOC/MANUAIS/PUBLICAR-PLAY-CONSOLE.md](../DOC/MANUAIS/PUBLICAR-PLAY-CONSOLE.md).
 > **Atualizado:** 01/08/2026
 
 ## Como usar

@@ -1,21 +1,21 @@
 {
   "_doc": "Config de fases - Banana King Counterattacks. Composicao conforme SS5.1 da ESPECFICATION.md (verificada 1:1 contra a tabela). Mapeamento nivel->nave: 1=nave-inimiga-05, 2=nave-inimiga-03|nave-inimiga-04, 3=nave-inimiga-02, 4=nave-inimiga-01, 5=nave-inimiga-00.",
   "baseline": {
-    "formationSpeed": 42,
-    "formationAccel": 55,
+    "formationSpeed": 50.4,
+    "formationAccel": 66.0,
     "stepDown": 5,
-    "cocoIntervalS": 4.5,
+    "cocoIntervalS": 3.6,
     "cocoFactorMin": 0.6,
     "cocoFactorMax": 1.5,
     "fireRateMs": 300,
     "bulletSpeed": 760,
     "heroKeyboardSpeed": 320,
-    "powerupDropPct": 7,
+    "powerupDropPct": 5,
     "powerupWeights": {
       "triple": 5,
       "rapid": 2,
       "shield": 2,
-      "life": 1
+      "life": 0.4
     },
     "powerupDurationS": 8,
     "invulnS": 2,
@@ -26,7 +26,7 @@
     "bananaCount": 7,
     "bananaHp": 2,
     "_calibracao_provisoria": "Calibracao v2 - ajustada apos o primeiro playtest humano completo (campanha zerada, 230200 pts). Ajustar aqui, sem tocar em codigo. Referencia medida: uma fase limpa com combo perfeito vale ~7.8k (fase 01) a ~25.8k (fase 10); campanha completa ~166k. O marco caiu de 20000 para 12000 porque o playtest apontou a barreira escassa demais: com X=12000 o jogador habilidoso recebe ~1 reposicao por fase e o jogador fraco ~1 a cada 1,5 - continua sendo um recurso a merecer (SS4.4), mas a defesa deixa de ficar zerada por fases inteiras.",
-    "bananaBonusScoreMilestone": 12000,
+    "bananaBonusScoreMilestone": 0,
     "phaseClearBonus": 1000,
     "lifeBonusPerLife": 5000,
     "bananaBonusFallSpeed": 95
@@ -71,9 +71,10 @@
           "img": "n05"
         }
       ],
-      "formationSpeed": 42,
+      "reinforcements": [],
+      "formationSpeed": 50.4,
       "stepDown": 5,
-      "cocoIntervalS": 4.5,
+      "cocoIntervalS": 3.6,
       "bananaBonusGuaranteed": false
     },
     {
@@ -97,9 +98,19 @@
           "img": "n05"
         }
       ],
-      "formationSpeed": 44,
+      "reinforcements": [
+        {
+          "lv": 2,
+          "img": "n04"
+        },
+        {
+          "lv": 2,
+          "img": "n03"
+        }
+      ],
+      "formationSpeed": 52.8,
       "stepDown": 5,
-      "cocoIntervalS": 4.3,
+      "cocoIntervalS": 3.4,
       "bananaBonusGuaranteed": false
     },
     {
@@ -123,10 +134,20 @@
           "img": "n05"
         }
       ],
-      "formationSpeed": 46,
+      "reinforcements": [
+        {
+          "lv": 2,
+          "img": "n03"
+        },
+        {
+          "lv": 3,
+          "img": "n02"
+        }
+      ],
+      "formationSpeed": 55.2,
       "stepDown": 5,
-      "cocoIntervalS": 4.1,
-      "bananaBonusGuaranteed": true
+      "cocoIntervalS": 3.2,
+      "bananaBonusGuaranteed": false
     },
     {
       "id": 4,
@@ -149,9 +170,19 @@
           "img": "n05"
         }
       ],
-      "formationSpeed": 48,
+      "reinforcements": [
+        {
+          "lv": 3,
+          "img": "n02"
+        },
+        {
+          "lv": 3,
+          "img": "n02"
+        }
+      ],
+      "formationSpeed": 57.6,
       "stepDown": 5,
-      "cocoIntervalS": 3.9,
+      "cocoIntervalS": 3.0,
       "bananaBonusGuaranteed": false
     },
     {
@@ -175,9 +206,19 @@
           "img": "n05"
         }
       ],
-      "formationSpeed": 50,
+      "reinforcements": [
+        {
+          "lv": 3,
+          "img": "n02"
+        },
+        {
+          "lv": 4,
+          "img": "n01"
+        }
+      ],
+      "formationSpeed": 60.0,
       "stepDown": 5,
-      "cocoIntervalS": 3.7,
+      "cocoIntervalS": 2.8,
       "bananaBonusGuaranteed": true
     },
     {
@@ -201,9 +242,19 @@
           "img": "n03"
         }
       ],
-      "formationSpeed": 52,
+      "reinforcements": [
+        {
+          "lv": 4,
+          "img": "n01"
+        },
+        {
+          "lv": 4,
+          "img": "n01"
+        }
+      ],
+      "formationSpeed": 62.4,
       "stepDown": 5,
-      "cocoIntervalS": 3.4,
+      "cocoIntervalS": 2.5,
       "bananaBonusGuaranteed": false
     },
     {
@@ -227,10 +278,20 @@
           "img": "n04"
         }
       ],
-      "formationSpeed": 54,
+      "reinforcements": [
+        {
+          "lv": 4,
+          "img": "n01"
+        },
+        {
+          "lv": 5,
+          "img": "n00"
+        }
+      ],
+      "formationSpeed": 64.8,
       "stepDown": 5,
-      "cocoIntervalS": 3.2,
-      "bananaBonusGuaranteed": true
+      "cocoIntervalS": 2.3,
+      "bananaBonusGuaranteed": false
     },
     {
       "id": 8,
@@ -253,10 +314,27 @@
           "img": "n02"
         }
       ],
-      "formationSpeed": 56,
+      "reinforcements": [
+        {
+          "lv": 5,
+          "img": "n00"
+        },
+        {
+          "lv": 5,
+          "img": "n00"
+        }
+      ],
+      "formationSpeed": 67.2,
       "stepDown": 5,
-      "cocoIntervalS": 3,
-      "bananaBonusGuaranteed": false
+      "cocoIntervalS": 2.1,
+      "bananaBonusGuaranteed": false,
+      "powerupDropPct": 8,
+      "powerupWeights": {
+        "triple": 6,
+        "rapid": 5,
+        "shield": 2,
+        "life": 0.4
+      }
     },
     {
       "id": 9,
@@ -279,10 +357,43 @@
           "img": "n02"
         }
       ],
-      "formationSpeed": 58,
+      "reinforcements": [
+        {
+          "lv": 3,
+          "img": "n02"
+        },
+        {
+          "lv": 4,
+          "img": "n01"
+        },
+        {
+          "lv": 4,
+          "img": "n01"
+        },
+        {
+          "lv": 5,
+          "img": "n00"
+        },
+        {
+          "lv": 5,
+          "img": "n00"
+        },
+        {
+          "lv": 5,
+          "img": "n00"
+        }
+      ],
+      "formationSpeed": 69.6,
       "stepDown": 5,
-      "cocoIntervalS": 2.8,
-      "bananaBonusGuaranteed": true
+      "cocoIntervalS": 1.9,
+      "bananaBonusGuaranteed": false,
+      "powerupDropPct": 9,
+      "powerupWeights": {
+        "triple": 7,
+        "rapid": 6,
+        "shield": 2,
+        "life": 0.4
+      }
     },
     {
       "id": 10,
@@ -305,11 +416,47 @@
           "img": "n01"
         }
       ],
-      "formationSpeed": 60,
+      "reinforcements": [
+        {
+          "lv": 4,
+          "img": "n01"
+        },
+        {
+          "lv": 4,
+          "img": "n01"
+        },
+        {
+          "lv": 5,
+          "img": "n00"
+        },
+        {
+          "lv": 5,
+          "img": "n00"
+        },
+        {
+          "lv": 5,
+          "img": "n00"
+        },
+        {
+          "lv": 5,
+          "img": "n00"
+        }
+      ],
+      "formationSpeed": 72.0,
       "stepDown": 5,
-      "cocoIntervalS": 2.6,
-      "bananaBonusGuaranteed": true
+      "cocoIntervalS": 1.7,
+      "bananaBonusGuaranteed": false,
+      "powerupDropPct": 10,
+      "powerupWeights": {
+        "triple": 8,
+        "rapid": 7,
+        "shield": 2,
+        "life": 0.4
+      }
     }
   ],
-  "_curva_dificuldade": "Curva v2 - revisada apos o playtest humano da campanha completa. A v1 (26->38) foi reprovada por LEITURA DE PERFORMANCE, nao por dificuldade: a 26 px/s a formacao parece travada no inicio da fase e o jogador le isso como celular lento / lag, nao como jogo facil. Como formationAccel soma ate +80 conforme as naves morrem, o fim da fase rodava ~4x mais rapido que o comeco e so ai o jogo 'acordava'. A v2 sobe o piso para 42->60 e reduz formationAccel para 55, comprimindo a razao fim/inicio de ~4,1x para ~2,3x: o movimento le como intencional desde o primeiro frame e a fase ainda ganha ritmo ao esvaziar. stepDown continua FIXO em 5: subir o degrau multiplica por 4 (SS4.2 - cada uma das 4 fileiras aplica o degrau ao tocar a borda) e esgota a barreira, que nao regenera entre fases (SS4.4). O grosso da curva de ameaca segue no cocoIntervalS (4.5s -> 2.6s), que pressiona sem consumir a barreira: os cocos por fase sobem de ~2 para ~11. Bananas garantidas nas fases 3/5/7/9/10 (era so a 5) para acompanhar o marco de 12000 pontos."
+  "_curva_dificuldade": "Curva v2 - revisada apos o playtest humano da campanha completa. A v1 (26->38) foi reprovada por LEITURA DE PERFORMANCE, nao por dificuldade: a 26 px/s a formacao parece travada no inicio da fase e o jogador le isso como celular lento / lag, nao como jogo facil. Como formationAccel soma ate +80 conforme as naves morrem, o fim da fase rodava ~4x mais rapido que o comeco e so ai o jogo 'acordava'. A v2 sobe o piso para 42->60 e reduz formationAccel para 55, comprimindo a razao fim/inicio de ~4,1x para ~2,3x: o movimento le como intencional desde o primeiro frame e a fase ainda ganha ritmo ao esvaziar. stepDown continua FIXO em 5: subir o degrau multiplica por 4 (SS4.2 - cada uma das 4 fileiras aplica o degrau ao tocar a borda) e esgota a barreira, que nao regenera entre fases (SS4.4). O grosso da curva de ameaca segue no cocoIntervalS (4.5s -> 2.6s), que pressiona sem consumir a barreira: os cocos por fase sobem de ~2 para ~11. Bananas garantidas nas fases 3/5/7/9/10 (era so a 5) para acompanhar o marco de 12000 pontos. ATUALIZACAO (melhoria de 2026-08): todas as velocidades de formacao multiplicadas por 1.2 (piso 42->50.4, teto 60->72) e formationAccel acompanhando (55->66) para preservar a razao fim/inicio de ~2,3x da v2. O total de naves por fase sobe de 20 para 35 nas fases 02-10 (7 fileiras x 5 colunas), o que alonga a fase e aumenta a pressao sobre a barreira.",
+  "_reforcos": "Camadas de reforco: toda fase de 02 em diante comeca com as 4 fileiras de `rows` e ganha as de `reinforcements` UMA A UMA, a cada evento de descida do bloco (stepDown) - varias fileiras podem tocar a borda no mesmo frame, mas isso conta como um unico evento e entra uma camada so. A camada nasce acima da borda superior e entra em cena descendo, para o jogador ver o reforco chegar em vez de naves surgirem no meio do campo. Se a formacao for limpa antes de todos os reforcos entrarem, a camada seguinte entra na hora - a fase nunca termina devendo naves. Fases 02-08 tem 6 fileiras (4+2); as fases 09 e 10 tem 10 (4+6). Fase 01 fica sem reforcos, como tutorial.",
+  "_dificuldade_v3": "Ajuste v3 (melhoria de 2026-08) - a campanha estava rapida e facil demais de zerar. Quatro alavancas, nenhuma tocando em codigo: (1) velocidade da formacao x1.2 (50.4->72) com formationAccel acompanhando (66); (2) numero de naves por fase de 20 para 30 (fases 02-08) e 50 (fases 09-10) via reforcos; (3) cocos bem mais frequentes - a curva caiu de 4.5->2.6 s para 3.6->1.7 s, quase dobrando os cocos por fase; (4) a barreira deixou de ser reabastecivel por pontuacao (bananaBonusScoreMilestone = 0) e so a fase 05 solta a banana garantida, entao a defesa passou a ser um recurso finito para a campanha inteira, com uma unica reposicao no meio do caminho. O drop de power-up caiu de 7% para 5% e o peso de `life` de 1 para 0.4, porque vida gratuita era o que mais amaciava as fases finais.",
+  "_powerups_fases_finais": "Fases 08-10 sobrescrevem  e  do baseline (5% / triple 5, rapid 2). O fim da campanha ficou com 6 a 10 fileiras de naves resistentes e cocos a cada ~2 s: sem armas o jogador nao consegue limpar a formacao antes dela alcancar a barreira. O reforco e progressivo (8% -> 9% -> 10% de drop) e concentrado nas armas -  e  mantem os pesos baixos do baseline, entao a dificuldade nao cai, so deixa de ser injusta. Ajustar aqui, sem tocar em codigo."
 }

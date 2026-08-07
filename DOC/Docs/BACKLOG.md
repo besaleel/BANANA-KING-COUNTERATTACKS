@@ -26,25 +26,25 @@
 
 ## Épico 0 — Documentação e base do projeto
 
-- [x] Consolidar a especificação em [DOC/ESPECFICATION.md](ESPECFICATION.md)
+- [x] Consolidar a especificação em [DOC/Docs/ESPECFICATION.md](ESPECFICATION.md)
       a partir de `PROJECT/ESPECIFICACAO-POC.md`.
 - [x] Registrar a distinção **"Banana King Counterattacks" (app)** vs.
       **"Banana King" (personagem)** vs. **projeto antigo "Banana King"** (§0 da spec).
-- [x] Adaptar [DOC/GERAR-AAB.md](GERAR-AAB.md): caminhos, keystore, alias, pacote
+- [x] Adaptar [DOC/MANUAIS/GERAR-AAB.md](../MANUAIS/GERAR-AAB.md): caminhos, keystore, alias, pacote
       `com.bananaking.counterattacks` e aviso de stack indefinido.
 - [x] Reescrever `README.md`: status real, índice da documentação, estrutura,
       como rodar o protótipo e identidade do app.
-- [x] Remover do [GERAR-AAB.md](GERAR-AAB.md) as **4 afirmações falsas** de que
+- [x] Remover do [GERAR-AAB.md](../MANUAIS/GERAR-AAB.md) as **4 afirmações falsas** de que
       `*.jks`, `keystore.properties`, `local.properties` e `DEPLOY/*.aab` já
       estariam no `.gitignore`; substituídas por avisos que apontam para o §0 do
       próprio documento.
 - [x] Criar `servir-prototipo.py` (contorno dos caminhos inconsistentes do
       protótipo — ver épico 2).
-- [x] Atualizar `DOC/GOOGLE-ADMOB.md` com o App ID real. *(01/08/2026 — App ID
+- [x] Atualizar `DOC/MANUAIS/GOOGLE-ADMOB.md` com o App ID real. *(01/08/2026 — App ID
       e unidade de banner cadastrados; a **integração do SDK** segue pendente no
       épico 8.1)*
 - [ ] Decidir se `PROJECT/ESPECIFICACAO-POC.md` vira histórico (marcar como
-      superado pela spec de `DOC/`) ou é removido.
+      superado pela spec de `MANUAIS/`) ou é removido.
 - [ ] Criar `CLAUDE.md` na raiz com convenções do projeto (assets, i18n,
       onde ficam as regras de jogo).
 
@@ -52,7 +52,7 @@
 
 ## Épico 1 — Protótipo Fase 01 (fatia vertical) ✅
 
-Entregue em [PROJECT/Banana King - Fase 01.dc.html](../PROJECT/Banana%20King%20-%20Fase%2001.dc.html).
+Entregue em [PROJECT/Banana King - Fase 01.dc.html](../../PROJECT/Banana%20King%20-%20Fase%2001.dc.html).
 
 - [x] Tela inicial: logo, tagline, seletor de 6 idiomas, nome, última pontuação, termos.
 - [x] Gameplay Fase 01: arrasto + teclado, tiro automático, 4 fileiras × 5 colunas
@@ -121,7 +121,7 @@ problema crítico de a formação parar sobre o herói e drenar as 3 vidas em ~4
       A barreira é a "reserva de vidas extras" do jogador. *(30/07/2026, épico 2)*
 - [x] Remover o clamp `r.y = hero.y − 20` ou reavaliá-lo: com as naves morrendo na
       barreira, ele passa a ser um caso de borda raro
-      ([html:414](../PROJECT/Banana%20King%20-%20Fase%2001.dc.html#L414)).
+      ([html:414](../../PROJECT/Banana%20King%20-%20Fase%2001.dc.html#L414)).
       *(31/07/2026 — **avaliado e MANTIDO** como rede de segurança: a barreira é
       finita, então após bananas destruídas abre-se um corredor por onde a
       formação passa sem ser consumida. Sem o clamp ela afundaria indefinidamente
@@ -180,7 +180,7 @@ problema crítico de a formação parar sobre o herói e drenar as 3 vidas em ~4
 
 - [x] Corrigir a divergência de default do drop de power-up: a spec fixa **4 %**,
       mas o fallback no código é `12` em
-      [Banana King - Fase 01.dc.html:361](../PROJECT/Banana%20King%20-%20Fase%2001.dc.html#L361).
+      [Banana King - Fase 01.dc.html:361](../../PROJECT/Banana%20King%20-%20Fase%2001.dc.html#L361).
       Alinhar em 4 %. *(30/07/2026, épico 2 — `powerupDropPct: 4` no config;
       taxa medida em 3,80 % sobre 4000 naves destruídas)*
 - [ ] **Ajustar escalas** de personagens/naves conforme o mock
@@ -360,7 +360,7 @@ regressão — no mobile nunca chegou a tocar.
       agora seria de draw calls, não de tamanho)*
 
 > **✅ Concluído em 31/07/2026 — assets otimizados.** Processo documentado em
-> [GERAR-ASSETS.md](GERAR-ASSETS.md), reproduzível por
+> [GERAR-ASSETS.md](../MANUAIS/GERAR-ASSETS.md), reproduzível por
 > `python APK/tools/gerar-assets.py`.
 >
 > | | Antes | Depois |
@@ -403,7 +403,7 @@ regressão — no mobile nunca chegou a tocar.
 - [ ] **Reaplicar `android:screenOrientation="portrait"` se a pasta `android/`
       for regerada.** Ela está no `.gitignore` (é saída do `cap add`), então a
       edição manual do `AndroidManifest.xml` se perde. Detalhes em
-      [GERAR-ASSETS.md](GERAR-ASSETS.md). Automatizar no épico 11.
+      [GERAR-ASSETS.md](../MANUAIS/GERAR-ASSETS.md). Automatizar no épico 11.
 - [x] **Reaplicar ícone e splash se a pasta `android/` for regerada.** Mesma
       causa do item acima: os mipmaps são saída do `cap add` e voltam ao
       placeholder do Capacitor (o "X" azul). *(01/08/2026 — automatizado em
@@ -422,7 +422,7 @@ regressão — no mobile nunca chegou a tocar.
       | `android/gradle/wrapper/gradle-wrapper.properties` | `distributionUrl` | **gradle-8.9-all.zip** |
 
       Depois de reaplicar, rode `.\gradlew clean` antes do `bundleRelease`.
-      Tabela e histórico completos em [GERAR-AAB.md](GERAR-AAB.md) §7.
+      Tabela e histórico completos em [GERAR-AAB.md](../MANUAIS/GERAR-AAB.md) §7.
       Automatizar junto com os dois itens acima no épico 11.
 
 ---
@@ -444,7 +444,7 @@ regressão — no mobile nunca chegou a tocar.
 - [ ] Criar conta/app no **Google AdMob** e vincular à conta de pagamentos.
 - [ ] Cadastrar o **banner** e gerar a **Ad Unit ID** de produção.
 - [ ] Criar unidade de teste (test ad unit) para desenvolvimento.
-- [x] Registrar o **App ID real** em [GOOGLE-ADMOB.md](GOOGLE-ADMOB.md).
+- [x] Registrar o **App ID real** em [GOOGLE-ADMOB.md](../MANUAIS/GOOGLE-ADMOB.md).
       *(01/08/2026 — App ID e unidade de banner cadastrados)*
       ⚠️ **Estes IDs ainda NÃO estão no app** — o banner continua sendo o
       placeholder 320×50. A integração do SDK é a próxima tarefa deste épico.
@@ -530,7 +530,7 @@ regressão — no mobile nunca chegou a tocar.
       `tagForChildDirectedTreatment` e ser não personalizados, o que **reduz a
       receita por anúncio**. É o custo consciente da escolha.
 - [ ] Preencher **Data safety** no Play Console — respostas prontas em
-      [PUBLICAR-PLAY-CONSOLE.md](PUBLICAR-PLAY-CONSOLE.md).
+      [PUBLICAR-PLAY-CONSOLE.md](../MANUAIS/PUBLICAR-PLAY-CONSOLE.md).
 
 ---
 
@@ -541,7 +541,7 @@ regressão — no mobile nunca chegou a tocar.
 Bloqueia a geração do keystore (11.1). O `.gitignore` atual cobre apenas
 `APK/*.apk` e `APK/*.aab`; os arquivos sensíveis do release estão descobertos.
 Detalhes e o bloco pronto para colar estão no §0 do
-[GERAR-AAB.md](GERAR-AAB.md).
+[GERAR-AAB.md](../MANUAIS/GERAR-AAB.md).
 
 - [x] Adicionar ao `.gitignore` da raiz: `*.jks`, `*.keystore`,
       `keystore.properties`, `local.properties`, `DEPLOY/*.aab`. *(31/07/2026)*
@@ -563,7 +563,7 @@ Detalhes e o bloco pronto para colar estão no §0 do
       os 5 mipmaps (legado + round + foreground do adaptive icon) a partir de
       `DEPLOY/store-assets/icon-512.png` e as 11 splashes a partir de
       `PROJECT/assets/logo-transparente.png`. **Exige novo build e novo
-      `versionCode`** — ver §11.1 em [GERAR-AAB.md](GERAR-AAB.md).)*
+      `versionCode`** — ver §11.1 em [GERAR-AAB.md](../MANUAIS/GERAR-AAB.md).)*
 
 > **Por que o placeholder passou:** `APK/android/` está no `.gitignore` (é saída
 > do `cap add`), então o ícone não era revisável no diff — só aparece depois de
@@ -637,7 +637,7 @@ Detalhes e o bloco pronto para colar estão no §0 do
       `PROJECT/assets/logo.png` ou `icon.png`.
 - [ ] Gerar o **AAB assinado** e enviar às faixas de teste
       (internal → closed → open).
-- [ ] Validar o processo de [GERAR-AAB.md](GERAR-AAB.md) de ponta a ponta com o
+- [ ] Validar o processo de [GERAR-AAB.md](../MANUAIS/GERAR-AAB.md) de ponta a ponta com o
       stack definitivo e corrigir o documento se divergir.
 
 ---
@@ -657,6 +657,95 @@ Detalhes e o bloco pronto para colar estão no §0 do
       chamada telefônica).
 - [ ] Medir FPS em dispositivo de entrada e validar a ausência de GC visível
       (pooling do épico 2).
+
+---
+
+## Épico 13 — Ajustes de UX e dificuldade (07/08/2026)
+
+Rodada de melhorias a partir do feedback de uso. Os itens de balanceamento são
+todos de configuração — `APK/src/config/fases.json` — exceto o mecanismo de
+reforços, que exigiu código novo.
+
+### 13.1 — Hierarquia dos botões na vitória de fase
+
+- [x] Botão **Próxima fase** ampliado (`.btn-xl`: 88 % da largura, 17 px, alvo de
+      toque de ~60 px) e **Menu** reduzido e apagado (`.btn-quiet`: 14 px, borda
+      de 1 px a 45 % de opacidade), com 26 px de separação entre os dois.
+      *Motivo: usuários saíam da campanha por engano ao mirar em "próxima fase".*
+
+### 13.2 — Confirmação ao sair para o menu
+
+- [x] Modal `#mdQuit` avisa que voltar ao menu **descarta a partida** (placar,
+      vidas, barreira e fase) e exige confirmação. O botão seguro (*continuar
+      jogando*) é o primário; o destrutivo é o discreto.
+- [x] Aparece **apenas na vitória de fase** — nas telas de game over e vitória
+      final a corrida já acabou e não há o que descartar.
+- [x] `backToMenu()` passou a chamar `clearProgress()`: sair de fato encerra a
+      corrida, em vez de deixar um progresso órfão gravado.
+- [x] Strings `quitTitle` / `quitDesc` / `quitStay` / `quitConfirm` nos 6 idiomas.
+
+### 13.3 — Camadas de reforço (naves que chegam durante a fase)
+
+- [x] Cada fase de 02 em diante ganha um bloco `reinforcements` em
+      `fases.json`: fileiras que **não** entram na montagem, materializadas uma
+      a uma nos eventos de descida do bloco (`spawnReinforcementRow` em
+      `entities.js`). Fases 02–08: 4 iniciais + 2 reforços.
+- [x] A camada nasce **logo abaixo do vilão** (`rowY0` = 130, e o Trasho ocupa
+      y 52–134), já visível. Lê como o vilão despachando a próxima onda.
+- [x] **Uma camada a cada 2 descidas** (`DESCENTS_PER_REINFORCEMENT`): as ondas
+      entram na 2ª, 4ª, 6ª descida. O gatilho é sempre o evento de descida —
+      nunca um temporizador.
+- [x] A camada nova entra **em fase** com o bloco (copia `x` e `dir` de uma
+      fileira viva). Nascer em `x: 0` com `dir` alternado a punha no centro já
+      prestes a tocar a borda, disparando a descida seguinte de imediato —
+      efeito dominó que trazia todas as camadas de uma vez.
+- [x] **Formação limpa traz a próxima onda na hora** (sem esperar descida). Não
+      é refinamento, é obrigatório: sem naves vivas nenhuma fileira toca a
+      borda, o bloco nunca desce e o contador congela.
+
+> **Bug corrigido em playtest (fase 04).** A primeira versão fazia a camada
+> nascer *acima* da borda superior (`y = -40`), para o jogador "ver o reforço
+> chegando do espaço", contando com as descidas seguintes para trazê-la à tela.
+> Em jogo isso travou: ao limpar toda a formação antes da onda entrar, não
+> restava fileira viva para tocar a borda — o bloco parava de descer e a camada
+> ficava permanentemente fora da tela. Tela vazia, fase que não termina.
+> A correção ataca as duas pontas: a onda nasce **visível** sob o vilão, e o
+> caminho de "formação vazia" a materializa na hora, independente de descidas.
+- [x] `stage.total` conta as naves futuras — senão a chegada de uma camada faria
+      `alive/total` passar de 1 e a formação *desaceleraria* abaixo da base.
+- [x] Fase 01 permanece com 4 fileiras fixas, como tutorial.
+
+### 13.4 — Dificuldade geral
+
+Motivo: a campanha estava rápida e fácil demais de zerar.
+
+- [x] Velocidade da formação **×1.2** (piso 42 → 50.4, teto 60 → 72), com
+      `formationAccel` acompanhando (55 → 66) para preservar a razão fim/início
+      de ~2,3× fixada na curva v2.
+- [x] Naves por fase: 20 → **30** (fases 02–08, 6 fileiras = 4+2) e **50**
+      (fases 09 e 10, 10 fileiras = 4+6). Campanha: ~200 → **330** naves.
+- [x] Cocos bem mais frequentes: a curva caiu de 4.5→2.6 s para **3.6→1.7 s**.
+- [x] Drop de power-up de 7 % → **5 %**, e o peso de `life` de 1 → **0.4**
+      (vida gratuita era o que mais amaciava as fases finais).
+
+### 13.5 — Banana bônus restrita à fase 05
+
+- [x] `bananaBonusScoreMilestone = 0` desliga a origem por pontuação (§4.4
+      origem 1) — antes soltava uma banana a cada 12 000 pontos, em qualquer fase.
+- [x] `bananaBonusGuaranteed` agora só na **fase 05** (era 3/5/7/9/10).
+- [x] Efeito de design: a barreira passa a ser um **recurso finito para a
+      campanha inteira**, com uma única reposição no meio do caminho. Reforça a
+      regra de §4.4 de que a barreira nunca regenera sozinha.
+
+### 13.6 — Documentação unificada em `DOC/`
+
+- [x] `MANUAIS/` → `DOC/`, agora com dois subdiretórios: **`DOC/Docs`**
+      (especificação e backlog — documentação de projeto) e **`DOC/MANUAIS`**
+      (procedimentos: gerar AAB, gerar assets, AdMob, publicar na Play Console).
+- [x] Todas as referências de caminho corrigidas — README, `.gitignore`,
+      `APK/.gitignore`, `APK/tools/gerar-icones.py`, `servir-prototipo.py`,
+      `DEPLOY/descricao-app.md` e os links cruzados entre os próprios documentos.
+      Validado: todo link markdown do repositório resolve para um arquivo real.
 
 ---
 

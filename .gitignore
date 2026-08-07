@@ -8,11 +8,12 @@ DEPLOY/*.apk
 dist/
 build/
 
-# Segredos de assinatura — NUNCA commitar (ver GERAR-AAB.md §0)
+# Segredos de assinatura — NUNCA commitar (ver DOC/MANUAIS/GERAR-AAB.md §0)
 *.jks
 *.keystore
 keystore.properties
 local.properties
+DEPLOY/keystore/
 
 # Mapeamento do R8: desofusca stack traces, então expõe a estrutura interna
 # do código. Guarde junto do AAB publicado, FORA do repositório (§5.1).

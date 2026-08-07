@@ -6,7 +6,7 @@ tropa estelar ao longo de **10 fases**.
 
 > **Atenção ao nome:** *Banana King Counterattacks* é o **jogo**. *Banana King*
 > (sozinho) é o **personagem herói**. Existe um projeto anterior e distinto também
-> chamado "Banana King" — ver §0 da [especificação](DOC/ESPECFICATION.md) antes de
+> chamado "Banana King" — ver §0 da [especificação](DOC/Docs/ESPECFICATION.md) antes de
 > tratar qualquer referência a esse nome como sendo deste projeto.
 
 ## Status
@@ -34,7 +34,7 @@ O protótipo em `PROJECT/` permanece como referência histórica.
 
 ### Como publicar
 
-Siga o [DOC/PUBLICAR-PLAY-CONSOLE.md](DOC/PUBLICAR-PLAY-CONSOLE.md) — traz as
+Siga o [DOC/MANUAIS/PUBLICAR-PLAY-CONSOLE.md](DOC/MANUAIS/PUBLICAR-PLAY-CONSOLE.md) — traz as
 descrições prontas em pt/en, as respostas do Data Safety, a classificação etária
 e o checklist de envio.
 
@@ -45,12 +45,12 @@ e o checklist de envio.
 
 | Documento | Conteúdo |
 | --- | --- |
-| [DOC/ESPECFICATION.md](DOC/ESPECFICATION.md) | **Especificação técnica e de design.** Fonte da verdade das regras de jogo, calibração, telas, i18n e monetização. |
-| [DOC/BACKLOG.md](DOC/BACKLOG.md) | Backlog de produção em 13 épicos, do protótipo à publicação. |
-| [DOC/GERAR-AAB.md](DOC/GERAR-AAB.md) | Build do AAB assinado, keystore, R8 e backup das chaves. Validado de ponta a ponta em 01/08/2026. |
-| [DOC/PUBLICAR-PLAY-CONSOLE.md](DOC/PUBLICAR-PLAY-CONSOLE.md) | **Cadastro na loja:** descrições prontas, Data Safety, classificação etária e checklist de envio. |
-| [DOC/GERAR-ASSETS.md](DOC/GERAR-ASSETS.md) | Geração dos assets otimizados (WebP) e fontes embutidas. |
-| [DOC/GOOGLE-ADMOB.md](DOC/GOOGLE-ADMOB.md) | Identificadores do AdMob (App ID ainda placeholder). |
+| [DOC/Docs/ESPECFICATION.md](DOC/Docs/ESPECFICATION.md) | **Especificação técnica e de design.** Fonte da verdade das regras de jogo, calibração, telas, i18n e monetização. |
+| [DOC/Docs/BACKLOG.md](DOC/Docs/BACKLOG.md) | Backlog de produção em 13 épicos, do protótipo à publicação. |
+| [DOC/MANUAIS/GERAR-AAB.md](DOC/MANUAIS/GERAR-AAB.md) | Build do AAB assinado, keystore, R8 e backup das chaves. Validado de ponta a ponta em 01/08/2026. |
+| [DOC/MANUAIS/PUBLICAR-PLAY-CONSOLE.md](DOC/MANUAIS/PUBLICAR-PLAY-CONSOLE.md) | **Cadastro na loja:** descrições prontas, Data Safety, classificação etária e checklist de envio. |
+| [DOC/MANUAIS/GERAR-ASSETS.md](DOC/MANUAIS/GERAR-ASSETS.md) | Geração dos assets otimizados (WebP) e fontes embutidas. |
+| [DOC/MANUAIS/GOOGLE-ADMOB.md](DOC/MANUAIS/GOOGLE-ADMOB.md) | Identificadores do AdMob (App ID ainda placeholder). |
 
 > Regras de jogo mudam **primeiro na especificação**, depois no código.
 
@@ -61,12 +61,13 @@ e o checklist de envio.
 | `PROJECT/` | Protótipo jogável e especificação original da POC |
 | `PROJECT/assets/` | Arte do jogo (~30 MB): 10 backgrounds de fase, personagens, 6 naves inimigas, frames da animação final, logo e ícone |
 | `PROJECT/uploads/` | Mocks de referência visual |
-| `DOC/` | Documentação do projeto |
+| `MANUAIS/` | Documentação interna do projeto (specs, backlog, guias de build e publicação) |
 | `APK/` | **Projeto de produção** — vanilla JS + Vite + Capacitor |
 | `APK/public/assets/` | Assets otimizados em WebP (1 MB) — gerados de `PROJECT/assets/` |
 | `APK/tools/` | Scripts de build (geração de assets, driver de screenshots) |
-| `docs/` | **Páginas legais** publicadas no GitHub Pages (privacidade e termos, 6 idiomas) |
+| `docs/` | **Site publicado no GitHub Pages** (privacidade e termos, 6 idiomas). ⚠️ O nome e a localização são exigidos pelo Pages e as URLs estão cadastradas na Play Console e no AdMob — **não renomear nem mover** |
 | `DEPLOY/` | Artefatos de publicação e assets de loja (binários não versionados) |
+| `DEPLOY/keystore/` | Backup local da chave de assinatura (`.jks`) — ignorado pelo git |
 
 ## Como rodar o projeto de produção (`APK/`)
 
@@ -109,7 +110,7 @@ pausa.
 > são relativos à raiz (`PROJECT/assets/...`). Nenhuma raiz de servidor satisfaz
 > os dois ao mesmo tempo, e abrir o `.html` direto do disco também não funciona.
 > O script contorna isso sem editar o protótipo; a padronização dos caminhos
-> está no épico 2 do [backlog](DOC/BACKLOG.md).
+> está no épico 2 do [backlog](DOC/Docs/BACKLOG.md).
 
 ## O jogo em uma tela
 
@@ -123,7 +124,7 @@ pausa.
 - **Power-ups:** tiro triplo, tiro rápido, escudo, vida extra e a **banana bônus**
   (única forma de recuperar a barreira).
 
-Detalhes e valores de calibração: [DOC/ESPECFICATION.md](DOC/ESPECFICATION.md).
+Detalhes e valores de calibração: [DOC/Docs/ESPECFICATION.md](DOC/Docs/ESPECFICATION.md).
 
 ## Identidade do app
 

@@ -220,7 +220,7 @@ def main() -> None:
     print("Adaptive icon")
     gerar_cor_de_fundo()
 
-    print("\nPronto. Reconstrua o AAB (DOC/GERAR-AAB.md) para o icone entrar no pacote.")
+    print("\nPronto. Reconstrua o AAB (DOC/MANUAIS/GERAR-AAB.md) para o icone entrar no pacote.")
 
 
 if __name__ == "__main__":

@@ -20,7 +20,7 @@ Uso (a partir da raiz do repositório):
     python servir-prototipo.py
 
 A correção definitiva é padronizar os caminhos no HTML — ver épico 2 do
-DOC/BACKLOG.md (migração do protótipo para o stack de produção).
+DOC/Docs/BACKLOG.md (migração do protótipo para o stack de produção).
 """
 
 import http.server

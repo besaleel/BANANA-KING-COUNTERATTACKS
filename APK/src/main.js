@@ -104,6 +104,10 @@ function applyI18n() {
   $('adNote').textContent = d.adNote;
   $('btnBuy').textContent = d.buy;
   $('btnCancelAds').textContent = d.cancel;
+  $('quitTitle').textContent = d.quitTitle;
+  $('quitDesc').textContent = d.quitDesc;
+  $('btnQuitCancel').textContent = d.quitStay;
+  $('btnQuitConfirm').textContent = d.quitConfirm;
   $('termsTitle').textContent = d.termsTitle;
   $('termsBody').textContent = d.termsBody;
   $('linkPrivacyUrl').textContent = d.privacyLink;
@@ -309,7 +313,21 @@ function backToMenu() {
   audio.sfx('click');
   audio.stopMusic();
   if (game) { game.running = false; game.paused = false; }
+  clearProgress();          // a corrida foi descartada: nao ha o que retomar
   show('menu');
+}
+
+/**
+ * Pede confirmacao antes de voltar ao menu (item 2 da lista de melhorias).
+ *
+ * Usado apenas na vitoria de FASE, onde sair descarta uma corrida viva -
+ * placar, vidas, barreira e progresso de fase. Nas telas de game over e de
+ * vitoria final a corrida ja acabou, entao ali o Menu continua direto: pedir
+ * confirmacao para descartar o que ja nao existe so atrapalha.
+ */
+function confirmBackToMenu() {
+  audio.sfx('click');
+  $('mdQuit').hidden = false;
 }
 
 function setFrameBackground(file) {
@@ -341,9 +359,19 @@ function wire() {
   $('btnVicNext').addEventListener('click', continuePhase);
   $('btnOverAgain').addEventListener('click', () => startGame(1));
   $('btnWinAgain').addEventListener('click', () => startGame(1));
-  $('btnVicMenu').addEventListener('click', backToMenu);
+  // so a vitoria de fase confirma: e' a unica com corrida em andamento
+  $('btnVicMenu').addEventListener('click', confirmBackToMenu);
   $('btnOverMenu').addEventListener('click', backToMenu);
   $('btnWinMenu').addEventListener('click', backToMenu);
+
+  $('btnQuitCancel').addEventListener('click', () => {
+    audio.sfx('click');
+    $('mdQuit').hidden = true;
+  });
+  $('btnQuitConfirm').addEventListener('click', () => {
+    $('mdQuit').hidden = true;
+    backToMenu();
+  });
 
   $('btnPause').addEventListener('click', () => { audio.sfx('click'); setPaused(true); });
   $('btnResume').addEventListener('click', () => { audio.sfx('click'); setPaused(false); });

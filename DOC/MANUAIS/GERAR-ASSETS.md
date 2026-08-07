@@ -1,6 +1,6 @@
 # Geração de assets otimizados
 
-> **Épico 6.1 do [BACKLOG.md](BACKLOG.md).** Como sair da arte original em PNG
+> **Épico 6.1 do [BACKLOG.md](../Docs/BACKLOG.md).** Como sair da arte original em PNG
 > para os arquivos que realmente entram no APK.
 > **Atualizado:** 31/07/2026
 
@@ -29,10 +29,36 @@ Depois de gerar, reconstrua o bundle:
 cd APK && npm run build
 ```
 
+### Cenário da vitória final — `gerar-win-bg.py`
+
+```bash
+python APK/tools/gerar-win-bg.py
+```
+
+Script **à parte**, com saída própria: `APK/public/assets/win_bg.webp` (768×1376,
+~16 KB). Não lê de `PROJECT/assets/` — desenha a cena por código (Pillow), então
+é a única arte do projeto sem original externo. Determinístico (`random.seed(7)`):
+rodar duas vezes produz o mesmo arquivo.
+
+Desenha o pôr do sol da tela de vitória final: sol grande e centralizado no
+horizonte, floresta em silhueta enquadrando as duas margens, e um caminho de luz
+que guia o olhar do primeiro plano até o sol — é por ele que o personagem
+caminha, encolhendo, na animação `bkwalk`.
+
+> **Por que foi refeito.** A arte anterior tinha dois defeitos que só apareceram
+> no playtest: uma **emenda vertical** visível em x=470 (61 % da largura, onde
+> duas imagens tinham sido coladas) e o **sol escondido atrás da floresta**, na
+> direita, quase invisível — numa tela cujo tema é caminhar rumo ao sol. Ambos
+> confirmados por análise de descontinuidade de colunas antes de refazer.
+
+Ajustes ficam nas constantes do topo do script: `HORIZON`, `SUN_CY`, `SUN_R` e a
+paleta `SKY` (mesma família de cores da UI: roxo `#2b1b3d`, amarelo `#ffd23f`,
+laranja `#ff8c42`).
+
 ## O que o script faz
 
 **1. Reduz a resolução.** Os sprites vinham em 1024×1024 mas são desenhados em
-~60 px ([render.js](../APK/src/game/render.js)): naves 60×46, herói 66×66,
+~60 px ([render.js](../../APK/src/game/render.js)): naves 60×46, herói 66×66,
 Trasho 96×82, com `devicePixelRatio` limitado a 2×.
 
 **2. Converte para WebP,** preservando alpha nos sprites recortados.
@@ -69,11 +95,11 @@ não 2×. O custo é de poucos KB.
 
 `APK/public/fonts/` traz **Press Start 2P** e **VT323** em WOFF2, subsets
 `latin` + `latin-ext` — suficientes para os 6 idiomas. Declaradas via
-`@font-face` em [styles.css](../APK/src/styles.css), **sem nenhuma requisição
+`@font-face` em [styles.css](../../APK/src/styles.css), **sem nenhuma requisição
 de rede** (a POC as puxava do Google Fonts, violando o offline-first da §8).
 
 Ambas são **SIL Open Font License 1.1**, que permite uso comercial e embutir no
-app. O comprovante está em [`APK/public/fonts/LICENSE.txt`](../APK/public/fonts/LICENSE.txt).
+app. O comprovante está em [`APK/public/fonts/LICENSE.txt`](../../APK/public/fonts/LICENSE.txt).
 
 Cirílico, grego e vietnamita foram omitidos: nenhum idioma suportado os usa e
 custariam ~60 KB a mais.
